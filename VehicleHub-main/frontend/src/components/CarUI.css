@@ -1,0 +1,56 @@
+#carUIDiv {
+    padding: 20px;
+}
+
+#carList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Increased gap for better spacing */
+}
+
+.carBox {
+    border: 1px solid #ccc;
+    padding: 20px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    border-radius: 15px; /* Rounded corners for car shape */
+    flex: 1 1 calc(33.333% - 40px); /* Three columns layout, adjust as needed */
+    box-sizing: border-box;
+    max-width: calc(33.333% - 40px); /* Ensure the box doesn't grow larger than the row */
+    position: relative; /* For positioning other elements */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow for depth */
+}
+
+.carBox div {
+    margin-bottom: 5px;
+}
+
+.carBox button {
+    margin-right: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.carBox button:hover {
+    background-color: #0056b3;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .carBox {
+        flex: 1 1 calc(50% - 40px); /* Two columns layout for medium screens */
+        max-width: calc(50% - 40px);
+    }
+}
+
+@media (max-width: 480px) {
+    .carBox {
+        flex: 1 1 calc(100% - 40px); /* One column layout for small screens */
+        max-width: calc(100% - 40px);
+    }
+}
+
