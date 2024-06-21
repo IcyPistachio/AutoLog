@@ -6,27 +6,27 @@ function CarInfo() {
     const [car, setCar] = useState(null);
     const [error, setError] = useState('');
     const [note, setNote] = useState('');
+    const [type, setType] = useState(''); // New state for type
+    const [miles, setMiles] = useState(''); // New state for miles
     const [notes, setNotes] = useState([]);
     const [editNoteId, setEditNoteId] = useState(null);
     const [editNoteContent, setEditNoteContent] = useState('');
-    const [editMode, setEditMode] = useState(false); // State to toggle edit mode
+    const [editNoteType, setEditNoteType] = useState('');
+    const [editNoteMiles, setEditNoteMiles] = useState('');
+    const [editMode, setEditMode] = useState(false);
     const [make, setMake] = useState('');
     const [model, setModel] = useState('');
     const [year, setYear] = useState('');
     const [odometer, setOdometer] = useState('');
-    const [color, setColor] = useState(''); // State for color
-    const [searchTerm, setSearchTerm] = useState(''); // State to hold search term
+    const [color, setColor] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
-    const app_name = 'cop4331vehiclehub-330c5739c6af'
-    function buildPath(route)
-    {
-        if (process.env.NODE_ENV === 'production') 
-        {
-            return 'https://' + app_name +  '.herokuapp.com/' + route;
-        }
-        else
-        {        
+    const app_name = 'cop4331vehiclehub-330c5739c6af';
+    function buildPath(route) {
+        if (process.env.NODE_ENV === 'production') {
+            return 'https://' + app_name + '.herokuapp.com/' + route;
+        } else {
             return 'http://localhost:5000/' + route;
         }
     }
@@ -45,12 +45,11 @@ function CarInfo() {
                     setError("API Error: " + res.error);
                 } else {
                     setCar(res.car);
-                    // Set initial values for edit mode
                     setMake(res.car.make);
                     setModel(res.car.model);
                     setYear(res.car.year);
                     setOdometer(res.car.odometer);
-                    setColor(res.car.color); // Set initial color
+                    setColor(res.car.color);
                 }
             } catch (e) {
                 setError(e.toString());
@@ -87,12 +86,16 @@ function CarInfo() {
             return;
         }
 
-        const noteWithOdometer = `${note} (Odometer: ${car.odometer} miles)`;
-        
         try {
             const response = await fetch(buildPath('api/addnote'), {
                 method: 'POST',
-                body: JSON.stringify({ carId: parseInt(carId), note: noteWithOdometer, dateCreated: new Date().toISOString() }),
+                body: JSON.stringify({
+                    carId: parseInt(carId),
+                    note,
+                    type,
+                    miles,
+                    dateCreated: new Date().toISOString()
+                }),
                 headers: { 'Content-Type': 'application/json' },
             });
 
@@ -102,6 +105,8 @@ function CarInfo() {
             } else {
                 fetchNotes();
                 setNote('');
+                setType(''); // Reset type
+                setMiles(''); // Reset miles
             }
         } catch (e) {
             setError(e.toString());
@@ -151,16 +156,25 @@ function CarInfo() {
         }
     };
 
-    const editNote = (noteId, currentNote) => {
+    const editNote = (noteId, currentNote, currentType, currentMiles) => {
         setEditNoteId(noteId);
         setEditNoteContent(currentNote);
+        setEditNoteType(currentType);
+        setEditNoteMiles(currentMiles);
     };
 
     const updateNote = async () => {
         try {
             const response = await fetch(buildPath('api/updatenote'), {
                 method: 'POST',
-                body: JSON.stringify({ carId: parseInt(carId), noteId: editNoteId, note: editNoteContent, dateCreated: new Date().toISOString() }),
+                body: JSON.stringify({
+                    carId: parseInt(carId),
+                    noteId: editNoteId,
+                    note: editNoteContent,
+                    type: editNoteType,
+                    miles: editNoteMiles,
+                    dateCreated: new Date().toISOString()
+                }),
                 headers: { 'Content-Type': 'application/json' },
             });
 
@@ -171,6 +185,8 @@ function CarInfo() {
                 fetchNotes();
                 setEditNoteId(null);
                 setEditNoteContent('');
+                setEditNoteType('');
+                setEditNoteMiles('');
             }
         } catch (e) {
             setError(e.toString());
@@ -180,7 +196,7 @@ function CarInfo() {
     const saveCarChanges = async () => {
         try {
             const userId = JSON.parse(localStorage.getItem('user_data')).id;
-            const obj = { userId, carId: parseInt(carId), make, model, year, odometer, color }; // Include color
+            const obj = { userId, carId: parseInt(carId), make, model, year, odometer, color };
             const js = JSON.stringify(obj);
 
             const response = await fetch(buildPath('api/updatecar'), {
@@ -195,8 +211,8 @@ function CarInfo() {
                 setError("API Error:" + res.error);
             } else {
                 setError('');
-                setEditMode(false); // Exit edit mode
-                setCar({ ...car, make, model, year, odometer, color }); // Update local car state
+                setEditMode(false);
+                setCar({ ...car, make, model, year, odometer, color });
             }
         } catch (e) {
             setError(e.toString());
@@ -212,14 +228,14 @@ function CarInfo() {
         navigate('/cars');
     };
 
-    // Function to handle search input change
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
     };
 
-    // Function to filter notes based on search term
     const filteredNotes = notes.filter((note) =>
         note.note.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        note.miles.toLowerCase().includes(searchTerm.toLowerCase()) ||
         formatDate(note.dateCreated).toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -262,67 +278,94 @@ function CarInfo() {
                         )}
                     </div>
                     <div>
-                        <label>Color: </label> {/* New color field */}
+                        <label>Color: </label>
                         {editMode ? (
                             <input type="text" value={color} onChange={(e) => setColor(e.target.value)} />
                         ) : (
                             <span>{car.color}</span>
                         )}
                     </div>
-                    <button onClick={() => setEditMode(!editMode)}>
-                        {editMode ? 'Cancel Edit' : 'Edit'}
-                    </button>
-                    {editMode && (
-                        <button onClick={saveCarChanges}>Save Changes</button>
+                    {editMode ? (
+                        <div>
+                            <button onClick={saveCarChanges}>Save Changes</button>
+                            <button onClick={() => setEditMode(false)}>Cancel</button>
+                        </div>
+                    ) : (
+                        <button onClick={() => setEditMode(true)}>Edit</button>
                     )}
-    
-                    <button onClick={goBack}>Back</button>
-    
-                    <h3>Add a Note</h3>
+                    <button onClick={goBack}>Back to Cars</button>
+                </div>
+            ) : (
+                <p>Loading...</p>
+            )}
+
+            <div>
+                <h2>Notes</h2>
+                <div>
+                    <input
+                        type="text"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                        placeholder="Type"
+                    />
+                    <input
+                        type="text"
+                        value={miles}
+                        onChange={(e) => setMiles(e.target.value)}
+                        placeholder="Miles"
+                    />
                     <textarea
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
-                        rows="4"
-                        cols="50"
-                        placeholder="Enter your notes here"
+                        placeholder="Add a note"
                     ></textarea>
                     <button onClick={addNote}>Add Note</button>
-    
-                    <h3>Notes</h3>
+                    <div>
                     <input
                         type="text"
                         value={searchTerm}
                         onChange={handleSearchChange}
                         placeholder="Search notes..."
                     />
-                    <ul>
-                        {filteredNotes.map((n) => (
-                            <li key={n.noteId}>
-                                {editNoteId === n.noteId ? (
-                                    <div>
-                                        <textarea
-                                            value={editNoteContent}
-                                            onChange={(e) => setEditNoteContent(e.target.value)}
-                                            rows="4"
-                                            cols="50"
-                                            placeholder="Edit your note here"
-                                        ></textarea>
-                                        <button onClick={updateNote}>Save</button>
-                                    </div>
-                                ) : (
-                                    <div>
-                                        {formatDate(n.dateCreated)}: {n.note}
-                                        <button onClick={() => deleteNote(n.noteId)}>Delete</button>
-                                        <button onClick={() => editNote(n.noteId, n.note)}>Edit</button>
-                                    </div>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
+                    </div>
                 </div>
-            ) : (
-                <p>Loading...</p>
-            )}
+                <div>
+                    {filteredNotes.map((note) => (
+                        <div key={note.noteId}>
+                            {editNoteId === note.noteId ? (
+                                <div>
+                                    <input
+                                        type="text"
+                                        value={editNoteType}
+                                        onChange={(e) => setEditNoteType(e.target.value)}
+                                        placeholder="Type"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={editNoteMiles}
+                                        onChange={(e) => setEditNoteMiles(e.target.value)}
+                                        placeholder="Miles"
+                                    />
+                                    <textarea
+                                        value={editNoteContent}
+                                        onChange={(e) => setEditNoteContent(e.target.value)}
+                                    ></textarea>
+                                    <button onClick={updateNote}>Update Note</button>
+                                    <button onClick={() => setEditNoteId(null)}>Cancel</button>
+                                </div>
+                            ) : (
+                                <div>
+                                    
+                                    Type: {note.type} | Miles: {note.miles} | Note: {note.note} | {formatDate(note.dateCreated)}
+                                    
+                                    <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
+                                    <button onClick={() => deleteNote(note.noteId)}>Delete</button>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }

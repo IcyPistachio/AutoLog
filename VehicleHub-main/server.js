@@ -294,14 +294,14 @@ app.post('/api/updatecar', async (req, res, next) => {
 
 // Add a note
 app.post('/api/addnote', async (req, res, next) => {
-    // incoming: carId, note, dateCreated
+    // incoming: carId, note, type, miles, dateCreated
     // outgoing: error, noteId
-    const { carId, note, dateCreated } = req.body;
+    const { carId, note, type, miles, dateCreated } = req.body;
     var error = '';
     try {
         const db = client.db('COP4331');
         const noteId = await getNextSequenceValue('noteId');
-        const newNote = { noteId, carId, note, dateCreated };
+        const newNote = { noteId, carId, note, type, miles, dateCreated }; // Include type and miles
         const result = await db.collection('CarNotes').insertOne(newNote);
         res.status(200).json({ error: '', noteId });
     } catch (e) {
@@ -347,15 +347,15 @@ app.post('/api/getcarnotes', async (req, res, next) => {
 });
 
 app.post('/api/updatenote', async (req, res, next) => {
-    // incoming: carId, noteId, note, dateCreated
+    // incoming: carId, noteId, note, type, miles, dateCreated
     // outgoing: error
-    const { carId, noteId, note, dateCreated } = req.body;
+    const { carId, noteId, note, type, miles, dateCreated } = req.body;
     var error = '';
     try {
         const db = client.db('COP4331');
         const result = await db.collection('CarNotes').updateOne(
             { carId, noteId },
-            { $set: { note, dateCreated } }
+            { $set: { note, type, miles, dateCreated } } // Include type and miles
         );
 
         if (result.matchedCount === 0) {
