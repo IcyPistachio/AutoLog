@@ -18,21 +18,14 @@ function Login() {
         };
     }, []);
 
-    const app_name = 'cop4331vehiclehub-330c5739c6af';
-    function buildPath(route) {
-        if (process.env.NODE_ENV === 'production') {
-            return 'https://' + app_name + '.herokuapp.com/' + route;
-        } else {
-            return 'http://localhost:5000/' + route;
-        }
-    }
+    var bp = require('./Path.js');
 
     const doLogin = async event => {
         event.preventDefault();
         var obj = { email: loginEmail.value, password: loginPassword.value };
         var js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPath('api/login'), {
+            const response = await fetch(bp.buildPath('api/login'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' }
@@ -50,7 +43,7 @@ function Login() {
             alert(e.toString());
             return;
         }
-    };
+    };    
 
     return (
         <div className="login-container">

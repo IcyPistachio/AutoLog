@@ -22,19 +22,12 @@ function CarInfo() {
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
-    const app_name = 'cop4331vehiclehub-330c5739c6af';
-    function buildPath(route) {
-        if (process.env.NODE_ENV === 'production') {
-            return 'https://' + app_name + '.herokuapp.com/' + route;
-        } else {
-            return 'http://localhost:5000/' + route;
-        }
-    }
+    var bp = require('./Path.js');
 
     useEffect(() => {
         const fetchCarInfo = async () => {
             try {
-                const response = await fetch(buildPath('api/getcarinfo'), {
+                const response = await fetch(bp.buildPath('api/getcarinfo'), {
                     method: 'POST',
                     body: JSON.stringify({ carId: parseInt(carId) }),
                     headers: { 'Content-Type': 'application/json' },
@@ -58,7 +51,7 @@ function CarInfo() {
 
         const fetchCarNotes = async () => {
             try {
-                const response = await fetch(buildPath('api/getcarnotes'), {
+                const response = await fetch(bp.buildPath('api/getcarnotes'), {
                     method: 'POST',
                     body: JSON.stringify({ carId: parseInt(carId) }),
                     headers: { 'Content-Type': 'application/json' },
@@ -87,7 +80,7 @@ function CarInfo() {
         }
 
         try {
-            const response = await fetch(buildPath('api/addnote'), {
+            const response = await fetch(bp.buildPath('api/addnote'), {
                 method: 'POST',
                 body: JSON.stringify({
                     carId: parseInt(carId),
@@ -115,7 +108,7 @@ function CarInfo() {
 
     const fetchNotes = async () => {
         try {
-            const response = await fetch(buildPath('api/getcarnotes'), {
+            const response = await fetch(bp.buildPath('api/getcarnotes'), {
                 method: 'POST',
                 body: JSON.stringify({ carId: parseInt(carId) }),
                 headers: { 'Content-Type': 'application/json' },
@@ -139,7 +132,7 @@ function CarInfo() {
         }
 
         try {
-            const response = await fetch(buildPath('api/deletenote'), {
+            const response = await fetch(bp.buildPath('api/deletenote'), {
                 method: 'POST',
                 body: JSON.stringify({ carId: parseInt(carId), noteId }),
                 headers: { 'Content-Type': 'application/json' },
@@ -165,7 +158,7 @@ function CarInfo() {
 
     const updateNote = async () => {
         try {
-            const response = await fetch(buildPath('api/updatenote'), {
+            const response = await fetch(bp.buildPath('api/updatenote'), {
                 method: 'POST',
                 body: JSON.stringify({
                     carId: parseInt(carId),
@@ -199,7 +192,7 @@ function CarInfo() {
             const obj = { userId, carId: parseInt(carId), make, model, year, odometer, color };
             const js = JSON.stringify(obj);
 
-            const response = await fetch(buildPath('api/updatecar'), {
+            const response = await fetch(bp.buildPath('api/updatecar'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' },

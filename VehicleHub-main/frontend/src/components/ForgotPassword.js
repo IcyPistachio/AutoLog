@@ -6,18 +6,11 @@ function ForgotPassword() {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
-    const app_name = 'cop4331vehiclehub-330c5739c6af';
-    function buildPath(route) {
-        if (process.env.NODE_ENV === 'production') {
-            return 'https://' + app_name + '.herokuapp.com/' + route;
-        } else {
-            return 'http://localhost:5000/' + route;
-        }
-    }
+    var bp = require('./Path.js');
 
     const handleResetPassword = async (event) => {
         event.preventDefault();
-        const response = await fetch(buildPath('api/forgot-password'), {
+        const response = await fetch(bp.buildPath('api/forgot-password'), {
             method: 'POST',
             body: JSON.stringify({ email }),
             headers: { 'Content-Type': 'application/json' }

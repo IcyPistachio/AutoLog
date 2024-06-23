@@ -16,18 +16,7 @@ function CarUI() {
 
     const navigate = useNavigate();
 
-    const app_name = 'cop4331vehiclehub-330c5739c6af'
-    function buildPath(route)
-    {
-        if (process.env.NODE_ENV === 'production') 
-        {
-            return 'https://' + app_name +  '.herokuapp.com/' + route;
-        }
-        else
-        {        
-            return 'http://localhost:5000/' + route;
-        }
-    }
+    var bp = require('./Path.js');
 
     useEffect(() => {
         searchCars(''); // Initial search with empty search term on component mount
@@ -45,7 +34,7 @@ function CarUI() {
         const obj = { userId, make, model, year, odometer, color };
         const js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPath('api/addcar'), {
+            const response = await fetch(bp.buildPath('api/addcar'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' },
@@ -75,7 +64,7 @@ function CarUI() {
         const js = JSON.stringify(obj);
 
         try {
-            const response = await fetch(buildPath('api/searchcars'), {
+            const response = await fetch(bp.buildPath('api/searchcars'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' },
@@ -102,7 +91,7 @@ function CarUI() {
         const js = JSON.stringify(obj);
 
         try {
-            const response = await fetch(buildPath('api/deletecar'), {
+            const response = await fetch(bp.buildPath('api/deletecar'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' },
@@ -142,7 +131,7 @@ function CarUI() {
         const obj = { userId, carId, make, model, year, odometer, color };
         const js = JSON.stringify(obj);
         try {
-            const response = await fetch(buildPath('api/updatecar'), {
+            const response = await fetch(bp.buildPath('api/updatecar'), {
                 method: 'POST',
                 body: js,
                 headers: { 'Content-Type': 'application/json' },
