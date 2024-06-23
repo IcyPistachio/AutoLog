@@ -73,3 +73,67 @@
 .back-button:hover {
     background-color: #5a6268;
 }
+
+.password-strength {
+    display: block;
+    margin-top: 10px;
+}
+
+.password-strength.strong {
+    color: green;
+}
+
+.password-strength.weak {
+    color: red;
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    flex: 1;
+}
+
+.checkmark {
+    color: green;
+    margin-left: 10px;
+    font-size: 1.5em;
+}
+
+.crossmark {
+    color: red;
+    margin-left: 10px;
+    font-size: 1.5em;
+}
+
+.password-requirements {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.password-requirements li {
+    font-size: 0.9em;
+}
+
+.password-requirements .valid::before {
+    content: '✔ ';
+    color: green;
+}
+
+.password-requirements .invalid::before {
+    content: '✖ ';
+    color: red;
+}
+
+.valid {
+    color: green;
+}
+
+.invalid {
+    color: red;
+}
+

@@ -179,23 +179,35 @@ exports.setApp = function ( app, client )
     
     app.post('/api/login', async (req, res, next) => {
         // incoming: email, password
-        // outgoing: id, firstName, lastName, error
+        // outgoing: id, firstName, lastName, isVerified, error
         var error = '';
         const { email, password } = req.body;
-        const db = client.db('COP4331');
-        const results = await db.collection('Users').find({ Email: email, Password: password }).toArray();
-    
-        var id = -1;
-        var fn = '';
-        var ln = '';
-        if (results.length > 0) {
-            id = results[0].UserId;
-            fn = results[0].FirstName;
-            ln = results[0].LastName;
+        
+        try {
+            const db = client.db('COP4331');
+            
+            // Check if the user exists and retrieve necessary details
+            const user = await db.collection('Users').findOne({ Email: email, Password: password });
+            
+            if (!user) {
+                error = 'Email/Password combination incorrect';
+                res.status(200).json({ id: -1, firstName: '', lastName: '', isVerified: false, error });
+                return;
+            }
+            
+            // Extract user details
+            const { UserId: id, FirstName: firstName, LastName: lastName, isVerified } = user;
+            
+            // Prepare response object
+            const ret = { id, firstName, lastName, isVerified, error };
+            
+            // Send response
+            res.status(200).json(ret);
+        } catch (e) {
+            error = e.toString();
+            res.status(500).json({ id: -1, firstName: '', lastName: '', isVerified: false, error });
         }
-        var ret = { id: id, firstName: fn, lastName: ln, error: error };
-        res.status(200).json(ret);
-    });
+    });    
     
     app.post('/api/searchcars', async (req, res, next) => {
         // incoming: userId, search
