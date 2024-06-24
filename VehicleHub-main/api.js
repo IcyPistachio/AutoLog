@@ -366,4 +366,27 @@ exports.setApp = function ( app, client )
         }
     });
 
+    app.post('/api/changename', async (req, res) => {
+        // incoming: userId, firstName, lastName
+        // outgoing: error
+        const { userId, firstName, lastName } = req.body;
+        var error = '';
+        try {
+            const db = client.db('COP4331'); 
+            const result = await db.collection('Users').updateOne(
+                { UserId: userId },
+                { $set: { FirstName: firstName, LastName: lastName } }
+            );
+    
+            if (result.modifiedCount === 0) {
+                error = 'Failed to update name';
+            }
+        } catch (e) {
+            error = e.toString();
+        }
+    
+        const ret = { error };
+        res.status(200).json(ret);
+    });
+    
 }
