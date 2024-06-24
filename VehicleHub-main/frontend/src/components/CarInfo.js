@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function CarInfo() {
-    const { carId } = useParams();
+function CarInfo({ carId, onCarInfoUpdated  }) {
     const [car, setCar] = useState(null);
     const [error, setError] = useState('');
     const [note, setNote] = useState('');
-    const [type, setType] = useState(''); // New state for type
-    const [miles, setMiles] = useState(''); // New state for miles
+    const [type, setType] = useState('');
+    const [miles, setMiles] = useState('');
     const [notes, setNotes] = useState([]);
     const [editNoteId, setEditNoteId] = useState(null);
     const [editNoteContent, setEditNoteContent] = useState('');
@@ -98,8 +97,8 @@ function CarInfo() {
             } else {
                 fetchNotes();
                 setNote('');
-                setType(''); // Reset type
-                setMiles(''); // Reset miles
+                setType('');
+                setMiles('');
             }
         } catch (e) {
             setError(e.toString());
@@ -207,6 +206,7 @@ function CarInfo() {
                 setEditMode(false);
                 setCar({ ...car, make, model, year, odometer, color });
             }
+            onCarInfoUpdated();
         } catch (e) {
             setError(e.toString());
         }
@@ -215,10 +215,6 @@ function CarInfo() {
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
-    };
-
-    const goBack = () => {
-        navigate('/cars');
     };
 
     const handleSearchChange = (e) => {
@@ -286,7 +282,6 @@ function CarInfo() {
                     ) : (
                         <button onClick={() => setEditMode(true)}>Edit</button>
                     )}
-                    <button onClick={goBack}>Back to Cars</button>
                 </div>
             ) : (
                 <p>Loading...</p>
@@ -313,14 +308,12 @@ function CarInfo() {
                         placeholder="Add a note"
                     ></textarea>
                     <button onClick={addNote}>Add Note</button>
-                    <div>
                     <input
                         type="text"
                         value={searchTerm}
                         onChange={handleSearchChange}
                         placeholder="Search notes..."
                     />
-                    </div>
                 </div>
                 <div>
                     {filteredNotes.map((note) => (
@@ -348,9 +341,7 @@ function CarInfo() {
                                 </div>
                             ) : (
                                 <div>
-                                    
                                     Type: {note.type} | Miles: {note.miles} | Note: {note.note} | {formatDate(note.dateCreated)}
-                                    
                                     <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
                                     <button onClick={() => deleteNote(note.noteId)}>Delete</button>
                                 </div>
