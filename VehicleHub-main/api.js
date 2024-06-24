@@ -147,7 +147,7 @@ exports.setApp = function ( app, client )
             const user = await db.collection('Users').findOne({ verificationToken: req.params.token });
     
             if (!user) {
-                return res.status(400).json({ error: 'Invalid or expired token.' });
+                return res.status(400).json({ error: 'Invalid, expired token or already verified.' });
             }
     
             await db.collection('Users').updateOne({ verificationToken: req.params.token }, { $set: { isVerified: true }, $unset: { verificationToken: "" } });
