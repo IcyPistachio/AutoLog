@@ -18,6 +18,8 @@ function Register() {
         noSpaces: false,
     });
     const [isPasswordMatching, setIsPasswordMatching] = useState(false);
+    const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+    const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] = useState(false);
 
     const navigate = useNavigate();
     var bp = require('./Path.js');
@@ -121,33 +123,41 @@ function Register() {
                         placeholder="Password"
                         value={password}
                         onChange={handlePasswordChange}
+                        onFocus={() => setIsPasswordFocused(true)}
+                        onBlur={() => setIsPasswordFocused(false)}
                         required
                     />
                     {isPasswordValid && <span className="checkmark">✔</span>}
                     {!isPasswordValid && <span className="crossmark">✖</span>}
                 </div>
-                <ul className="password-requirements">
-                    <li className={passwordValidations.length ? 'valid' : 'invalid'}>8-20 characters</li>
-                    <li className={passwordValidations.lowercase ? 'valid' : 'invalid'}>At least one lowercase letter</li>
-                    <li className={passwordValidations.uppercase ? 'valid' : 'invalid'}>At least one uppercase letter</li>
-                    <li className={passwordValidations.number ? 'valid' : 'invalid'}>At least one number</li>
-                    <li className={passwordValidations.symbol ? 'valid' : 'invalid'}>At least one symbol (@, $, !, %, *, ?, &)</li>
-                    <li className={passwordValidations.noSpaces ? 'valid' : 'invalid'}>No spaces</li>
-                </ul>
+                {isPasswordFocused && (
+                    <ul className="password-requirements">
+                        <li className={passwordValidations.length ? 'valid' : 'invalid'}>8-20 characters</li>
+                        <li className={passwordValidations.lowercase ? 'valid' : 'invalid'}>At least one lowercase letter</li>
+                        <li className={passwordValidations.uppercase ? 'valid' : 'invalid'}>At least one uppercase letter</li>
+                        <li className={passwordValidations.number ? 'valid' : 'invalid'}>At least one number</li>
+                        <li className={passwordValidations.symbol ? 'valid' : 'invalid'}>At least one symbol (@, $, !, %, *, ?, &)</li>
+                        <li className={passwordValidations.noSpaces ? 'valid' : 'invalid'}>No spaces</li>
+                    </ul>
+                )}
                 <div className="password-container">
                     <input
                         type="password"
                         placeholder="Confirm Password"
                         value={confirmPassword}
                         onChange={handleConfirmPasswordChange}
+                        onFocus={() => setIsConfirmPasswordFocused(true)}
+                        onBlur={() => setIsConfirmPasswordFocused(false)}
                         required
                     />
                     {isPasswordMatching && <span className="checkmark">✔</span>}
                     {!isPasswordMatching && <span className="crossmark">✖</span>}
                 </div>
-                <p className={isPasswordMatching ? 'valid' : 'invalid'}>
-                    {isPasswordMatching ? '✔ Passwords match' : '✖ Passwords do not match'}
-                </p>
+                {isConfirmPasswordFocused && (
+                    <p className={isPasswordMatching ? 'valid' : 'invalid'}>
+                        {isPasswordMatching ? '✔ Passwords match' : '✖ Passwords do not match'}
+                    </p>
+                )}
                 <input type="submit" value="Register" />
                 <span className="message">{message}</span>
             </form>
