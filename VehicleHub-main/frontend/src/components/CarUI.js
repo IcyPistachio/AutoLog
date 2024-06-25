@@ -84,7 +84,7 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
                 <button type="button" onClick={onCreateVehicle}>Create Vehicle</button>
             </div>
             <br />
-            <input type="text" placeholder="Search Cars" ref={searchRef} onChange={handleSearchChange} />
+            <input type="text" placeholder="Search Vehicles" ref={searchRef} onChange={handleSearchChange} />
             <div className="car-list">
                 {carList.map((car) => (
                     <div key={car.carId} className="car-box" onClick={() => handleSelectCar(car.carId)}>

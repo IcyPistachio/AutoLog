@@ -74,7 +74,7 @@ function CarInfo({ carId, onCarInfoUpdated  }) {
 
     const addNote = async () => {
         if (!car) {
-            setError("Car information is not available");
+            setError("Vehicle information is not available");
             return;
         }
 
@@ -230,7 +230,7 @@ function CarInfo({ carId, onCarInfoUpdated  }) {
 
     return (
         <div>
-            <h2>Car Information</h2>
+            <h2>Vehicle Information</h2>
             {error && <p>{error}</p>}
             {car ? (
                 <div>
