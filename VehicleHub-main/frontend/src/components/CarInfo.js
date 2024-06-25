@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './CarInfo.css'; 
 
-function CarInfo({ carId, onCarInfoUpdated  }) {
+function CarInfo({ carId, onCarInfoUpdated }) {
     const [car, setCar] = useState(null);
     const [error, setError] = useState('');
     const [note, setNote] = useState('');
@@ -229,7 +230,7 @@ function CarInfo({ carId, onCarInfoUpdated  }) {
     );
 
     return (
-        <div>
+        <div className="car-info-container">
             <h2>Vehicle Information</h2>
             {error && <p>{error}</p>}
             {car ? (
@@ -287,26 +288,35 @@ function CarInfo({ carId, onCarInfoUpdated  }) {
                 <p>Loading...</p>
             )}
 
-            <div>
-                <h2>Notes</h2>
-                <div>
-                    <input
-                        type="text"
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                        placeholder="Type"
-                    />
-                    <input
-                        type="text"
-                        value={miles}
-                        onChange={(e) => setMiles(e.target.value)}
-                        placeholder="Miles"
-                    />
-                    <textarea
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                        placeholder="Add a note"
-                    ></textarea>
+            <div className="notes-section">
+                <h2>Vehicle Notes:</h2>
+                <div className="note-form">
+                    <label>
+                        Service Type:
+                        <input
+                            type="text"
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                            placeholder="Service Type"
+                        />
+                    </label>
+                    <label>
+                        Miles:
+                        <input
+                            type="text"
+                            value={miles}
+                            onChange={(e) => setMiles(e.target.value)}
+                            placeholder="Miles"
+                        />
+                    </label>
+                    <label>
+                        Note:
+                        <textarea
+                            value={note}
+                            onChange={(e) => setNote(e.target.value)}
+                            placeholder="Add a note"
+                        ></textarea>
+                    </label>
                     <button onClick={addNote}>Add Note</button>
                     <input
                         type="text"
@@ -319,29 +329,38 @@ function CarInfo({ carId, onCarInfoUpdated  }) {
                     {filteredNotes.map((note) => (
                         <div key={note.noteId}>
                             {editNoteId === note.noteId ? (
-                                <div>
-                                    <input
-                                        type="text"
-                                        value={editNoteType}
-                                        onChange={(e) => setEditNoteType(e.target.value)}
-                                        placeholder="Type"
-                                    />
-                                    <input
-                                        type="text"
-                                        value={editNoteMiles}
-                                        onChange={(e) => setEditNoteMiles(e.target.value)}
-                                        placeholder="Miles"
-                                    />
-                                    <textarea
-                                        value={editNoteContent}
-                                        onChange={(e) => setEditNoteContent(e.target.value)}
-                                    ></textarea>
+                                <div className="edit-note-form">
+                                    <label>
+                                        Type:
+                                        <input
+                                            type="text"
+                                            value={editNoteType}
+                                            onChange={(e) => setEditNoteType(e.target.value)}
+                                            placeholder="Type"
+                                        />
+                                    </label>
+                                    <label>
+                                        Miles:
+                                        <input
+                                            type="text"
+                                            value={editNoteMiles}
+                                            onChange={(e) => setEditNoteMiles(e.target.value)}
+                                            placeholder="Miles"
+                                        />
+                                    </label>
+                                    <label>
+                                        Note:
+                                        <textarea
+                                            value={editNoteContent}
+                                            onChange={(e) => setEditNoteContent(e.target.value)}
+                                        ></textarea>
+                                    </label>
                                     <button onClick={updateNote}>Update Note</button>
                                     <button onClick={() => setEditNoteId(null)}>Cancel</button>
                                 </div>
                             ) : (
-                                <div>
-                                    Type: {note.type} | Miles: {note.miles} | Note: {note.note} | {formatDate(note.dateCreated)}
+                                <div className="note">
+                                    <p>Type: {note.type} | Miles: {note.miles} | Note: {note.note} | {formatDate(note.dateCreated)}</p>
                                     <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
                                     <button onClick={() => deleteNote(note.noteId)}>Delete</button>
                                 </div>

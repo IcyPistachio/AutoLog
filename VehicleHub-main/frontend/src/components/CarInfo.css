@@ -1,0 +1,56 @@
+.car-info-container {
+    padding: 20px;
+}
+
+.notes-section {
+    margin-top: 20px;
+}
+
+.note-form,
+.edit-note-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-bottom: 20px;
+}
+
+.note-form label,
+.edit-note-form label {
+    display: flex;
+    flex-direction: column;
+}
+
+.note-form button,
+.edit-note-form button {
+    grid-column: span 2;
+    justify-self: start;
+}
+
+.note-form input,
+.note-form textarea,
+.edit-note-form input,
+.edit-note-form textarea {
+    width: 100%;
+}
+
+.note-form input[type="text"],
+.edit-note-form input[type="text"] {
+    padding: 8px;
+    margin-top: 4px;
+}
+
+.note-form textarea,
+.edit-note-form textarea {
+    padding: 8px;
+    margin-top: 4px;
+}
+
+.note {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.note button {
+    margin-right: 10px;
+}
