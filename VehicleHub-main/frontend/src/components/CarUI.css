@@ -54,8 +54,3 @@
     }
 }
 
-/* Additional styles for half-width input fields */
-.width {
-    width: calc(50% - 10px); /* Adjust width as needed */
-    margin-right: 10px; /* Adjust margin between input fields */
-}

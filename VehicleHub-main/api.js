@@ -164,18 +164,19 @@ exports.setApp = function ( app, client )
         // incoming: userId, make, model, year, odometer, color
         // outgoing: error, carId
         const { userId, make, model, year, odometer, color } = req.body;
-        var error = '';
+        let error = '';
         try {
             const db = client.db('COP4331');
             const carId = await getNextSequenceValue('carId');
-            const newCar = { carId, userId, make, model, year, odometer, color };
+            const createdAt = new Date(); // Current date
+            const newCar = { carId, userId, make, model, year, odometer, color, createdAt };
             const result = await db.collection('Cars').insertOne(newCar);
             res.status(200).json({ error: '', carId });
         } catch (e) {
             error = e.toString();
             res.status(200).json({ error });
         }
-    });
+    });    
     
     app.post('/api/login', async (req, res, next) => {
         // incoming: email, password
@@ -212,9 +213,9 @@ exports.setApp = function ( app, client )
     app.post('/api/searchcars', async (req, res, next) => {
         // incoming: userId, search
         // outgoing: results[], error
-        var error = '';
+        let error = '';
         const { userId, search } = req.body;
-        var _search = search.trim();
+        const _search = search.trim();
         const db = client.db('COP4331');
         try {
             const results = await db.collection('Cars').find({
@@ -226,13 +227,13 @@ exports.setApp = function ( app, client )
                     { color: { $regex: _search + '.*', $options: 'i' } },
                     { odometer: { $regex: _search + '.*', $options: 'i' } }
                 ]
-            }).toArray();
+            }).sort({ createdAt: -1 }).toArray(); // Sort by createdAt descending
             res.status(200).json({ results, error });
         } catch (e) {
             error = e.toString();
             res.status(200).json({ results: [], error });
         }
-    });
+    });    
     
     app.post('/api/deletecar', async (req, res, next) => {
         // incoming: userId, carId
@@ -273,12 +274,13 @@ exports.setApp = function ( app, client )
         // incoming: userId, carId, make, model, year, odometer, color
         // outgoing: error
         const { carId, make, model, year, odometer, color } = req.body;
-        var error = '';
+        let error = '';
         try {
             const db = client.db('COP4331');
+            const createdAt = new Date(); // Current date
             const result = await db.collection('Cars').updateOne(
                 { carId },
-                { $set: { make, model, year, odometer, color } }
+                { $set: { make, model, year, odometer, color, createdAt } }
             );
             if (result.matchedCount === 0) {
                 error = 'Car not found';

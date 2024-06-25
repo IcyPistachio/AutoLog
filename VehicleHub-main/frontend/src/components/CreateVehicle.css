@@ -1,0 +1,30 @@
+.width {
+    width: calc(50% - 10px); 
+    margin-right: 10px; 
+}
+
+.add-car-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adjust the gap between input groups as needed */
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group label {
+    margin-right: 10px; /* Adjust label spacing */
+}
+
+.input-group input {
+    flex: 1; /* Input fills remaining space */
+    padding: 5px;
+    font-size: 14px; /* Adjust font size */
+    border: 1px solid #ccc; /* Example border style */
+}
+
+button[type="submit"] {
+    margin-top: 10px; /* Adjust margin from the last input group */
+}
