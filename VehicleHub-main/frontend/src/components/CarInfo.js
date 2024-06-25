@@ -20,6 +20,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
     const [odometer, setOdometer] = useState('');
     const [color, setColor] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    const [showAddNoteForm, setShowAddNoteForm] = useState(false);
     const navigate = useNavigate();
 
     var bp = require('./Path.js');
@@ -100,6 +101,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                 setNote('');
                 setType('');
                 setMiles('');
+                //setShowAddNoteForm(false); // Hide form after adding the note
             }
         } catch (e) {
             setError(e.toString());
@@ -290,41 +292,46 @@ function CarInfo({ carId, onCarInfoUpdated }) {
 
             <div className="notes-section">
                 <h2>Vehicle Notes:</h2>
-                <div className="note-form">
-                    <label>
-                        Service Type:
-                        <input
-                            type="text"
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                            placeholder="Service Type"
-                        />
-                    </label>
-                    <label>
-                        Miles:
-                        <input
-                            type="text"
-                            value={miles}
-                            onChange={(e) => setMiles(e.target.value)}
-                            placeholder="Miles"
-                        />
-                    </label>
-                    <label>
-                        Note:
-                        <textarea
-                            value={note}
-                            onChange={(e) => setNote(e.target.value)}
-                            placeholder="Add a note"
-                        ></textarea>
-                    </label>
-                    <button onClick={addNote}>Add Note</button>
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        placeholder="Search notes..."
-                    />
-                </div>
+                <button onClick={() => setShowAddNoteForm(!showAddNoteForm)}>
+                    {showAddNoteForm ? 'Hide Add Note Form' : 'Create New Note'}
+                </button>
+                {showAddNoteForm && (
+                    <div className="note-form">
+                        <label>
+                            Service Type:
+                            <input
+                                type="text"
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
+                                placeholder="Service Type"
+                            />
+                        </label>
+                        <label>
+                            Miles:
+                            <input
+                                type="text"
+                                value={miles}
+                                onChange={(e) => setMiles(e.target.value)}
+                                placeholder="Miles"
+                            />
+                        </label>
+                        <label>
+                            Note:
+                            <textarea
+                                value={note}
+                                onChange={(e) => setNote(e.target.value)}
+                                placeholder="Add a note"
+                            ></textarea>
+                        </label>
+                        <button onClick={addNote}>Add Note</button>
+                    </div>
+                )}
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    placeholder="Search notes..."
+                />
                 <div>
                     {filteredNotes.map((note) => (
                         <div key={note.noteId}>
