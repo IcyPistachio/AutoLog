@@ -19,7 +19,6 @@ function LoggedInName() {
     };
 
     const handleChangeName = async () => {
-        // Make API call to update the user's name
         const obj = { userId, firstName, lastName };
         const js = JSON.stringify(obj);
         
@@ -35,7 +34,7 @@ function LoggedInName() {
                 alert('Failed to update name');
             } else {
                 alert('Name updated successfully');
-                setIsEditing(false); // Exit edit mode
+                setIsEditing(false);
 
                 const updatedUser = { ...ud, firstName, lastName };
                 localStorage.setItem('user_data', JSON.stringify(updatedUser));

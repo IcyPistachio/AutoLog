@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './CarUI.css'; // Assuming you have a CSS file for styling
+import './CarUI.css'; 
 
 function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) {
     const [message, setMessage] = useState('');
@@ -10,7 +10,7 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
     var bp = require('./Path.js');
 
     useEffect(() => {
-        searchCars(searchRef.current.value); // Initial search with empty search term on component mount
+        searchCars(searchRef.current.value); 
     }, [carInfoUpdated]);
 
     const searchCars = async (searchTerm) => {

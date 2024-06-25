@@ -40,7 +40,7 @@ function CreateVehicle({ onVehicleCreated }) {
                 yearRef.current.value = '';
                 odometerRef.current.value = '';
                 colorRef.current.value = '';
-                onVehicleCreated(); // Notify parent component
+                onVehicleCreated(); 
             }
         } catch (e) {
             setMessage(e.toString());

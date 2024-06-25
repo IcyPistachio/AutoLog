@@ -6,7 +6,7 @@
 .add-car-section {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Adjust the gap between input groups as needed */
+    gap: 10px; 
 }
 
 .input-group {
@@ -15,16 +15,16 @@
 }
 
 .input-group label {
-    margin-right: 10px; /* Adjust label spacing */
+    margin-right: 10px; 
 }
 
 .input-group input {
-    flex: 1; /* Input fills remaining space */
+    flex: 1; 
     padding: 5px;
-    font-size: 14px; /* Adjust font size */
-    border: 1px solid #ccc; /* Example border style */
+    font-size: 14px; 
+    border: 1px solid #ccc; 
 }
 
 button[type="submit"] {
-    margin-top: 10px; /* Adjust margin from the last input group */
+    margin-top: 10px; 
 }

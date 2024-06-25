@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './HomePage.css'; // Assuming you want to add some styling
+import './HomePage.css'; 
 
 function HomePage() {
     const navigate = useNavigate();
 
     const handleLoginSignup = () => {
-        navigate('/login'); // Redirect to login page
+        navigate('/login'); 
     };
 
     return (

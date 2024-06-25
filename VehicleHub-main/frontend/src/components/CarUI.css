@@ -5,7 +5,7 @@
 #carList {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Increased gap for better spacing */
+    gap: 20px; 
 }
 
 .carBox {
@@ -13,12 +13,12 @@
     padding: 20px;
     cursor: pointer;
     background-color: #f9f9f9;
-    border-radius: 15px; /* Rounded corners for car shape */
-    flex: 1 1 calc(33.333% - 40px); /* Three columns layout, adjust as needed */
+    border-radius: 15px; 
+    flex: 1 1 calc(33.333% - 40px); 
     box-sizing: border-box;
-    max-width: calc(33.333% - 40px); /* Ensure the box doesn't grow larger than the row */
-    position: relative; /* For positioning other elements */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow for depth */
+    max-width: calc(33.333% - 40px); 
+    position: relative; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .carBox div {
@@ -39,17 +39,16 @@
     background-color: #0056b3;
 }
 
-/* Media query for smaller screens */
 @media (max-width: 768px) {
     .carBox {
-        flex: 1 1 calc(50% - 40px); /* Two columns layout for medium screens */
+        flex: 1 1 calc(50% - 40px); 
         max-width: calc(50% - 40px);
     }
 }
 
 @media (max-width: 480px) {
     .carBox {
-        flex: 1 1 calc(100% - 40px); /* One column layout for small screens */
+        flex: 1 1 calc(100% - 40px); 
         max-width: calc(100% - 40px);
     }
 }

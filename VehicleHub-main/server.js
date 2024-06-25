@@ -42,8 +42,7 @@ app.listen(PORT, () =>
     console.log('Server listening on port ' + PORT);
 });
 
-// Add the following for the correct retrieval path -
-// For Heroku deployment
+
 
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') 

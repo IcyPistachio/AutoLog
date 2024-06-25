@@ -54,7 +54,7 @@ exports.setApp = function ( app, client )
         }
     
         const resetToken = crypto.randomBytes(20).toString('hex');
-        const resetTokenExpiration = Date.now() + 3600000; // 1 hour from now
+        const resetTokenExpiration = Date.now() + 3600000; // 1 hour 
         const resetLink = `${getBaseUrl()}/reset-password/${resetToken}`;
     
         // Save the reset token and expiration to the user's record
@@ -301,7 +301,7 @@ exports.setApp = function ( app, client )
         try {
             const db = client.db('COP4331');
             const noteId = await getNextSequenceValue('noteId');
-            const newNote = { noteId, carId, note, type, miles, dateCreated }; // Include type and miles
+            const newNote = { noteId, carId, note, type, miles, dateCreated }; 
             const result = await db.collection('CarNotes').insertOne(newNote);
             res.status(200).json({ error: '', noteId });
         } catch (e) {
@@ -355,7 +355,7 @@ exports.setApp = function ( app, client )
             const db = client.db('COP4331');
             const result = await db.collection('CarNotes').updateOne(
                 { carId, noteId },
-                { $set: { note, type, miles, dateCreated } } // Include type and miles
+                { $set: { note, type, miles, dateCreated } } 
             );
     
             if (result.matchedCount === 0) {

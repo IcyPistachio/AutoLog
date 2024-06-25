@@ -3,13 +3,13 @@ import GarageTitle from '../components/GarageTitle';
 import LoggedInName from '../components/LoggedInName';
 import CarUI from '../components/CarUI';
 import CarInfo from '../components/CarInfo';
-import CreateVehicle from '../components/CreateVehicle'; // Import the new component
-import './CarPage.css'; // CSS for CarPage layout
+import CreateVehicle from '../components/CreateVehicle'; 
+import './CarPage.css'; 
 
 const CarPage = () => {
     const [selectedCarId, setSelectedCarId] = useState(null);
-    const [carInfoUpdated, setCarInfoUpdated] = useState(false); // Track car info update
-    const [creatingVehicle, setCreatingVehicle] = useState(false); // Track if creating vehicle
+    const [carInfoUpdated, setCarInfoUpdated] = useState(false); 
+    const [creatingVehicle, setCreatingVehicle] = useState(false); 
 
     const handleCarSelect = (carId) => {
         setSelectedCarId(carId);

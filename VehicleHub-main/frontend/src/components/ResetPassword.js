@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './ResetPassword.css'; // Import CSS for ResetPassword
+import './ResetPassword.css'; 
 
 function ResetPassword() {
     const [newPassword, setNewPassword] = useState('');
@@ -18,7 +18,7 @@ function ResetPassword() {
     const [showPasswordMatchRequirement, setShowPasswordMatchRequirement] = useState(false);
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
-    const { token } = useParams(); // Assuming the token is passed as a URL parameter
+    const { token } = useParams(); 
     var bp = require('./Path.js');
 
     useEffect(() => {
