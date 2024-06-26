@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Login.css'; 
+import './Login.css';
+import garageSound from '../sounds/garageSound.mp3';
 
 function Login() {
     const [loginEmail, setLoginEmail] = useState('');
@@ -35,12 +36,22 @@ function Login() {
                 var user = { firstName: res.firstName, lastName: res.lastName, id: res.id };
                 localStorage.setItem('user_data', JSON.stringify(user));
                 setMessage('');
+                playGarageSound(); // Call function to play garage sound
                 navigate('/garage');
             }
         } catch (e) {
             alert(e.toString());
             return;
         }
+    };
+
+    const playGarageSound = () => {
+        const audio = new Audio(garageSound); // Create a new audio object
+        audio.play(); // Play the sound
+        setTimeout(() => {
+            audio.pause(); // Pause after 5 seconds
+            audio.currentTime = 0; // Reset audio time for next play
+        }, 5000); // Play for 5 seconds
     };
 
     return (
