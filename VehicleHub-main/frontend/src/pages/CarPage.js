@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GarageTitle from '../components/GarageTitle';
 import LoggedInName from '../components/LoggedInName';
 import CarUI from '../components/CarUI';
@@ -10,6 +10,14 @@ const CarPage = () => {
     const [selectedCarId, setSelectedCarId] = useState(null);
     const [carInfoUpdated, setCarInfoUpdated] = useState(false); 
     const [creatingVehicle, setCreatingVehicle] = useState(false); 
+    const [showGarageDoor, setShowGarageDoor] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowGarageDoor(false);
+        }, 2000); // Adjust the time to match the animation duration
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleCarSelect = (carId) => {
         setSelectedCarId(carId);
@@ -32,6 +40,7 @@ const CarPage = () => {
 
     return (
         <div className="car-page-container">
+            {showGarageDoor && <div className="garage-door"></div>}
             <GarageTitle />
             <LoggedInName />
             <div className="car-page-content">
