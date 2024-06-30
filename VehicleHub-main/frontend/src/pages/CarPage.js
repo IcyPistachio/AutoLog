@@ -3,13 +3,13 @@ import GarageTitle from '../components/GarageTitle';
 import LoggedInName from '../components/LoggedInName';
 import CarUI from '../components/CarUI';
 import CarInfo from '../components/CarInfo';
-import CreateVehicle from '../components/CreateVehicle'; 
-import './CarPage.css'; 
+import CreateVehicle from '../components/CreateVehicle';
+import '../components/CarPage.css';
 
 const CarPage = () => {
     const [selectedCarId, setSelectedCarId] = useState(null);
-    const [carInfoUpdated, setCarInfoUpdated] = useState(false); 
-    const [creatingVehicle, setCreatingVehicle] = useState(false); 
+    const [carInfoUpdated, setCarInfoUpdated] = useState(false);
+    const [creatingVehicle, setCreatingVehicle] = useState(false);
     const [showGarageDoor, setShowGarageDoor] = useState(true);
 
     useEffect(() => {
