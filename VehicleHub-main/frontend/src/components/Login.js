@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 import './Login.css';
 import garageSound from '../sounds/garageSound.mp3';
 
@@ -56,42 +57,48 @@ function Login() {
 
     return (
         <div className="login-container">
-            <h1 className="title">VehicleHub</h1>
-            <span id="inner-title">LOG IN</span>
-            <input
-                type="email"
-                id="loginEmail"
-                placeholder="Email"
-                value={loginEmail}
-                onChange={(e) => setLoginEmail(e.target.value)}
-            />
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Password"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.target.value)}
-            />
-            <input
-                type="submit"
-                id="loginButton"
-                className="buttons"
-                value="Log In"
-                onClick={doLogin}
-            />
-            <span id="loginResult" className="message">{message}</span>
-            <div className="separator">
-                <hr className="line" />
-                <span className="or">or</span>
-                <hr className="line" />
-            </div>
-            <button className="signup-button" onClick={() => navigate('/register')}>
-                Sign Up
-            </button>
-            <div className="forgot-password-link">
-                <Link to="/forgot-password">Forgot password?</Link>
-            </div>
-        </div>
+            <form className="login-form">
+                <h1 className="title">VehicleHub</h1>
+                <span id="inner-title">LOG IN</span>
+
+                <input
+                    type="email"
+                    id="loginEmail"
+                    placeholder="Email"
+                    value={loginEmail}
+                    onChange={(e) => setLoginEmail(e.target.value)}
+                />
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Password"
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                />
+
+                <div className="forgot-password">
+                    <Link className="forgot-password-link" to="/forgot-password">Forgot password?</Link>
+                </div>
+
+                <div classname="buttons">
+                    <button className="login-button" onClick={() => doLogin}>
+                        LOG IN
+                    </button>
+
+                    <span id="loginResult" className="message">{message}</span>
+
+                    <div className="separator">
+                        <hr className="line" />
+                        <span className="or">OR</span>
+                        <hr className="line" />
+                    </div>
+
+                    <button className="signup-button" onClick={() => navigate('/register')}>
+                        SIGN UP
+                    </button>
+                </div>
+            </form >
+        </div >
     );
 }
 
