@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import './Login.css';
 import garageSound from '../sounds/garageSound.mp3';
+import logo from '../images/Group 19.png'
 
 function Login() {
     const [loginEmail, setLoginEmail] = useState('');
@@ -57,24 +58,32 @@ function Login() {
 
     return (
         <div className="login-container">
+            <img src={logo} alt="AutoLog Logo" />
             <form className="login-form">
-                <h1 className="title">VehicleHub</h1>
-                <span id="inner-title">LOG IN</span>
+                <h1 className="title">LOG IN</h1>
 
-                <input
-                    type="email"
-                    id="loginEmail"
-                    placeholder="Email"
-                    value={loginEmail}
-                    onChange={(e) => setLoginEmail(e.target.value)}
-                />
-                <input
-                    type="password"
-                    id="loginPassword"
-                    placeholder="Password"
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                />
+                <div className="vbox">
+                    <label>
+                        Email:
+                        <input
+                            type="email"
+                            id="loginEmail"
+                            placeholder="Email"
+                            value={loginEmail}
+                            onChange={(e) => setLoginEmail(e.target.value)}
+                        />
+                    </label>
+                    <label>
+                        Password:
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Password"
+                            value={loginPassword}
+                            onChange={(e) => setLoginPassword(e.target.value)}
+                        />
+                    </label>
+                </div>
 
                 <div className="forgot-password">
                     <Link className="forgot-password-link" to="/forgot-password">Forgot password?</Link>

@@ -1,42 +1,56 @@
+* {
+    font-family: "Monaco", monospace;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
 .login-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: auto;
     width: 50vw;
     height: 70vh;
     text-align: center;
+    min-height: 90vh;
 }
 
 .login-form {
-    padding: 3%;
-    width: 420px;
-    box-shadow: rgb(0 0 0 / 25%) 5px 5px 10px;
+    padding: 5%;
     background-color: lightslategray;
 }
 
-.login-form .title {
-    font-size: 2.5em;
-    font-weight: bold;
-    margin-bottom: 20px;
-    color: #333;
+.vbox {
+    display: flex;
+    flex-direction: column;
 }
 
-.login-form #inner-title {
-    font-size: 1.5em;
+.login-form .title {
+    font-size: 3.5em;
     font-weight: bold;
     margin-bottom: 20px;
-    display: block;
-    color: black;
+    color: #2E343B;
+    text-shadow: 3px 3px 5px rgb(0 0 0 / 25%);
+    padding-bottom: 1rem;
+}
+
+.login-form label {
+    width: 20vw;
+    font-size: large;
+    text-align: left;
+    color: white;
 }
 
 .login-form input[type="email"],
 .login-form input[type="password"] {
     width: calc(100% - 22px);
     padding: 7px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    box-shadow: inset 3px 3px #ccc;
+    margin: 5px 0;
+    border: none;
+    box-shadow: inset 4px 4px #ccc;
 }
 
 .login-form button {
@@ -44,8 +58,7 @@
     padding: 10px;
     color: black;
     border-color: black;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: large;
     cursor: pointer;
     box-shadow: 7px 7px black;
 }
@@ -73,8 +86,9 @@
 }
 
 .login-form .message {
-    margin-top: 20px;
-    color: red;
+    display: inline-block;
+    margin-top: 15px;
+    color: #800000;
 }
 
 .separator {
@@ -86,25 +100,21 @@
 .line {
     flex: 1;
     border: 0;
-    height: 1px;
-    background: #ccc;
+    height: 2px;
+    background: black;
 }
 
 .or {
     margin: 0 10px;
-    color: white;
+    color: black;
 }
 
 .forgot-password {
-    padding: 10px;
-    margin: 10px;
-    margin-top: 0px;
-    padding-top: 0px;
-    margin-bottom: 30px;
+    margin-bottom: 4vh;
     text-align: left;
 }
 
 .forgot-password-link {
-    color: #00008B;
-    font-weight: bold;
+    color: #000060;
+
 }
