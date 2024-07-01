@@ -58,6 +58,7 @@
     color: #FF9400;
     background-color: black;
     box-shadow: 7px 7px #FF9400;
+    border-color: #FF9400;
 }
 
 .signup-button {
@@ -68,6 +69,7 @@
     color: #D9D9D9;
     background-color: black;
     box-shadow: 7px 7px #D9D9D9;
+    border-color: #D9D9D9;
 }
 
 .login-form .message {

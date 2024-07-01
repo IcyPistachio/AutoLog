@@ -80,8 +80,8 @@ function Login() {
                     <Link className="forgot-password-link" to="/forgot-password">Forgot password?</Link>
                 </div>
 
-                <div classname="buttons">
-                    <button className="login-button" onClick={() => doLogin}>
+                <div className="buttons">
+                    <button className="login-button" onClick={doLogin}>
                         LOG IN
                     </button>
 
