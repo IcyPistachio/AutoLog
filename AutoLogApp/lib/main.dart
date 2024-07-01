@@ -445,7 +445,16 @@ class CarInfo extends StatefulWidget {
 
 class _CarInfoState extends State<CarInfo> {
   Map<String, dynamic>? _carInfo;
+  List<dynamic>? _carNotes;
+  List<dynamic>? _filteredCarNotes;
   String _errorMessage = '';
+  bool _isEditing = false;
+  final TextEditingController _makeController = TextEditingController();
+  final TextEditingController _modelController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
+  final TextEditingController _odometerController = TextEditingController();
+  final TextEditingController _colorController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   Future<void> _fetchCarInfo() async {
     final response = await http.post(
@@ -468,6 +477,11 @@ class _CarInfoState extends State<CarInfo> {
         setState(() {
           _carInfo = responseBody['car'];
           _errorMessage = '';
+          _makeController.text = _carInfo!['make'];
+          _modelController.text = _carInfo!['model'];
+          _yearController.text = _carInfo!['year'];
+          _odometerController.text = _carInfo!['odometer'];
+          _colorController.text = _carInfo!['color'];
         });
       }
     } else {
@@ -477,10 +491,98 @@ class _CarInfoState extends State<CarInfo> {
     }
   }
 
+  Future<void> _fetchCarNotes() async {
+    final response = await http.post(
+      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/getcarnotes'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'carId': widget.carId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['error'] != '') {
+        setState(() {
+          _errorMessage = responseBody['error'];
+        });
+      } else {
+        setState(() {
+          _carNotes = responseBody['notes'];
+          _filteredCarNotes = _carNotes;
+          _errorMessage = '';
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'An error occurred. Please try again.';
+      });
+    }
+  }
+
+  Future<void> _updateCarInfo() async {
+    final response = await http.post(
+      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/updatecar'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'carId': widget.carId,
+        'make': _makeController.text,
+        'model': _modelController.text,
+        'year': _yearController.text,
+        'odometer': _odometerController.text,
+        'color': _colorController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['error'] != '') {
+        setState(() {
+          _errorMessage = responseBody['error'];
+        });
+      } else {
+        setState(() {
+          _errorMessage = '';
+          _isEditing = false;
+          _fetchCarInfo(); // Refresh car info
+          _fetchCarNotes(); // Refresh car notes
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'An error occurred. Please try again.';
+      });
+    }
+  }
+
+  void _filterNotes(String query) {
+    if (query.isEmpty) {
+      setState(() {
+        _filteredCarNotes = _carNotes;
+      });
+    } else {
+      setState(() {
+        _filteredCarNotes = _carNotes!.where((note) {
+          return note['note'].toString().toLowerCase().contains(query.toLowerCase()) ||
+                 note['type'].toString().toLowerCase().contains(query.toLowerCase()) ||
+                 note['miles'].toString().toLowerCase().contains(query.toLowerCase());
+        }).toList();
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _fetchCarInfo();
+    _fetchCarNotes();
+    _searchController.addListener(() {
+      _filterNotes(_searchController.text);
+    });
   }
 
   @override
@@ -498,34 +600,135 @@ class _CarInfoState extends State<CarInfo> {
                   style: TextStyle(color: Colors.red),
                 ),
               )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Make: ${_carInfo!['make']}',
-                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    'Model: ${_carInfo!['model']}',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    'Year: ${_carInfo!['year']}',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    'Color: ${_carInfo!['color']}',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    'Odometer: ${_carInfo!['odometer']}',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                ],
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _isEditing
+                        ? Column(
+                            children: [
+                              TextField(
+                                controller: _makeController,
+                                decoration: InputDecoration(labelText: 'Make'),
+                              ),
+                              TextField(
+                                controller: _modelController,
+                                decoration: InputDecoration(labelText: 'Model'),
+                              ),
+                              TextField(
+                                controller: _yearController,
+                                decoration: InputDecoration(labelText: 'Year'),
+                              ),
+                              TextField(
+                                controller: _odometerController,
+                                decoration: InputDecoration(labelText: 'Odometer'),
+                              ),
+                              TextField(
+                                controller: _colorController,
+                                decoration: InputDecoration(labelText: 'Color'),
+                              ),
+                              SizedBox(height: 10.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _isEditing = false;
+                                      });
+                                    },
+                                    child: Text('Cancel'),
+                                  ),
+                                  SizedBox(width: 10.0),
+                                  ElevatedButton(
+                                    onPressed: _updateCarInfo,
+                                    child: Text('Save'),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Make: ${_carInfo!['make']}',
+                                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10.0),
+                              Text(
+                                'Model: ${_carInfo!['model']}',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                              SizedBox(height: 10.0),
+                              Text(
+                                'Year: ${_carInfo!['year']}',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                              SizedBox(height: 10.0),
+                              Text(
+                                'Color: ${_carInfo!['color']}',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                              SizedBox(height: 10.0),
+                              Text(
+                                'Odometer: ${_carInfo!['odometer']}',
+                                style: TextStyle(fontSize: 18.0),
+                              ),
+                              SizedBox(height: 20.0),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isEditing = true;
+                                  });
+                                },
+                                child: Text('Edit'),
+                              ),
+                            ],
+                          ),
+                    SizedBox(height: 20.0),
+                    TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        labelText: 'Search Notes',
+                        prefixIcon: Icon(Icons.search),
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    _filteredCarNotes == null
+                        ? Center(
+                            child: Text(
+                              _errorMessage.isNotEmpty ? _errorMessage : 'Loading notes...',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: _filteredCarNotes!.map((note) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Service Type: ${note['type']}',
+                                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Miles: ${note['miles']}',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                    Text(
+                                      'Note: ${note['note']}',
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                  ],
+                ),
               ),
       ),
     );
