@@ -1150,6 +1150,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final FocusNode _passwordFocusNode = FocusNode();
   String _errorMessage = '';
   bool _passwordsMatch = false;
   bool _showPasswordRequirements = false;
@@ -1218,6 +1219,27 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _passwordFocusNode.addListener(() {
+      setState(() {
+        _showPasswordRequirements = _passwordFocusNode.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _passwordFocusNode.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -1268,15 +1290,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  suffixIcon: _showPasswordRequirements
-                      ? _buildPasswordRequirementsIcon(_isPasswordValid)
-                      : null,
+                  suffixIcon: _buildPasswordRequirementsIcon(_isPasswordValid),
                 ),
                 obscureText: true,
+                focusNode: _passwordFocusNode,
                 onChanged: (value) {
-                  setState(() {
-                    _showPasswordRequirements = true;
-                  });
                   _validatePassword(value);
                   _checkPasswordsMatch(); // Update passwords match status
                 },
@@ -1289,6 +1307,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   }
                   return null;
                 },
+              ),
+              Visibility(
+                visible: _showPasswordRequirements,
+                child: Text(
+                  "Password must be 8-20 characters, with at least one uppercase, lowercase, number, and symbol.",
+                  style: TextStyle(color: Colors.grey),
+                ),
               ),
               TextFormField(
                 controller: _confirmPasswordController,
@@ -1309,9 +1334,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   return null;
                 },
                 onChanged: (value) {
-                  setState(() {
-                    _showPasswordRequirements = true;
-                  });
                   _checkPasswordsMatch(); // Update passwords match status
                 },
               ),
