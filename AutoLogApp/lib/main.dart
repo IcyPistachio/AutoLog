@@ -297,13 +297,14 @@ class _CarUIState extends State<CarUI> {
     );
   }
 
-  void _navigateToCarInfo(int carId) {
-    Navigator.push(
+  void _navigateToCarInfo(int carId) async {
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => CarInfo(userId: widget.userId, carId: carId),
       ),
     );
+    _searchCars(''); // Refresh cars list after returning from CarInfo
   }
 
   @override
@@ -449,12 +450,16 @@ class _CarInfoState extends State<CarInfo> {
   List<dynamic>? _filteredCarNotes;
   String _errorMessage = '';
   bool _isEditing = false;
+  bool _isAddingNote = false;
   final TextEditingController _makeController = TextEditingController();
   final TextEditingController _modelController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
   final TextEditingController _odometerController = TextEditingController();
   final TextEditingController _colorController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _noteTypeController = TextEditingController();
+  final TextEditingController _noteMilesController = TextEditingController();
+  final TextEditingController _noteTextController = TextEditingController();
 
   Future<void> _fetchCarInfo() async {
     final response = await http.post(
@@ -509,8 +514,12 @@ class _CarInfoState extends State<CarInfo> {
           _errorMessage = responseBody['error'];
         });
       } else {
+        List<dynamic> notes = responseBody['notes'];
+        // Sort notes by dateCreated in descending order
+        notes.sort((a, b) => DateTime.parse(b['dateCreated']).compareTo(DateTime.parse(a['dateCreated'])));
+
         setState(() {
-          _carNotes = responseBody['notes'];
+          _carNotes = notes;
           _filteredCarNotes = _carNotes;
           _errorMessage = '';
         });
@@ -559,6 +568,133 @@ class _CarInfoState extends State<CarInfo> {
     }
   }
 
+  Future<void> _addNewNote() async {
+    final response = await http.post(
+      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/addnote'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'carId': widget.carId,
+        'note': _noteTextController.text,
+        'type': _noteTypeController.text,
+        'miles': _noteMilesController.text,
+        'dateCreated': DateTime.now().toIso8601String(),
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['error'] != '') {
+        setState(() {
+          _errorMessage = responseBody['error'];
+        });
+      } else {
+        setState(() {
+          _errorMessage = '';
+          _isAddingNote = false;
+          _noteTypeController.clear();
+          _noteMilesController.clear();
+          _noteTextController.clear();
+          _fetchCarNotes(); // Refresh car notes
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'An error occurred. Please try again.';
+      });
+    }
+  }
+
+  Future<void> _deleteNote(int noteId) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Note'),
+          content: Text('Are you sure you want to delete this note?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () async {
+                Navigator.of(context).pop(); // Close the dialog
+                final response = await http.post(
+                  Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/deletenote'),
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+                  body: jsonEncode(<String, dynamic>{
+                    'carId': widget.carId,
+                    'noteId': noteId,
+                  }),
+                );
+
+                if (response.statusCode == 200) {
+                  final responseBody = jsonDecode(response.body);
+                  if (responseBody['error'] != '') {
+                    setState(() {
+                      _errorMessage = responseBody['error'];
+                    });
+                  } else {
+                    setState(() {
+                      _errorMessage = '';
+                      _fetchCarNotes(); // Refresh car notes after deletion
+                    });
+                  }
+                } else {
+                  setState(() {
+                    _errorMessage = 'An error occurred. Please try again.';
+                  });
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _updateNote(int noteId, String type, String miles, String note) async {
+    final response = await http.post(
+      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/updatenote'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'carId': widget.carId,
+        'noteId': noteId,
+        'type': type,
+        'miles': miles,
+        'note': note,
+        'dateCreated': DateTime.now().toIso8601String(),
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['error'] != '') {
+        setState(() {
+          _errorMessage = responseBody['error'];
+        });
+      } else {
+        setState(() {
+          _errorMessage = '';
+          _fetchCarNotes(); // Refresh car notes
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'An error occurred. Please try again.';
+      });
+    }
+  }
+
   void _filterNotes(String query) {
     if (query.isEmpty) {
       setState(() {
@@ -568,8 +704,8 @@ class _CarInfoState extends State<CarInfo> {
       setState(() {
         _filteredCarNotes = _carNotes!.where((note) {
           return note['note'].toString().toLowerCase().contains(query.toLowerCase()) ||
-                 note['type'].toString().toLowerCase().contains(query.toLowerCase()) ||
-                 note['miles'].toString().toLowerCase().contains(query.toLowerCase());
+              note['type'].toString().toLowerCase().contains(query.toLowerCase()) ||
+              note['miles'].toString().toLowerCase().contains(query.toLowerCase());
         }).toList();
       });
     }
@@ -687,6 +823,54 @@ class _CarInfoState extends State<CarInfo> {
                             ],
                           ),
                     SizedBox(height: 20.0),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _isAddingNote = true;
+                        });
+                      },
+                      child: Text('Add Note'),
+                    ),
+                    if (_isAddingNote)
+                      Column(
+                        children: [
+                          TextField(
+                            controller: _noteTypeController,
+                            decoration: InputDecoration(labelText: 'Service Type'),
+                          ),
+                          TextField(
+                            controller: _noteMilesController,
+                            decoration: InputDecoration(labelText: 'Miles'),
+                          ),
+                          TextField(
+                            controller: _noteTextController,
+                            decoration: InputDecoration(labelText: 'Note'),
+                          ),
+                          SizedBox(height: 10.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isAddingNote = false;
+                                    _noteTypeController.clear();
+                                    _noteMilesController.clear();
+                                    _noteTextController.clear();
+                                  });
+                                },
+                                child: Text('Cancel'),
+                              ),
+                              SizedBox(width: 10.0),
+                              ElevatedButton(
+                                onPressed: _addNewNote,
+                                child: Text('Create Note'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    SizedBox(height: 20.0),
                     TextField(
                       controller: _searchController,
                       decoration: InputDecoration(
@@ -705,22 +889,89 @@ class _CarInfoState extends State<CarInfo> {
                         : Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: _filteredCarNotes!.map((note) {
+                              final noteId = note['noteId'];
+                              final typeController = TextEditingController(text: note['type']);
+                              final milesController = TextEditingController(text: note['miles']);
+                              final noteController = TextEditingController(text: note['note']);
+
                               return Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      'Service Type: ${note['type']}',
-                                      style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      'Miles: ${note['miles']}',
-                                      style: TextStyle(fontSize: 16.0),
-                                    ),
-                                    Text(
-                                      'Note: ${note['note']}',
-                                      style: TextStyle(fontSize: 16.0),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Service Type: ${note['type']}',
+                                                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                              ),
+                                              Text(
+                                                'Miles: ${note['miles']}',
+                                                style: TextStyle(fontSize: 16.0),
+                                              ),
+                                              Text(
+                                                'Note: ${note['note']}',
+                                                style: TextStyle(fontSize: 16.0),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('Edit Note'),
+                                                  content: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      TextField(
+                                                        controller: typeController,
+                                                        decoration: InputDecoration(labelText: 'Service Type'),
+                                                      ),
+                                                      TextField(
+                                                        controller: milesController,
+                                                        decoration: InputDecoration(labelText: 'Miles'),
+                                                      ),
+                                                      TextField(
+                                                        controller: noteController,
+                                                        decoration: InputDecoration(labelText: 'Note'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: Text('Cancel'),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                    TextButton(
+                                                      child: Text('Save'),
+                                                      onPressed: () {
+                                                        _updateNote(noteId, typeController.text, milesController.text, noteController.text);
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () => _deleteNote(note['noteId']),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
