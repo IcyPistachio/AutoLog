@@ -443,7 +443,7 @@ class _CarUIState extends State<CarUI> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text('Hello ${widget.firstName} ${widget.lastName}'),
+            Text('Welcome, ${widget.firstName} ${widget.lastName} to your garage!'),
             SizedBox(width: 10),
             IconButton(
               icon: Icon(Icons.edit),
@@ -537,7 +537,7 @@ class _CarUIState extends State<CarUI> {
               child: _cars.isEmpty
                   ? Center(
                       child: Text(
-                        _errorMessage.isNotEmpty ? _errorMessage : 'No cars found.',
+                        _errorMessage.isNotEmpty ? _errorMessage : 'No vehicles found.',
                         style: TextStyle(color: Colors.red),
                       ),
                     )
@@ -869,7 +869,7 @@ class _CarInfoState extends State<CarInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Car Information'),
+        title: Text('Vehicle Information'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
