@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login App',
+      title: 'AutoLog',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -128,8 +128,17 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: <Widget>[
+              // Logo placeholder
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+                child: Image.asset(
+                  'assets/logo.png',
+                  height: 100, // Adjust height as needed
+                ),
+              ),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
