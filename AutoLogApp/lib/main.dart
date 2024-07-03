@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/login'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
 
     // If user confirms, open web browser
     if (confirm == true) {
-      Uri url = Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/forgot-password');
+      Uri url = Uri.parse('https://autolog-b358aa95bace.herokuapp.com/forgot-password');
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       } else {
@@ -213,7 +213,7 @@ class _CarUIState extends State<CarUI> {
 
   Future<void> _searchCars(String search) async {
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/searchcars'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/searchcars'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -250,7 +250,7 @@ class _CarUIState extends State<CarUI> {
     final color = _colorController.text;
 
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/addcar'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/addcar'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -309,7 +309,7 @@ class _CarUIState extends State<CarUI> {
               onPressed: () async {
                 Navigator.of(context).pop();
                 final response = await http.post(
-                  Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/deletecar'),
+                  Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/deletecar'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },
@@ -354,7 +354,7 @@ class _CarUIState extends State<CarUI> {
 
   Future<void> _changeName(String newFirstName, String newLastName) async {
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/changename'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/changename'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -598,7 +598,7 @@ class _CarInfoState extends State<CarInfo> {
 
   Future<void> _fetchCarInfo() async {
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/getcarinfo'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/getcarinfo'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -633,7 +633,7 @@ class _CarInfoState extends State<CarInfo> {
 
   Future<void> _fetchCarNotes() async {
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/getcarnotes'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/getcarnotes'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -668,7 +668,7 @@ class _CarInfoState extends State<CarInfo> {
 
   Future<void> _updateCarInfo() async {
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/updatecar'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/updatecar'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -705,7 +705,7 @@ class _CarInfoState extends State<CarInfo> {
 
   Future<void> _addNewNote() async {
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/addnote'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/addnote'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -760,7 +760,7 @@ class _CarInfoState extends State<CarInfo> {
               onPressed: () async {
                 Navigator.of(context).pop(); // Close the dialog
                 final response = await http.post(
-                  Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/deletenote'),
+                  Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/deletenote'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },
@@ -797,7 +797,7 @@ class _CarInfoState extends State<CarInfo> {
 
   Future<void> _updateNote(int noteId, String type, String miles, String note) async {
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/updatenote'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/updatenote'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -1184,7 +1184,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final password = _passwordController.text;
 
     final response = await http.post(
-      Uri.parse('https://cop4331vehiclehub-330c5739c6af.herokuapp.com/api/register'),
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
