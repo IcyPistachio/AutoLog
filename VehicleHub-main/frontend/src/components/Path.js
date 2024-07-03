@@ -1,4 +1,4 @@
-const app_name = 'cop4331vehiclehub-330c5739c6af'
+const app_name = 'autolog-b358aa95bace'
 exports.buildPath = 
 function buildPath(route)
 {
