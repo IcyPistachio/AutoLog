@@ -87,20 +87,20 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirmation'),
-          content: Text('Are you sure you want to go to the forgot password page?'),
+          title: const Text('Confirmation'),
+          content: const Text('Are you sure you want to go to the forgot password page?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(false); // Return false when cancel button is clicked
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true); // Return true when yes button is clicked
               },
-              child: Text('Yes'),
+              child: const Text('Yes'),
             ),
           ],
         );
@@ -122,17 +122,17 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Text('Login'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -170,15 +170,15 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Text('Sign Up'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextButton(
                 onPressed: _openForgotPasswordPage,
                 child: Text('Forgot Password?'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Text(
                 _errorMessage,
-                style: TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red),
               ),
             ],
           ),
@@ -295,17 +295,17 @@ class _CarUIState extends State<CarUI> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Deletion'),
-          content: Text('Are you sure you want to delete this vehicle?'),
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this vehicle?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: const Text('Delete'),
               onPressed: () async {
                 Navigator.of(context).pop();
                 final response = await http.post(
@@ -377,7 +377,7 @@ class _CarUIState extends State<CarUI> {
           widget.firstName = newFirstName;
           widget.lastName = newLastName;
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Name updated successfully.'),
           duration: Duration(seconds: 2),
         ));
@@ -397,29 +397,29 @@ class _CarUIState extends State<CarUI> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Change Name'),
+          title: const Text('Change Name'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
                 controller: _firstNameController,
-                decoration: InputDecoration(labelText: 'First Name'),
+                decoration: const InputDecoration(labelText: 'First Name'),
               ),
               TextFormField(
                 controller: _lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
+                decoration: const InputDecoration(labelText: 'Last Name'),
               ),
             ],
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Confirm'),
+              child: const Text('Confirm'),
               onPressed: () {
                 _changeName(_firstNameController.text, _lastNameController.text);
                 Navigator.of(context).pop();
@@ -444,9 +444,9 @@ class _CarUIState extends State<CarUI> {
         title: Row(
           children: [
             Text('Welcome, ${widget.firstName} ${widget.lastName} to your garage!'),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               onPressed: () {
                 _showNameChangeDialog();
               },
@@ -455,7 +455,7 @@ class _CarUIState extends State<CarUI> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () {
               // Perform logout action
               Navigator.pop(context); // Navigate back to login or previous screen
@@ -464,43 +464,43 @@ class _CarUIState extends State<CarUI> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             TextField(
               controller: _searchController,
-              decoration: InputDecoration(labelText: 'Search Vehicles'),
+              decoration: const InputDecoration(labelText: 'Search Vehicles'),
               onChanged: (value) {
                 _searchCars(value);
               },
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             _showAddForm
                 ? Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       TextFormField(
                         controller: _makeController,
-                        decoration: InputDecoration(labelText: 'Make'),
+                        decoration: const InputDecoration(labelText: 'Make'),
                       ),
                       TextFormField(
                         controller: _modelController,
-                        decoration: InputDecoration(labelText: 'Model'),
+                        decoration: const InputDecoration(labelText: 'Model'),
                       ),
                       TextFormField(
                         controller: _yearController,
-                        decoration: InputDecoration(labelText: 'Year'),
+                        decoration: const InputDecoration(labelText: 'Year'),
                       ),
                       TextFormField(
                         controller: _odometerController,
-                        decoration: InputDecoration(labelText: 'Odometer'),
+                        decoration: const InputDecoration(labelText: 'Odometer'),
                       ),
                       TextFormField(
                         controller: _colorController,
-                        decoration: InputDecoration(labelText: 'Color'),
+                        decoration: const InputDecoration(labelText: 'Color'),
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -510,18 +510,18 @@ class _CarUIState extends State<CarUI> {
                                 _showAddForm = false;
                               });
                             },
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
-                          SizedBox(width: 10.0),
+                          const SizedBox(width: 10.0),
                           ElevatedButton(
                             onPressed: () {
                               _addCar();
                             },
-                            child: Text('Create Vehicle'),
+                            child: const Text('Create Vehicle'),
                           ),
                         ],
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                     ],
                   )
                 : ElevatedButton(
@@ -530,15 +530,15 @@ class _CarUIState extends State<CarUI> {
                         _showAddForm = true;
                       });
                     },
-                    child: Text('Add Vehicle'),
+                    child: const Text('Add Vehicle'),
                   ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Expanded(
               child: _cars.isEmpty
                   ? Center(
                       child: Text(
                         _errorMessage.isNotEmpty ? _errorMessage : 'No vehicles found.',
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       ),
                     )
                   : ListView.builder(
@@ -553,7 +553,7 @@ class _CarUIState extends State<CarUI> {
                             _navigateToCarInfo(car['carId']);
                           },
                           trailing: IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                             onPressed: () {
                               _deleteCar(car['carId']);
                             },
@@ -746,17 +746,17 @@ class _CarInfoState extends State<CarInfo> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Note'),
-          content: Text('Are you sure you want to delete this note?'),
+          title: const Text('Delete Note'),
+          content: const Text('Are you sure you want to delete this note?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: const Text('Delete'),
               onPressed: () async {
                 Navigator.of(context).pop(); // Close the dialog
                 final response = await http.post(
@@ -869,15 +869,15 @@ class _CarInfoState extends State<CarInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Vehicle Information'),
+        title: const Text('Vehicle Information'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: _carInfo == null
             ? Center(
                 child: Text(
                   _errorMessage.isNotEmpty ? _errorMessage : 'Loading...',
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
               )
             : SingleChildScrollView(
@@ -889,25 +889,25 @@ class _CarInfoState extends State<CarInfo> {
                             children: [
                               TextField(
                                 controller: _makeController,
-                                decoration: InputDecoration(labelText: 'Make'),
+                                decoration: const InputDecoration(labelText: 'Make'),
                               ),
                               TextField(
                                 controller: _modelController,
-                                decoration: InputDecoration(labelText: 'Model'),
+                                decoration: const InputDecoration(labelText: 'Model'),
                               ),
                               TextField(
                                 controller: _yearController,
-                                decoration: InputDecoration(labelText: 'Year'),
+                                decoration: const InputDecoration(labelText: 'Year'),
                               ),
                               TextField(
                                 controller: _odometerController,
-                                decoration: InputDecoration(labelText: 'Odometer'),
+                                decoration: const InputDecoration(labelText: 'Odometer'),
                               ),
                               TextField(
                                 controller: _colorController,
-                                decoration: InputDecoration(labelText: 'Color'),
+                                decoration: const InputDecoration(labelText: 'Color'),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -917,12 +917,12 @@ class _CarInfoState extends State<CarInfo> {
                                         _isEditing = false;
                                       });
                                     },
-                                    child: Text('Cancel'),
+                                    child: const Text('Cancel'),
                                   ),
-                                  SizedBox(width: 10.0),
+                                  const SizedBox(width: 10.0),
                                   ElevatedButton(
                                     onPressed: _updateCarInfo,
-                                    child: Text('Save'),
+                                    child: const Text('Save'),
                                   ),
                                 ],
                               ),
@@ -933,29 +933,29 @@ class _CarInfoState extends State<CarInfo> {
                             children: [
                               Text(
                                 'Make: ${_carInfo!['make']}',
-                                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                               Text(
                                 'Model: ${_carInfo!['model']}',
-                                style: TextStyle(fontSize: 18.0),
+                                style: const TextStyle(fontSize: 18.0),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                               Text(
                                 'Year: ${_carInfo!['year']}',
-                                style: TextStyle(fontSize: 18.0),
+                                style: const TextStyle(fontSize: 18.0),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                               Text(
                                 'Color: ${_carInfo!['color']}',
-                                style: TextStyle(fontSize: 18.0),
+                                style: const TextStyle(fontSize: 18.0),
                               ),
-                              SizedBox(height: 10.0),
+                              const SizedBox(height: 10.0),
                               Text(
                                 'Odometer: ${_carInfo!['odometer']}',
-                                style: TextStyle(fontSize: 18.0),
+                                style: const TextStyle(fontSize: 18.0),
                               ),
-                              SizedBox(height: 20.0),
+                              const SizedBox(height: 20.0),
                               ElevatedButton(
                                 onPressed: () {
                                   setState(() {
@@ -966,31 +966,31 @@ class _CarInfoState extends State<CarInfo> {
                               ),
                             ],
                           ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
                           _isAddingNote = true;
                         });
                       },
-                      child: Text('Add Note'),
+                      child: const Text('Add Note'),
                     ),
                     if (_isAddingNote)
                       Column(
                         children: [
                           TextField(
                             controller: _noteTypeController,
-                            decoration: InputDecoration(labelText: 'Service Type'),
+                            decoration: const InputDecoration(labelText: 'Service Type'),
                           ),
                           TextField(
                             controller: _noteMilesController,
-                            decoration: InputDecoration(labelText: 'Miles'),
+                            decoration: const InputDecoration(labelText: 'Miles'),
                           ),
                           TextField(
                             controller: _noteTextController,
-                            decoration: InputDecoration(labelText: 'Note'),
+                            decoration: const InputDecoration(labelText: 'Note'),
                           ),
-                          SizedBox(height: 10.0),
+                          const SizedBox(height: 10.0),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -1003,31 +1003,31 @@ class _CarInfoState extends State<CarInfo> {
                                     _noteTextController.clear();
                                   });
                                 },
-                                child: Text('Cancel'),
+                                child: const Text('Cancel'),
                               ),
-                              SizedBox(width: 10.0),
+                              const SizedBox(width: 10.0),
                               ElevatedButton(
                                 onPressed: _addNewNote,
-                                child: Text('Create Note'),
+                                child: const Text('Create Note'),
                               ),
                             ],
                           ),
                         ],
                       ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextField(
                       controller: _searchController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Search Notes',
                         prefixIcon: Icon(Icons.search),
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     _filteredCarNotes == null
                     ? Center(
                         child: Text(
                           _errorMessage.isNotEmpty ? _errorMessage : 'Loading notes...',
-                          style: TextStyle(color: Colors.red),
+                          style: const TextStyle(color: Colors.red),
                         ),
                       )
                     : Column(
@@ -1056,58 +1056,58 @@ class _CarInfoState extends State<CarInfo> {
                                         children: [
                                           Text(
                                             'Service Type: ${note['type']}',
-                                            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                                            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                           ),
                                           Text(
                                             'Miles: ${note['miles']}',
-                                            style: TextStyle(fontSize: 16.0),
+                                            style: const TextStyle(fontSize: 16.0),
                                           ),
                                           Text(
                                             'Note: ${note['note']}',
-                                            style: TextStyle(fontSize: 16.0),
+                                            style: const TextStyle(fontSize: 16.0),
                                           ),
                                           Text(
                                             'Created At: $formattedDate',
-                                            style: TextStyle(fontSize: 14.0, color: Colors.grey),
+                                            style: const TextStyle(fontSize: 14.0, color: Colors.grey),
                                           ),
                                         ],
                                       ),
                                     ),
                                     IconButton(
-                                      icon: Icon(Icons.edit),
+                                      icon: const Icon(Icons.edit),
                                       onPressed: () {
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title: Text('Edit Note'),
+                                              title: const Text('Edit Note'),
                                               content: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   TextField(
                                                     controller: typeController,
-                                                    decoration: InputDecoration(labelText: 'Service Type'),
+                                                    decoration: const InputDecoration(labelText: 'Service Type'),
                                                   ),
                                                   TextField(
                                                     controller: milesController,
-                                                    decoration: InputDecoration(labelText: 'Miles'),
+                                                    decoration: const InputDecoration(labelText: 'Miles'),
                                                   ),
                                                   TextField(
                                                     controller: noteController,
-                                                    decoration: InputDecoration(labelText: 'Note'),
+                                                    decoration: const InputDecoration(labelText: 'Note'),
                                                   ),
                                                 ],
                                               ),
                                               actions: <Widget>[
                                                 TextButton(
-                                                  child: Text('Cancel'),
+                                                  child: const Text('Cancel'),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
                                                 ),
                                                 TextButton(
-                                                  child: Text('Save'),
+                                                  child: const Text('Save'),
                                                   onPressed: () {
                                                     _updateNote(noteId, typeController.text, milesController.text, noteController.text);
                                                     Navigator.of(context).pop();
@@ -1120,7 +1120,7 @@ class _CarInfoState extends State<CarInfo> {
                                       },
                                     ),
                                     IconButton(
-                                      icon: Icon(Icons.delete),
+                                      icon: const Icon(Icons.delete),
                                       onPressed: () => _deleteNote(note['noteId']),
                                     ),
                                   ],
@@ -1243,10 +1243,10 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        title: const Text('Register'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -1254,7 +1254,7 @@ class _RegisterPageState extends State<RegisterPage> {
             children: <Widget>[
               TextFormField(
                 controller: _firstNameController,
-                decoration: InputDecoration(labelText: 'First Name'),
+                decoration: const InputDecoration(labelText: 'First Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your first name';
@@ -1264,7 +1264,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
+                decoration: const InputDecoration(labelText: 'Last Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your last name';
@@ -1274,7 +1274,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
@@ -1310,7 +1310,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               Visibility(
                 visible: _showPasswordRequirements,
-                child: Text(
+                child: const Text(
                   "Password must be 8-20 characters, with at least one uppercase, lowercase, number, and symbol.",
                   style: TextStyle(color: Colors.grey),
                 ),
@@ -1320,8 +1320,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
                   suffixIcon: _passwordsMatch
-                      ? Icon(Icons.check_circle, color: Colors.green)
-                      : Icon(Icons.cancel, color: Colors.red),
+                      ? const Icon(Icons.check_circle, color: Colors.green)
+                      : const Icon(Icons.cancel, color: Colors.red),
                 ),
                 obscureText: true,
                 validator: (value) {
@@ -1337,19 +1337,19 @@ class _RegisterPageState extends State<RegisterPage> {
                   _checkPasswordsMatch(); // Update passwords match status
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _register();
                   }
                 },
-                child: Text('Register'),
+                child: const Text('Register'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Text(
                 _errorMessage,
-                style: TextStyle(color: Colors.red),
+                style: const TextStyle(color: Colors.red),
               ),
             ],
           ),
@@ -1360,8 +1360,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _buildPasswordRequirementsIcon(bool isRequirementMet) {
     return isRequirementMet
-        ? Icon(Icons.check_circle, color: Colors.green)
-        : Icon(Icons.cancel, color: Colors.red);
+        ? const Icon(Icons.check_circle, color: Colors.green)
+        : const Icon(Icons.cancel, color: Colors.red);
   }
 }
-
