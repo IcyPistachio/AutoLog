@@ -6,3 +6,8 @@ AutoLogApp/.dart_tool/
 AutoLogApp/.flutter-plugins
 AutoLogApp/.flutter-plugins-dependencies
 AutoLogApp/pubspec.lock
+.vscode/launch.json
+/autologapp/.idea
+/autologapp/android
+autologapp/autologapp.iml
+/autologapp/build
