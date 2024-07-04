@@ -1,5 +1,8 @@
-
 /AutoLogWeb/frontend/node_modules
 /AutoLogWeb/node_modules
 AutoLogWeb/.env
-
+/auto_log_app/build
+AutoLogApp/.dart_tool/
+AutoLogApp/.flutter-plugins
+AutoLogApp/.flutter-plugins-dependencies
+AutoLogApp/pubspec.lock
