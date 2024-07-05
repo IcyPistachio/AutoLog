@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart' as intl;
 
+import 'constants.dart' as constants;
 import 'splash_screen.dart';
 
 void main() {
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'AutoLog',
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF708090),
+        fontFamily: 'Monaco',
+        scaffoldBackgroundColor: constants.slategray,
         primarySwatch: Colors.blue,
       ),
       home: SplashScreen(),
@@ -29,7 +31,8 @@ class CarUI extends StatefulWidget {
   String firstName;
   String lastName;
 
-  CarUI({required this.userId, required this.firstName, required this.lastName});
+  CarUI(
+      {required this.userId, required this.firstName, required this.lastName});
 
   @override
   _CarUIState createState() => _CarUIState();
@@ -143,7 +146,8 @@ class _CarUIState extends State<CarUI> {
               onPressed: () async {
                 Navigator.of(context).pop();
                 final response = await http.post(
-                  Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/deletecar'),
+                  Uri.parse(
+                      'https://autolog-b358aa95bace.herokuapp.com/api/deletecar'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },
@@ -224,8 +228,10 @@ class _CarUIState extends State<CarUI> {
   }
 
   void _showNameChangeDialog() {
-    final TextEditingController _firstNameController = TextEditingController(text: widget.firstName);
-    final TextEditingController _lastNameController = TextEditingController(text: widget.lastName);
+    final TextEditingController _firstNameController =
+        TextEditingController(text: widget.firstName);
+    final TextEditingController _lastNameController =
+        TextEditingController(text: widget.lastName);
 
     showDialog(
       context: context,
@@ -255,7 +261,8 @@ class _CarUIState extends State<CarUI> {
             TextButton(
               child: const Text('Confirm'),
               onPressed: () {
-                _changeName(_firstNameController.text, _lastNameController.text);
+                _changeName(
+                    _firstNameController.text, _lastNameController.text);
                 Navigator.of(context).pop();
               },
             ),
@@ -333,7 +340,8 @@ class _CarUIState extends State<CarUI> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text('Welcome, ${widget.firstName} ${widget.lastName} to your garage!'),
+            Text(
+                'Welcome, ${widget.firstName} ${widget.lastName} to your garage!'),
             const SizedBox(width: 10),
             IconButton(
               icon: const Icon(Icons.edit),
@@ -348,7 +356,8 @@ class _CarUIState extends State<CarUI> {
             icon: const Icon(Icons.logout),
             onPressed: () {
               // Perform logout action
-              Navigator.pop(context); // Navigate back to login or previous screen
+              Navigator.pop(
+                  context); // Navigate back to login or previous screen
             },
           ),
         ],
@@ -377,7 +386,9 @@ class _CarUIState extends State<CarUI> {
               child: _cars.isEmpty
                   ? Center(
                       child: Text(
-                        _errorMessage.isNotEmpty ? _errorMessage : 'No vehicles found.',
+                        _errorMessage.isNotEmpty
+                            ? _errorMessage
+                            : 'No vehicles found.',
                         style: const TextStyle(color: Colors.red),
                       ),
                     )
@@ -489,7 +500,8 @@ class _CarInfoState extends State<CarInfo> {
       } else {
         List<dynamic> notes = responseBody['notes'];
         // Sort notes by dateCreated in descending order
-        notes.sort((a, b) => DateTime.parse(b['dateCreated']).compareTo(DateTime.parse(a['dateCreated'])));
+        notes.sort((a, b) => DateTime.parse(b['dateCreated'])
+            .compareTo(DateTime.parse(a['dateCreated'])));
 
         setState(() {
           _carNotes = notes;
@@ -529,7 +541,7 @@ class _CarInfoState extends State<CarInfo> {
       } else {
         setState(() {
           _errorMessage = '';
-          
+
           _fetchCarInfo(); // Refresh car info
           _fetchCarNotes(); // Refresh car notes
         });
@@ -597,7 +609,8 @@ class _CarInfoState extends State<CarInfo> {
               onPressed: () async {
                 Navigator.of(context).pop(); // Close the dialog
                 final response = await http.post(
-                  Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/deletenote'),
+                  Uri.parse(
+                      'https://autolog-b358aa95bace.herokuapp.com/api/deletenote'),
                   headers: <String, String>{
                     'Content-Type': 'application/json; charset=UTF-8',
                   },
@@ -632,7 +645,8 @@ class _CarInfoState extends State<CarInfo> {
     );
   }
 
-  Future<void> _updateNote(int noteId, String type, String miles, String note) async {
+  Future<void> _updateNote(
+      int noteId, String type, String miles, String note) async {
     final response = await http.post(
       Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/updatenote'),
       headers: <String, String>{
@@ -668,12 +682,17 @@ class _CarInfoState extends State<CarInfo> {
   }
 
   void _showEditCarDialog() {
-  // Create new controllers for the edit dialog
-    final TextEditingController makeController = TextEditingController(text: _makeController.text);
-    final TextEditingController modelController = TextEditingController(text: _modelController.text);
-    final TextEditingController yearController = TextEditingController(text: _yearController.text);
-    final TextEditingController odometerController = TextEditingController(text: _odometerController.text);
-    final TextEditingController colorController = TextEditingController(text: _colorController.text);
+    // Create new controllers for the edit dialog
+    final TextEditingController makeController =
+        TextEditingController(text: _makeController.text);
+    final TextEditingController modelController =
+        TextEditingController(text: _modelController.text);
+    final TextEditingController yearController =
+        TextEditingController(text: _yearController.text);
+    final TextEditingController odometerController =
+        TextEditingController(text: _odometerController.text);
+    final TextEditingController colorController =
+        TextEditingController(text: _colorController.text);
 
     showDialog(
       context: context,
@@ -723,7 +742,7 @@ class _CarInfoState extends State<CarInfo> {
                   'odometer': odometerController.text,
                   'color': colorController.text,
                 };
-                
+
                 // Call _updateCarInfo with the updated values
                 _updateCarInfo(updatedInfo);
                 Navigator.of(context).pop();
@@ -796,9 +815,18 @@ class _CarInfoState extends State<CarInfo> {
           String day = intl.DateFormat.d().format(noteDate);
           String year = intl.DateFormat.y().format(noteDate);
 
-          return note['note'].toString().toLowerCase().contains(query.toLowerCase()) ||
-              note['type'].toString().toLowerCase().contains(query.toLowerCase()) ||
-              note['miles'].toString().toLowerCase().contains(query.toLowerCase()) ||
+          return note['note']
+                  .toString()
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              note['type']
+                  .toString()
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              note['miles']
+                  .toString()
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
               monthName.toLowerCase().contains(query.toLowerCase()) ||
               day.contains(query) || // Check for day number
               year.contains(query); // Check for year number
@@ -836,48 +864,48 @@ class _CarInfoState extends State<CarInfo> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                         Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Make: ${_carInfo!['make']}',
-                                style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 10.0),
-                              Text(
-                                'Model: ${_carInfo!['model']}',
-                                style: const TextStyle(fontSize: 18.0),
-                              ),
-                              const SizedBox(height: 10.0),
-                              Text(
-                                'Year: ${_carInfo!['year']}',
-                                style: const TextStyle(fontSize: 18.0),
-                              ),
-                              const SizedBox(height: 10.0),
-                              Text(
-                                'Color: ${_carInfo!['color']}',
-                                style: const TextStyle(fontSize: 18.0),
-                              ),
-                              const SizedBox(height: 10.0),
-                              Text(
-                                'Odometer: ${_carInfo!['odometer']}',
-                                style: const TextStyle(fontSize: 18.0),
-                              ),
-                              const SizedBox(height: 20.0),
-                              ElevatedButton(
-                                onPressed: () {
-                                  _showEditCarDialog();
-                                },
-                                child: const Text('Edit'),
-                              ),
-                            ],
-                          ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Make: ${_carInfo!['make']}',
+                          style: const TextStyle(
+                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(
+                          'Model: ${_carInfo!['model']}',
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(
+                          'Year: ${_carInfo!['year']}',
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(
+                          'Color: ${_carInfo!['color']}',
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Text(
+                          'Odometer: ${_carInfo!['odometer']}',
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                        const SizedBox(height: 20.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            _showEditCarDialog();
+                          },
+                          child: const Text('Edit'),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 20.0),
                     ElevatedButton(
                       onPressed: _showAddNoteDialog,
                       child: const Text('Add Note'),
                     ),
-
                     const SizedBox(height: 20.0),
                     TextField(
                       controller: _searchController,
@@ -888,119 +916,167 @@ class _CarInfoState extends State<CarInfo> {
                     ),
                     const SizedBox(height: 20.0),
                     _filteredCarNotes == null
-                    ? Center(
-                        child: Text(
-                          _errorMessage.isNotEmpty ? _errorMessage : 'Loading notes...',
-                          style: const TextStyle(color: Colors.red),
-                        ),
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: _filteredCarNotes!.map((note) {
-                          final noteId = note['noteId'];  
-                          
-                          // Format the dateCreated field
-                          final createdDate = DateTime.parse(note['dateCreated']);
-                          final formattedDate = '${intl.DateFormat.yMMMMd().format(createdDate)}';
+                        ? Center(
+                            child: Text(
+                              _errorMessage.isNotEmpty
+                                  ? _errorMessage
+                                  : 'Loading notes...',
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: _filteredCarNotes!.map((note) {
+                              final noteId = note['noteId'];
 
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // Format the dateCreated field
+                              final createdDate =
+                                  DateTime.parse(note['dateCreated']);
+                              final formattedDate =
+                                  '${intl.DateFormat.yMMMMd().format(createdDate)}';
+
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Service Type: ${note['type']}',
-                                            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                                          ),
-                                          Text(
-                                            'Miles: ${note['miles']}',
-                                            style: const TextStyle(fontSize: 16.0),
-                                          ),
-                                          Text(
-                                            'Note: ${note['note']}',
-                                            style: const TextStyle(fontSize: 16.0),
-                                          ),
-                                          Text(
-                                            'Created At: $formattedDate',
-                                            style: const TextStyle(fontSize: 14.0, color: Colors.grey),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: () {
-                                        // Create new controllers for the edit dialog
-                                        final TextEditingController typeController = TextEditingController(text: note['type']);
-                                        final TextEditingController milesController = TextEditingController(text: note['miles']);
-                                        final TextEditingController noteController = TextEditingController(text: note['note']);
-
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: const Text('Edit Note'),
-                                              content: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  TextField(
-                                                    controller: typeController,
-                                                    decoration: const InputDecoration(labelText: 'Service Type'),
-                                                  ),
-                                                  TextField(
-                                                    controller: milesController,
-                                                    decoration: const InputDecoration(labelText: 'Miles'),
-                                                  ),
-                                                  TextField(
-                                                    controller: noteController,
-                                                    decoration: const InputDecoration(labelText: 'Note'),
-                                                  ),
-                                                ],
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Service Type: ${note['type']}',
+                                                style: const TextStyle(
+                                                    fontSize: 16.0,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  child: const Text('Cancel'),
-                                                  onPressed: () {
-                                                    // Clear text in controllers when cancel is pressed
-                                                    typeController.clear();
-                                                    milesController.clear();
-                                                    noteController.clear();
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                                TextButton(
-                                                  child: const Text('Save'),
-                                                  onPressed: () {
-                                                    _updateNote(noteId, typeController.text, milesController.text, noteController.text);
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                              ],
+                                              Text(
+                                                'Miles: ${note['miles']}',
+                                                style: const TextStyle(
+                                                    fontSize: 16.0),
+                                              ),
+                                              Text(
+                                                'Note: ${note['note']}',
+                                                style: const TextStyle(
+                                                    fontSize: 16.0),
+                                              ),
+                                              Text(
+                                                'Created At: $formattedDate',
+                                                style: const TextStyle(
+                                                    fontSize: 14.0,
+                                                    color: Colors.grey),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () {
+                                            // Create new controllers for the edit dialog
+                                            final TextEditingController
+                                                typeController =
+                                                TextEditingController(
+                                                    text: note['type']);
+                                            final TextEditingController
+                                                milesController =
+                                                TextEditingController(
+                                                    text: note['miles']);
+                                            final TextEditingController
+                                                noteController =
+                                                TextEditingController(
+                                                    text: note['note']);
+
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title:
+                                                      const Text('Edit Note'),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      TextField(
+                                                        controller:
+                                                            typeController,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                labelText:
+                                                                    'Service Type'),
+                                                      ),
+                                                      TextField(
+                                                        controller:
+                                                            milesController,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                labelText:
+                                                                    'Miles'),
+                                                      ),
+                                                      TextField(
+                                                        controller:
+                                                            noteController,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                                labelText:
+                                                                    'Note'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child:
+                                                          const Text('Cancel'),
+                                                      onPressed: () {
+                                                        // Clear text in controllers when cancel is pressed
+                                                        typeController.clear();
+                                                        milesController.clear();
+                                                        noteController.clear();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                    TextButton(
+                                                      child: const Text('Save'),
+                                                      onPressed: () {
+                                                        _updateNote(
+                                                            noteId,
+                                                            typeController.text,
+                                                            milesController
+                                                                .text,
+                                                            noteController
+                                                                .text);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
                                             );
                                           },
-                                        );
-                                      },
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () =>
+                                              _deleteNote(note['noteId']),
+                                        ),
+                                      ],
                                     ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      onPressed: () => _deleteNote(note['noteId']),
-                                    ),
-
                                   ],
                                 ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
+                              );
+                            }).toList(),
+                          ),
                   ],
                 ),
               ),
@@ -1020,7 +1096,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final FocusNode _passwordFocusNode = FocusNode();
   String _errorMessage = '';
   bool _passwordsMatch = false;
@@ -1029,7 +1106,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _checkPasswordsMatch() {
     setState(() {
-      _passwordsMatch = _confirmPasswordController.text == _passwordController.text;
+      _passwordsMatch =
+          _confirmPasswordController.text == _passwordController.text;
     });
   }
 
@@ -1044,7 +1122,8 @@ class _RegisterPageState extends State<RegisterPage> {
       return false;
     }
 
-    final passwordRegExp = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+    final passwordRegExp =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
     return passwordRegExp.hasMatch(password);
   }
 
@@ -1084,7 +1163,8 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     } else {
       setState(() {
-        _errorMessage = 'An error occurred. User may already exist. Please try again.';
+        _errorMessage =
+            'An error occurred. User may already exist. Please try again.';
       });
     }
   }

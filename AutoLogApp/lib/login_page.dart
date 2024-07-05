@@ -4,17 +4,19 @@ import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'main.dart';
+import 'constants.dart' as constants;
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
+enum FormInputType { email, password }
+
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String _errorMessage = '';
 
   Future<void> _login() async {
     final email = _emailController.text;
@@ -31,22 +33,30 @@ class _LoginPageState extends State<LoginPage> {
       }),
     );
 
+    SnackBar errorSnackBar(String errMsg) {
+      return SnackBar(
+          content: Row(children: <Widget>[
+            const Icon(
+              Icons.warning_amber_rounded,
+              color: constants.red,
+            ),
+            Text(errMsg, style: constants.errorTextStyle)
+          ]),
+          backgroundColor: Colors.white,
+          padding: const EdgeInsets.all(20));
+    }
+
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['error'] != '') {
-        setState(() {
-          _errorMessage = responseBody['error'];
-        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(errorSnackBar(responseBody['error']));
       } else if (!responseBody['isVerified']) {
-        setState(() {
-          _errorMessage = 'Email not verified';
-        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar(errorSnackBar('Email not verified'));
       } else {
         _emailController.clear();
         _passwordController.clear();
-        setState(() {
-          _errorMessage = '';
-        });
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -59,9 +69,8 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } else {
-      setState(() {
-        _errorMessage = 'An error occurred. Please try again.';
-      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(errorSnackBar('An error occurred. Please try again.'));
     }
   }
 
@@ -72,17 +81,20 @@ class _LoginPageState extends State<LoginPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Confirmation'),
-          content: const Text('Are you sure you want to go to the forgot password page?'),
+          content: const Text(
+              'Are you sure you want to go to the forgot password page?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(false); // Return false when cancel button is clicked
+                Navigator.of(context)
+                    .pop(false); // Return false when cancel button is clicked
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(true); // Return true when yes button is clicked
+                Navigator.of(context)
+                    .pop(true); // Return true when yes button is clicked
               },
               child: const Text('Yes'),
             ),
@@ -93,7 +105,8 @@ class _LoginPageState extends State<LoginPage> {
 
     // If user confirms, open web browser
     if (confirm == true) {
-      Uri url = Uri.parse('https://autolog-b358aa95bace.herokuapp.com/forgot-password');
+      Uri url = Uri.parse(
+          'https://autolog-b358aa95bace.herokuapp.com/forgot-password');
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       } else {
@@ -102,50 +115,66 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Widget _loginFormInput(FormInputType formInputType) {
+    String? inputLabelText;
+    String? validatorMessage;
+    TextEditingController? controller;
+
+    switch (formInputType) {
+      case FormInputType.email:
+        controller = _emailController;
+        inputLabelText = 'Email';
+        validatorMessage = 'Please enter your email';
+        break;
+      case FormInputType.password:
+        controller = _passwordController;
+        inputLabelText = 'Password';
+        validatorMessage = 'Please enter your password';
+        break;
+      default:
+    }
+
+    String? emptyValidator(String? value) {
+      return (value == null || value.isEmpty) ? validatorMessage : null;
+    }
+
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+        filled: true,
+        fillColor: Colors.white,
+        labelText: inputLabelText,
+        border: InputBorder.none,
+      ),
+      obscureText: formInputType == FormInputType.password,
+      validator: emptyValidator,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF778899),
-        centerTitle: true,
-        title: Image.asset(
-          'assets/logo.png',
-          height: 60,
-        )
-      ),
+          backgroundColor: constants.lightslategray,
+          centerTitle: true,
+          title: Image.asset(
+            'assets/logo.png',
+            height: 60,
+          )),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(30.0),
         child: Form(
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.zero,
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
+              const Center(
+                  child: Text("LOG IN", style: constants.headerTextStyle)),
+              const SizedBox(height: 20.0),
+              _loginFormInput(FormInputType.email),
+              const SizedBox(height: 20.0),
+              _loginFormInput(FormInputType.password),
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
@@ -153,27 +182,27 @@ class _LoginPageState extends State<LoginPage> {
                     _login();
                   }
                 },
-                child: Text('Login'),
+                style: constants.accentButtonStyle,
+                child:
+                    const Text('LOG IN ->', style: constants.buttonTextStyle),
               ),
               const SizedBox(height: 20.0),
-              ElevatedButton(
+              OutlinedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterPage()),
                   );
                 },
-                child: Text('Sign Up'),
+                style: constants.defaultButtonStyle,
+                child: const Text('SIGN UP', style: constants.buttonTextStyle),
               ),
               const SizedBox(height: 20.0),
               TextButton(
                 onPressed: _openForgotPasswordPage,
-                child: Text('Forgot Password?'),
-              ),
-              const SizedBox(height: 20.0),
-              Text(
-                _errorMessage,
-                style: const TextStyle(color: Colors.red),
+                child: const Text('Forgot Password?',
+                    style: TextStyle(
+                        color: constants.blue, fontWeight: FontWeight.bold)),
               ),
             ],
           ),
