@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './ForgotPassword.css';
+import Form from 'react-bootstrap/Form';
+import logo from '../images/Group 19.png'
 
 function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -26,20 +29,23 @@ function ForgotPassword() {
 
     return (
         <div className="forgot-password-container">
-            <h1>Reset Password</h1>
-            <p>Enter the email associated with the account password you are trying to reset.</p>
-            <form onSubmit={handleResetPassword}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <input type="submit" value="Send Reset Link" />
-            </form>
-            <span className="message">{message}</span>
-            <button onClick={() => navigate(-1)}>Back</button>
+            <img src={logo} alt="AutoLog Logo" className="logo" />
+            <div className='textContainer'>
+                <h1>RESET PASSWORD</h1> 
+                <p>Enter the email associated with the account password you are trying to reset.</p>
+                <form onSubmit={handleResetPassword}>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input type="submit" value="Send Reset Link" />
+                </form>
+                <span className="message">{message}</span>
+                <button onClick={() => navigate(-1)}>Back</button>
+            </div>
         </div>
     );
 }
