@@ -12,7 +12,7 @@ function HomePage() {
     return (
         <div className="home-container">
             <h1>AutoLog</h1>
-            <p>Welcome to Vehicle Hub! This is your one-stop solution to manage all your vehicles. Whether you want to add new vehicles, update their details, or keep track of maintenance, Vehicle Hub has got you covered.</p>
+            <p>Welcome to AutoLog! This is your one-stop solution to manage all your vehicles. Whether you want to add new vehicles, update their details, or keep track of maintenance, AutoLog has got you covered.</p>
             <button onClick={handleLoginSignup}>Login/Signup</button>
         </div>
     );
