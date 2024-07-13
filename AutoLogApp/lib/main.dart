@@ -389,7 +389,7 @@ class _CarUIState extends State<CarUI> {
                         _errorMessage.isNotEmpty
                             ? _errorMessage
                             : 'No vehicles found.',
-                        style: const TextStyle(color: Colors.red),
+                        style: const TextStyle(color: constants.red),
                       ),
                     )
                   : ListView.builder(
@@ -857,7 +857,7 @@ class _CarInfoState extends State<CarInfo> {
             ? Center(
                 child: Text(
                   _errorMessage.isNotEmpty ? _errorMessage : 'Loading...',
-                  style: const TextStyle(color: Colors.red),
+                  style: const TextStyle(color: constants.red),
                 ),
               )
             : SingleChildScrollView(
@@ -921,7 +921,7 @@ class _CarInfoState extends State<CarInfo> {
                               _errorMessage.isNotEmpty
                                   ? _errorMessage
                                   : 'Loading notes...',
-                              style: const TextStyle(color: Colors.red),
+                              style: const TextStyle(color: constants.red),
                             ),
                           )
                         : Column(
@@ -970,8 +970,7 @@ class _CarInfoState extends State<CarInfo> {
                                               Text(
                                                 'Created At: $formattedDate',
                                                 style: const TextStyle(
-                                                    fontSize: 14.0,
-                                                    color: Colors.grey),
+                                                    fontSize: 14.0),
                                               ),
                                             ],
                                           ),
@@ -1082,236 +1081,5 @@ class _CarInfoState extends State<CarInfo> {
               ),
       ),
     );
-  }
-}
-
-class RegisterPage extends StatefulWidget {
-  @override
-  _RegisterPageState createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  final FocusNode _passwordFocusNode = FocusNode();
-  String _errorMessage = '';
-  bool _passwordsMatch = false;
-  bool _showPasswordRequirements = false;
-  bool _isPasswordValid = false;
-
-  void _checkPasswordsMatch() {
-    setState(() {
-      _passwordsMatch =
-          _confirmPasswordController.text == _passwordController.text;
-    });
-  }
-
-  void _validatePassword(String value) {
-    setState(() {
-      _isPasswordValid = _isPasswordCompliant(value);
-    });
-  }
-
-  bool _isPasswordCompliant(String password) {
-    if (password.isEmpty) {
-      return false;
-    }
-
-    final passwordRegExp =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-    return passwordRegExp.hasMatch(password);
-  }
-
-  Future<void> _register() async {
-    final firstName = _firstNameController.text;
-    final lastName = _lastNameController.text;
-    final email = _emailController.text;
-    final password = _passwordController.text;
-
-    final response = await http.post(
-      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'firstName': firstName,
-        'lastName': lastName,
-        'email': email,
-        'password': password,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-      if (responseBody.containsKey('error')) {
-        setState(() {
-          _errorMessage = responseBody['error'];
-        });
-      } else if (responseBody.containsKey('message')) {
-        setState(() {
-          _errorMessage = responseBody['message'];
-        });
-      } else {
-        setState(() {
-          _errorMessage = 'An unexpected error occurred.';
-        });
-      }
-    } else {
-      setState(() {
-        _errorMessage =
-            'An error occurred. User may already exist. Please try again.';
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _passwordFocusNode.addListener(() {
-      setState(() {
-        _showPasswordRequirements = _passwordFocusNode.hasFocus;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _passwordFocusNode.dispose();
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextFormField(
-                controller: _firstNameController,
-                decoration: const InputDecoration(labelText: 'First Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: const InputDecoration(labelText: 'Last Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your last name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  // Basic email validation
-                  if (!value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  suffixIcon: _buildPasswordRequirementsIcon(_isPasswordValid),
-                ),
-                obscureText: true,
-                focusNode: _passwordFocusNode,
-                onChanged: (value) {
-                  _validatePassword(value);
-                  _checkPasswordsMatch(); // Update passwords match status
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  if (!_isPasswordValid) {
-                    return 'Password must be 8-20 characters, with at least one uppercase, lowercase, number, and symbol.';
-                  }
-                  return null;
-                },
-              ),
-              Visibility(
-                visible: _showPasswordRequirements,
-                child: const Text(
-                  "Password must be 8-20 characters, with at least one uppercase, lowercase, number, and symbol.",
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              TextFormField(
-                controller: _confirmPasswordController,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  suffixIcon: _passwordsMatch
-                      ? const Icon(Icons.check_circle, color: Colors.green)
-                      : const Icon(Icons.cancel, color: Colors.red),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please confirm your password';
-                  }
-                  if (value != _passwordController.text) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  _checkPasswordsMatch(); // Update passwords match status
-                },
-              ),
-              const SizedBox(height: 20.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _register();
-                  }
-                },
-                child: const Text('Register'),
-              ),
-              const SizedBox(height: 20.0),
-              Text(
-                _errorMessage,
-                style: const TextStyle(color: Colors.red),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPasswordRequirementsIcon(bool isRequirementMet) {
-    return isRequirementMet
-        ? const Icon(Icons.check_circle, color: Colors.green)
-        : const Icon(Icons.cancel, color: Colors.red);
   }
 }

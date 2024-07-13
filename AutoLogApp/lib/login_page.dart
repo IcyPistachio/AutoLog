@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'main.dart';
 import 'constants.dart' as constants;
+import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -33,27 +34,14 @@ class _LoginPageState extends State<LoginPage> {
       }),
     );
 
-    SnackBar errorSnackBar(String errMsg) {
-      return SnackBar(
-          content: Row(children: <Widget>[
-            const Icon(
-              Icons.warning_amber_rounded,
-              color: constants.red,
-            ),
-            Text(errMsg, style: constants.errorTextStyle)
-          ]),
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.all(20));
-    }
-
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       if (responseBody['error'] != '') {
         ScaffoldMessenger.of(context)
-            .showSnackBar(errorSnackBar(responseBody['error']));
+            .showSnackBar(constants.errorSnackBar(responseBody['error']));
       } else if (!responseBody['isVerified']) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(errorSnackBar('Email not verified'));
+            .showSnackBar(constants.errorSnackBar('Email not verified'));
       } else {
         _emailController.clear();
         _passwordController.clear();
@@ -69,8 +57,8 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(errorSnackBar('An error occurred. Please try again.'));
+      ScaffoldMessenger.of(context).showSnackBar(
+          constants.errorSnackBar('An error occurred. Please try again.'));
     }
   }
 
@@ -117,25 +105,22 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginFormInput(FormInputType formInputType) {
     String? inputLabelText;
-    String? validatorMessage;
     TextEditingController? controller;
 
     switch (formInputType) {
       case FormInputType.email:
         controller = _emailController;
         inputLabelText = 'Email';
-        validatorMessage = 'Please enter your email';
         break;
       case FormInputType.password:
         controller = _passwordController;
         inputLabelText = 'Password';
-        validatorMessage = 'Please enter your password';
         break;
       default:
     }
 
     String? emptyValidator(String? value) {
-      return (value == null || value.isEmpty) ? validatorMessage : null;
+      return (value == null || value.isEmpty) ? '*Required' : null;
     }
 
     return TextFormField(
@@ -146,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
         filled: true,
         fillColor: Colors.white,
         labelText: inputLabelText,
+        errorStyle: constants.errorTextStyle,
         border: InputBorder.none,
       ),
       obscureText: formInputType == FormInputType.password,
