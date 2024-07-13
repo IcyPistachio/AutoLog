@@ -7,8 +7,10 @@ const darkgray = Color(0xFF2E343B);
 const lightgray = Color(0xFFD9D9D9);
 const orange = Color(0xFFFF9400);
 const red = Color(0xFF800000);
+const green = Color(0xFF113321);
 const blue = Color(0xFF00008B);
 
+// Text Styles
 const headerTextStyle = TextStyle(
     fontSize: 36,
     fontWeight: FontWeight.bold,
@@ -22,7 +24,10 @@ const headerTextStyle = TextStyle(
     ]);
 const buttonTextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
-const errorTextStyle = TextStyle(color: red, fontWeight: FontWeight.bold);
+const errorTextStyle =
+    TextStyle(fontSize: 12, color: red, fontWeight: FontWeight.bold);
+
+// Button Styles
 final accentButtonStyle = ButtonStyle(
     backgroundColor: WidgetStateProperty.all(orange),
     foregroundColor: WidgetStateProperty.all(Colors.black),
@@ -36,3 +41,17 @@ final defaultButtonStyle = ButtonStyle(
     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
         const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)))));
+
+// SnackBar
+SnackBar errorSnackBar(String errMsg) {
+  return SnackBar(
+      content: Row(children: <Widget>[
+        const Icon(
+          Icons.warning_amber_rounded,
+          color: red,
+        ),
+        Text(errMsg, style: errorTextStyle)
+      ]),
+      backgroundColor: Colors.white,
+      padding: const EdgeInsets.all(20));
+}
