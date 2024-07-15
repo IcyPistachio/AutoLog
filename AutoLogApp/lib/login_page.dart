@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'main.dart';
 import 'constants.dart' as constants;
 import 'register_page.dart';
+import 'garage_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -45,14 +45,14 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         _emailController.clear();
         _passwordController.clear();
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => CarUI(
-              userId: responseBody['id'],
-              firstName: responseBody['firstName'],
-              lastName: responseBody['lastName'],
-            ),
+                userId: responseBody['id'],
+                firstName: responseBody['firstName'],
+                lastName: responseBody['lastName'],
+                email: email),
           ),
         );
       }
@@ -127,16 +127,29 @@ class _LoginPageState extends State<LoginPage> {
       controller: controller,
       decoration: InputDecoration(
         contentPadding:
-            const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
-        filled: true,
-        fillColor: Colors.white,
+            const EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
         labelText: inputLabelText,
+        labelStyle:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         errorStyle: constants.errorTextStyle,
-        border: InputBorder.none,
+        filled: true,
+        fillColor: constants.lightslategray,
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: constants.darkgray, width: 2.0),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 2.0),
+        ),
       ),
+      style: const TextStyle(
+          color: constants.darkgray, fontWeight: FontWeight.bold),
       obscureText: formInputType == FormInputType.password,
       validator: emptyValidator,
     );
+  }
+
+  Widget _spacer() {
+    return const SizedBox(height: 20.0);
   }
 
   @override
@@ -157,11 +170,11 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               const Center(
                   child: Text("LOG IN", style: constants.headerTextStyle)),
-              const SizedBox(height: 20.0),
+              _spacer(),
               _loginFormInput(FormInputType.email),
-              const SizedBox(height: 20.0),
+              _spacer(),
               _loginFormInput(FormInputType.password),
-              const SizedBox(height: 20.0),
+              _spacer(),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -172,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                 child:
                     const Text('LOG IN ->', style: constants.buttonTextStyle),
               ),
-              const SizedBox(height: 20.0),
+              _spacer(),
               OutlinedButton(
                 onPressed: () {
                   Navigator.push(
@@ -183,7 +196,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: constants.defaultButtonStyle,
                 child: const Text('SIGN UP', style: constants.buttonTextStyle),
               ),
-              const SizedBox(height: 20.0),
+              _spacer(),
               TextButton(
                 onPressed: _openForgotPasswordPage,
                 child: const Text('Forgot Password?',
