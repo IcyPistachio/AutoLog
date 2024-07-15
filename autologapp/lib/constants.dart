@@ -22,6 +22,18 @@ const headerTextStyle = TextStyle(
           blurRadius: 1.0,
           color: Color.fromARGB(59, 18, 21, 24))
     ]);
+const subHeaderTextStyle = TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: darkgray,
+    shadows: <Shadow>[
+      Shadow(
+          offset: Offset(2.0, 2.0),
+          blurRadius: 1.0,
+          color: Color.fromARGB(59, 18, 21, 24))
+    ]);
+const formLabelTextStyle =
+    TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
 const buttonTextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
 const errorTextStyle =
@@ -48,10 +60,10 @@ SnackBar errorSnackBar(String errMsg) {
       content: Row(children: <Widget>[
         const Icon(
           Icons.warning_amber_rounded,
-          color: red,
+          color: Colors.white,
         ),
-        Text(errMsg, style: errorTextStyle)
+        const SizedBox(width: 5),
+        Text(errMsg, style: const TextStyle(fontSize: 12, color: Colors.white))
       ]),
-      backgroundColor: Colors.white,
-      padding: const EdgeInsets.all(20));
+      padding: const EdgeInsets.all(15));
 }
