@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:email_validator/email_validator.dart';
 import 'dart:convert';
@@ -36,6 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _validatePassword(String value) {
     setState(() {
       _isPasswordValid = _isPasswordCompliant(value);
+      _showPasswordRequirements = !_isPasswordValid;
     });
   }
 
@@ -125,14 +125,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _buildValidatorIcon(bool requirementsMet) {
     return requirementsMet
-        ? const Icon(Icons.check_circle, color: Colors.green)
-        : const Icon(Icons.cancel, color: Colors.red);
+        ? const Icon(Icons.check_circle, color: constants.green)
+        : const Icon(Icons.cancel, color: constants.red);
   }
 
   Widget _registerFormInput(FormInputType formInputType) {
     String? inputLabelText;
     TextEditingController? controller;
-    Widget? validatorIcon;
 
     switch (formInputType) {
       case FormInputType.first:
@@ -169,14 +168,22 @@ class _RegisterPageState extends State<RegisterPage> {
         controller: controller,
         decoration: InputDecoration(
           contentPadding:
-              const EdgeInsets.symmetric(vertical: 3.0, horizontal: 10.0),
+              const EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: constants.lightslategray,
+          labelStyle:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           labelText: inputLabelText,
           errorStyle: constants.errorTextStyle,
-          suffixIcon: validatorIcon,
-          border: InputBorder.none,
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: constants.darkgray, width: 2.0),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: 2.0),
+          ),
         ),
+        style: const TextStyle(
+            color: constants.darkgray, fontWeight: FontWeight.bold),
         validator: formValidator);
   }
 
@@ -209,14 +216,25 @@ class _RegisterPageState extends State<RegisterPage> {
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 3.0, horizontal: 10.0),
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Password',
-                    errorStyle: constants.errorTextStyle,
-                    suffixIcon: _buildValidatorIcon(_isPasswordValid),
-                    border: InputBorder.none),
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 3.0, horizontal: 10.0),
+                  filled: true,
+                  fillColor: constants.lightslategray,
+                  labelText: 'Password',
+                  labelStyle: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                  errorStyle: constants.errorTextStyle,
+                  suffixIcon: _buildValidatorIcon(_isPasswordValid),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: constants.darkgray, width: 2.0),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  ),
+                ),
+                style: const TextStyle(
+                    color: constants.darkgray, fontWeight: FontWeight.bold),
                 obscureText: true,
                 focusNode: _passwordFocusNode,
                 onChanged: (value) {
@@ -236,7 +254,8 @@ class _RegisterPageState extends State<RegisterPage> {
               Visibility(
                 visible: _showPasswordRequirements,
                 child: const Text(
-                    "Password must be 8-20 characters, with at least one uppercase, lowercase, number, and symbol."),
+                    "Password must be 8-20 characters, with at least one uppercase, lowercase, number, and symbol.",
+                    style: constants.errorTextStyle),
               ),
               const SizedBox(height: 20.0),
               TextFormField(
@@ -245,13 +264,22 @@ class _RegisterPageState extends State<RegisterPage> {
                   contentPadding: const EdgeInsets.symmetric(
                       vertical: 3.0, horizontal: 10.0),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: constants.lightslategray,
+                  labelStyle: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                   labelText: 'Confirm Password',
                   errorStyle: constants.errorTextStyle,
-                  suffixIcon: _passwordsMatch
-                      ? const Icon(Icons.check_circle, color: Colors.green)
-                      : const Icon(Icons.cancel, color: Colors.red),
+                  suffixIcon: _buildValidatorIcon(_passwordsMatch),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide:
+                        BorderSide(color: constants.darkgray, width: 2.0),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2.0),
+                  ),
                 ),
+                style: const TextStyle(
+                    color: constants.darkgray, fontWeight: FontWeight.bold),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
