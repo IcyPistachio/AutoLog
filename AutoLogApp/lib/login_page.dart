@@ -135,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
         filled: true,
         fillColor: constants.lightslategray,
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: constants.darkgray, width: 2.0),
+          borderSide: BorderSide(color: constants.orange, width: 2.0),
         ),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white, width: 2.0),
@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: constants.lightslategray,
+          backgroundColor: constants.slategray,
           centerTitle: true,
           title: Image.asset(
             'assets/logo.png',
@@ -165,47 +165,47 @@ class _LoginPageState extends State<LoginPage> {
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              const Center(
-                  child: Text("LOG IN", style: constants.headerTextStyle)),
-              _spacer(),
-              _loginFormInput(FormInputType.email),
-              _spacer(),
-              _loginFormInput(FormInputType.password),
-              _spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _login();
-                  }
-                },
-                style: constants.accentButtonStyle,
-                child:
-                    const Text('LOG IN ->', style: constants.buttonTextStyle),
-              ),
-              _spacer(),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RegisterPage()),
-                  );
-                },
-                style: constants.defaultButtonStyle,
-                child: const Text('SIGN UP', style: constants.buttonTextStyle),
-              ),
-              _spacer(),
-              TextButton(
-                onPressed: _openForgotPasswordPage,
-                child: const Text('Forgot Password?',
-                    style: TextStyle(
-                        color: constants.blue, fontWeight: FontWeight.bold)),
-              ),
-            ],
-          ),
-        ),
+            key: _formKey,
+            child: Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                  const Center(
+                      child: Text("LOG IN", style: constants.headerTextStyle)),
+                  _spacer(),
+                  _loginFormInput(FormInputType.email),
+                  _spacer(),
+                  _loginFormInput(FormInputType.password),
+                  _spacer(),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _login();
+                      }
+                    },
+                    style: constants.accentButtonStyle,
+                    child: const Text('LOG IN ->',
+                        style: constants.buttonTextStyle),
+                  ),
+                  TextButton(
+                    onPressed: _openForgotPasswordPage,
+                    child: const Text('Forgot Password?',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                  ),
+                  const Spacer(),
+                  OutlinedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterPage()),
+                      );
+                    },
+                    style: constants.defaultButtonStyle,
+                    child:
+                        const Text('SIGN UP', style: constants.buttonTextStyle),
+                  ),
+                ]))),
       ),
     );
   }

@@ -176,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
           labelText: inputLabelText,
           errorStyle: constants.errorTextStyle,
           focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: constants.darkgray, width: 2.0),
+            borderSide: BorderSide(color: constants.orange, width: 2.0),
           ),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white, width: 2.0),
@@ -191,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: constants.lightslategray,
+          backgroundColor: constants.slategray,
           centerTitle: true,
           title: Image.asset(
             'assets/logo.png',
@@ -226,8 +226,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   errorStyle: constants.errorTextStyle,
                   suffixIcon: _buildValidatorIcon(_isPasswordValid),
                   focusedBorder: const OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: constants.darkgray, width: 2.0),
+                    borderSide: BorderSide(color: constants.orange, width: 2.0),
                   ),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white, width: 2.0),
@@ -271,8 +270,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   errorStyle: constants.errorTextStyle,
                   suffixIcon: _buildValidatorIcon(_passwordsMatch),
                   focusedBorder: const OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: constants.darkgray, width: 2.0),
+                    borderSide: BorderSide(color: constants.orange, width: 2.0),
                   ),
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white, width: 2.0),

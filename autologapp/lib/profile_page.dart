@@ -23,8 +23,6 @@ enum FormInputType { firstName, lastName, email }
 
 class _ProfilePageState extends State<ProfilePage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _firstNameController = TextEditingController();
-  final TextEditingController _lastNameController = TextEditingController();
   String _errorMessage = '';
 
   Future<void> _changeName(String newFirstName, String newLastName) async {
@@ -44,7 +42,8 @@ class _ProfilePageState extends State<ProfilePage> {
       final responseBody = jsonDecode(response.body);
       if (responseBody['error'] != '') {
         setState(() {
-          _errorMessage = responseBody['error'];
+          ScaffoldMessenger.of(context)
+              .showSnackBar(constants.errorSnackBar(responseBody['error']));
         });
       } else {
         setState(() {
@@ -64,56 +63,37 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  void _showNameChangeDialog() {
-    final TextEditingController _firstNameController =
-        TextEditingController(text: widget.firstName);
-    final TextEditingController _lastNameController =
-        TextEditingController(text: widget.lastName);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Change Name'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _firstNameController,
-                decoration: const InputDecoration(labelText: 'First Name'),
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: const InputDecoration(labelText: 'Last Name'),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+  Widget _profileTextField(String label, TextEditingController control) {
+    return TextFormField(
+        controller: control,
+        decoration: InputDecoration(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
+            labelText: label,
+            labelStyle: const TextStyle(
+                color: constants.darkgray, fontWeight: FontWeight.bold),
+            filled: true,
+            fillColor: constants.lightslategray,
+            focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: constants.orange, width: 2.0),
             ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () {
-                _changeName(
-                    _firstNameController.text, _lastNameController.text);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+            enabledBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: constants.darkgray, width: 2.0))),
+        style:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold));
   }
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _firstNameController =
+        TextEditingController(text: widget.firstName);
+    final TextEditingController _lastNameController =
+        TextEditingController(text: widget.lastName);
+    final TextEditingController _emailController =
+        TextEditingController(text: widget.email);
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: constants.lightslategray,
+            backgroundColor: constants.slategray,
             centerTitle: true,
             title: Image.asset('assets/logo.png', height: 60)),
         body: Padding(
@@ -121,40 +101,55 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              TextFormField(
-                controller: _firstNameController,
-                decoration: const InputDecoration(labelText: 'First Name'),
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: const InputDecoration(labelText: 'Last Name'),
-              ),
-              Text('${widget.email}'),
+              _profileTextField('First Name', _firstNameController),
+              const SizedBox(height: 20),
+              _profileTextField('Last Name', _lastNameController),
+              const SizedBox(height: 20),
+              TextField(
+                  controller: _emailController,
+                  readOnly: true,
+                  decoration: const InputDecoration(
+                      labelText: 'Email',
+                      labelStyle: TextStyle(
+                          color: constants.darkgray,
+                          fontWeight: FontWeight.bold),
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none),
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
               const SizedBox(height: 20.0),
-              ElevatedButton(
+              OutlinedButton(
                 onPressed: () {
                   _changeName(
                       _firstNameController.text, _lastNameController.text);
                 },
-                child: const Text('Update Name'),
+                style: constants.accentButtonStyle,
+                child:
+                    const Text('UPDATE NAME', style: constants.buttonTextStyle),
               ),
-              ElevatedButton(
+              OutlinedButton(
+                style: constants.defaultButtonStyle,
                 onPressed: () {},
-                child: const Text('Reset Password'),
+                child: const Text('RESET PASSWORD',
+                    style: constants.buttonTextStyle),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                      (Route route) => false);
-                },
-                child: const Text('Log Out'),
-              ),
-              if (_errorMessage.isNotEmpty)
-                Text(
-                  _errorMessage,
-                  style: const TextStyle(color: Colors.red),
-                ),
+              Expanded(
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                          margin: const EdgeInsets.all(30),
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage()),
+                                  (Route route) => false);
+                            },
+                            child: const Text('LOG OUT',
+                                style: TextStyle(
+                                    color: constants.red,
+                                    fontWeight: FontWeight.bold)),
+                          )))),
             ],
           ),
         ));

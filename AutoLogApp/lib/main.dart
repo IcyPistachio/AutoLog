@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'AutoLog',
       theme: ThemeData(
         fontFamily: 'Monaco',
-        scaffoldBackgroundColor: constants.slategray,
+        scaffoldBackgroundColor: constants.lightslategray,
         primarySwatch: Colors.blue,
       ),
       home: const SplashScreen(),

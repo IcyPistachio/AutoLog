@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'constants.dart' as constants;
 import 'profile_page.dart';
-import 'carInfo_page.dart';
+import 'car_info_page.dart';
 
 // ignore: must_be_immutable
 class CarUI extends StatefulWidget {
@@ -110,59 +110,6 @@ class _CarUIState extends State<CarUI> {
     }
   }
 
-  Future<void> _deleteCar(int carId) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: const Text('Are you sure you want to delete this vehicle?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                final response = await http.post(
-                  Uri.parse(
-                      'https://autolog-b358aa95bace.herokuapp.com/api/deletecar'),
-                  headers: <String, String>{
-                    'Content-Type': 'application/json; charset=UTF-8',
-                  },
-                  body: jsonEncode(<String, dynamic>{
-                    'userId': widget.userId,
-                    'carId': carId,
-                  }),
-                );
-
-                if (response.statusCode == 200) {
-                  final responseBody = jsonDecode(response.body);
-                  if (responseBody['error'] != '') {
-                    setState(() {
-                      _errorMessage = responseBody['error'];
-                    });
-                  } else {
-                    // Car deleted successfully, refresh cars list
-                    _searchCars('');
-                  }
-                } else {
-                  setState(() {
-                    _errorMessage = 'An error occurred. Please try again.';
-                  });
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _navigateToCarInfo(int carId) async {
     await Navigator.push(
       context,
@@ -171,88 +118,6 @@ class _CarUIState extends State<CarUI> {
       ),
     );
     _searchCars(''); // Refresh cars list after returning from CarInfo
-  }
-
-  Future<void> _changeName(String newFirstName, String newLastName) async {
-    final response = await http.post(
-      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/changename'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'userId': widget.userId,
-        'firstName': newFirstName,
-        'lastName': newLastName,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-      if (responseBody['error'] != '') {
-        setState(() {
-          _errorMessage = responseBody['error'];
-        });
-      } else {
-        setState(() {
-          // Update the local state with new names
-          widget.firstName = newFirstName;
-          widget.lastName = newLastName;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Name updated successfully.'),
-          duration: Duration(seconds: 2),
-        ));
-      }
-    } else {
-      setState(() {
-        _errorMessage = 'An error occurred. Please try again.';
-      });
-    }
-  }
-
-  void _showNameChangeDialog() {
-    final TextEditingController _firstNameController =
-        TextEditingController(text: widget.firstName);
-    final TextEditingController _lastNameController =
-        TextEditingController(text: widget.lastName);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Change Name'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _firstNameController,
-                decoration: const InputDecoration(labelText: 'First Name'),
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: const InputDecoration(labelText: 'Last Name'),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Confirm'),
-              onPressed: () {
-                _changeName(
-                    _firstNameController.text, _lastNameController.text);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void _showAddCarDialog() {
@@ -321,7 +186,7 @@ class _CarUIState extends State<CarUI> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: constants.lightslategray,
+        backgroundColor: constants.slategray,
         centerTitle: true,
         title: Image.asset(
           'assets/logo.png',
@@ -348,22 +213,32 @@ class _CarUIState extends State<CarUI> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text("${widget.firstName}'s GARAGE",
-                style: constants.subHeaderTextStyle),
+            Text("${widget.firstName}'s Garage",
+                style: constants.header2TextStyle),
             TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(labelText: 'Search Vehicles'),
-              onChanged: (value) {
-                _searchCars(value);
-              },
-            ),
+                controller: _searchController,
+                decoration: const InputDecoration(
+                    labelText: 'Search Vehicles',
+                    labelStyle: TextStyle(color: constants.darkgray),
+                    prefixIcon: Icon(Icons.search, color: constants.darkgray),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: constants.darkgray, width: 2)),
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: constants.orange, width: 2))),
+                onChanged: (value) {
+                  _searchCars(value);
+                },
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
             const SizedBox(height: 20.0),
             OutlinedButton(
                 onPressed: () {
                   _showAddCarDialog();
                 },
                 style: constants.defaultButtonStyle,
-                child: const Text('Add Vehicle',
+                child: const Text('ADD VEHICLE',
                     style: constants.buttonTextStyle)),
             const SizedBox(height: 20.0),
             Expanded(
@@ -377,26 +252,27 @@ class _CarUIState extends State<CarUI> {
                       ),
                     )
                   : ListView.separated(
-                      separatorBuilder: (context, index) =>
-                          const Divider(color: constants.slategray),
+                      separatorBuilder: (context, index) => const Divider(
+                          color: constants.lightslategray, height: 7),
                       itemCount: _cars.length,
                       itemBuilder: (context, index) {
                         final car = _cars[index];
                         return ListTile(
-                          tileColor: constants.lightslategray,
+                          tileColor: constants.slategray,
                           title: Text(
-                              '${car['year']} ${car['make']} ${car['model']}'),
+                              '${car['year']} ${car['make']} ${car['model']}',
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
                           subtitle: Text(
-                              'Color: ${car['color']}, ODO: ${car['odometer']}'),
+                              'Color: ${car['color']}\nODO: ${car['odometer']}',
+                              style: const TextStyle(
+                                  color: constants.darkgray,
+                                  fontWeight: FontWeight.bold)),
+                          isThreeLine: true,
                           onTap: () {
                             _navigateToCarInfo(car['carId']);
                           },
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              _deleteCar(car['carId']);
-                            },
-                          ),
                         );
                       },
                     ),

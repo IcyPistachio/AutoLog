@@ -138,6 +138,57 @@ class _CarInfoState extends State<CarInfo> {
     }
   }
 
+  Future<void> _deleteCar(int carId) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this vehicle?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                Navigator.pop(context);
+                final response = await http.post(
+                  Uri.parse(
+                      'https://autolog-b358aa95bace.herokuapp.com/api/deletecar'),
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+                  body: jsonEncode(<String, dynamic>{
+                    'userId': widget.userId,
+                    'carId': carId,
+                  }),
+                );
+
+                if (response.statusCode == 200) {
+                  final responseBody = jsonDecode(response.body);
+                  if (responseBody['error'] != '') {
+                    setState(() {
+                      _errorMessage = responseBody['error'];
+                    });
+                  }
+                } else {
+                  setState(() {
+                    _errorMessage = 'An error occurred. Please try again.';
+                  });
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _addNewNote() async {
     final response = await http.post(
       Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/addnote'),
@@ -434,7 +485,7 @@ class _CarInfoState extends State<CarInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: constants.lightslategray,
+        backgroundColor: constants.slategray,
         centerTitle: true,
         title: Image.asset('assets/logo.png', height: 60),
       ),
@@ -444,7 +495,7 @@ class _CarInfoState extends State<CarInfo> {
             ? Center(
                 child: Text(
                   _errorMessage.isNotEmpty ? _errorMessage : 'Loading...',
-                  style: const TextStyle(color: constants.red),
+                  style: constants.subHeaderTextStyle,
                 ),
               )
             : SingleChildScrollView(
@@ -455,52 +506,64 @@ class _CarInfoState extends State<CarInfo> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Make: ${_carInfo!['make']}',
-                          style: const TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 10.0),
-                        Text(
-                          'Model: ${_carInfo!['model']}',
-                          style: const TextStyle(fontSize: 18.0),
-                        ),
-                        const SizedBox(height: 10.0),
-                        Text(
-                          'Year: ${_carInfo!['year']}',
-                          style: const TextStyle(fontSize: 18.0),
+                          '${_carInfo!['year']} ${_carInfo!['make']} ${_carInfo!['model']}',
+                          style: constants.header3TextStyle,
                         ),
                         const SizedBox(height: 10.0),
                         Text(
                           'Color: ${_carInfo!['color']}',
-                          style: const TextStyle(fontSize: 18.0),
+                          style: constants.subHeader2TextStyle,
                         ),
-                        const SizedBox(height: 10.0),
-                        Text(
-                          'Odometer: ${_carInfo!['odometer']}',
-                          style: const TextStyle(fontSize: 18.0),
-                        ),
-                        const SizedBox(height: 20.0),
-                        ElevatedButton(
-                          onPressed: () {
-                            _showEditCarDialog();
-                          },
-                          child: const Text('Edit'),
-                        ),
+                        Row(children: [
+                          Text(
+                            'ODO: ${_carInfo!['odometer']}',
+                            style: constants.subHeader2TextStyle,
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            onPressed: () {
+                              _showEditCarDialog();
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteCar(widget.carId);
+                            },
+                          )
+                        ]),
                       ],
                     ),
                     const SizedBox(height: 20.0),
-                    ElevatedButton(
-                      onPressed: _showAddNoteDialog,
-                      child: const Text('Add Note'),
-                    ),
-                    const SizedBox(height: 20.0),
-                    TextField(
-                      controller: _searchController,
-                      decoration: const InputDecoration(
-                        labelText: 'Search Notes',
-                        prefixIcon: Icon(Icons.search),
+                    Row(children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: TextField(
+                          controller: _searchController,
+                          decoration: const InputDecoration(
+                            labelText: 'Search Notes',
+                            labelStyle: TextStyle(color: constants.darkgray),
+                            prefixIcon:
+                                Icon(Icons.search, color: constants.darkgray),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: constants.darkgray, width: 2)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: constants.orange, width: 2)),
+                          ),
+                          style: const TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
+                      const Spacer(),
+                      OutlinedButton(
+                          style: constants.roundButtonStyle,
+                          onPressed: _showAddNoteDialog,
+                          child: const Icon(Icons.add)),
+                    ]),
+                    const SizedBox(height: 20.0),
                     const SizedBox(height: 20.0),
                     _filteredCarNotes == null
                         ? Center(
@@ -508,7 +571,7 @@ class _CarInfoState extends State<CarInfo> {
                               _errorMessage.isNotEmpty
                                   ? _errorMessage
                                   : 'Loading notes...',
-                              style: const TextStyle(color: constants.red),
+                              style: constants.subHeaderTextStyle,
                             ),
                           )
                         : Column(
@@ -538,26 +601,24 @@ class _CarInfoState extends State<CarInfo> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                'Service Type: ${note['type']}',
-                                                style: const TextStyle(
-                                                    fontSize: 16.0,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                '${note['type']}',
+                                                style: constants
+                                                    .subHeaderTextStyle,
                                               ),
                                               Text(
                                                 'Miles: ${note['miles']}',
-                                                style: const TextStyle(
-                                                    fontSize: 16.0),
+                                                style: constants
+                                                    .subHeader2TextStyle,
                                               ),
                                               Text(
                                                 'Note: ${note['note']}',
-                                                style: const TextStyle(
-                                                    fontSize: 16.0),
+                                                style: constants
+                                                    .subHeader2TextStyle,
                                               ),
                                               Text(
-                                                'Created At: $formattedDate',
+                                                '$formattedDate',
                                                 style: const TextStyle(
-                                                    fontSize: 14.0),
+                                                    fontSize: 12.0),
                                               ),
                                             ],
                                           ),

@@ -22,7 +22,7 @@ const headerTextStyle = TextStyle(
           blurRadius: 1.0,
           color: Color.fromARGB(59, 18, 21, 24))
     ]);
-const subHeaderTextStyle = TextStyle(
+const header2TextStyle = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
     color: darkgray,
@@ -32,8 +32,12 @@ const subHeaderTextStyle = TextStyle(
           blurRadius: 1.0,
           color: Color.fromARGB(59, 18, 21, 24))
     ]);
-const formLabelTextStyle =
-    TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
+const header3TextStyle =
+    TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white);
+const subHeaderTextStyle =
+    TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold);
+const subHeader2TextStyle =
+    TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: darkgray);
 const buttonTextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
 const errorTextStyle =
@@ -53,6 +57,10 @@ final defaultButtonStyle = ButtonStyle(
     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
         const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0)))));
+final roundButtonStyle = ButtonStyle(
+    backgroundColor: WidgetStateProperty.all(darkgray),
+    foregroundColor: WidgetStateProperty.all(lightslategray),
+    shape: WidgetStateProperty.all<CircleBorder>(const CircleBorder()));
 
 // SnackBar
 SnackBar errorSnackBar(String errMsg) {
