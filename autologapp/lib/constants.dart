@@ -23,7 +23,7 @@ const headerTextStyle = TextStyle(
           color: Color.fromARGB(59, 18, 21, 24))
     ]);
 const header2TextStyle = TextStyle(
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: FontWeight.bold,
     color: darkgray,
     shadows: <Shadow>[
@@ -33,11 +33,12 @@ const header2TextStyle = TextStyle(
           color: Color.fromARGB(59, 18, 21, 24))
     ]);
 const header3TextStyle =
-    TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white);
+    TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white);
 const subHeaderTextStyle =
     TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold);
 const subHeader2TextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: darkgray);
+const subtitleTextStyle = TextStyle(fontSize: 14, color: darkgray);
 const buttonTextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
 const errorTextStyle =
@@ -52,6 +53,14 @@ final accentButtonStyle = ButtonStyle(
             borderRadius: BorderRadius.all(Radius.circular(10.0)))));
 final defaultButtonStyle = ButtonStyle(
     foregroundColor: WidgetStateProperty.all(Colors.black),
+    side: WidgetStateProperty.all<BorderSide>(
+        const BorderSide(color: Colors.black, width: 2)),
+    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+        const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0)))));
+final filledDefaultButtonStyle = ButtonStyle(
+    foregroundColor: WidgetStateProperty.all(Colors.black),
+    backgroundColor: WidgetStateProperty.all(slategray),
     side: WidgetStateProperty.all<BorderSide>(
         const BorderSide(color: Colors.black, width: 2)),
     shape: WidgetStateProperty.all<RoundedRectangleBorder>(
