@@ -611,9 +611,9 @@ class _CarInfoState extends State<CarInfo> {
                                                     .subHeader2TextStyle,
                                               ),
                                               Text(
-                                                'Note: ${note['note']}',
-                                                style: constants
-                                                    .subHeader2TextStyle,
+                                                '${note['note']}',
+                                                style:
+                                                    constants.subtitleTextStyle,
                                               ),
                                               Text(
                                                 '$formattedDate',

@@ -194,18 +194,17 @@ class _CarUIState extends State<CarUI> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.person, color: Colors.black),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProfilePage(
-                          userId: widget.userId,
-                          firstName: widget.firstName,
-                          lastName: widget.lastName,
-                          email: widget.email)));
-            },
-          ),
+              icon: const Icon(Icons.person, color: Colors.black, size: 30),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProfilePage(
+                            userId: widget.userId,
+                            firstName: widget.firstName,
+                            lastName: widget.lastName,
+                            email: widget.email)));
+              }),
         ],
       ),
       body: Padding(
@@ -213,7 +212,7 @@ class _CarUIState extends State<CarUI> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Text("${widget.firstName}'s Garage",
+            Text("${widget.firstName.toUpperCase()}'s GARAGE",
                 style: constants.header2TextStyle),
             TextField(
                 controller: _searchController,
@@ -237,9 +236,15 @@ class _CarUIState extends State<CarUI> {
                 onPressed: () {
                   _showAddCarDialog();
                 },
-                style: constants.defaultButtonStyle,
-                child: const Text('ADD VEHICLE',
-                    style: constants.buttonTextStyle)),
+                style: constants.filledDefaultButtonStyle,
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add),
+                    SizedBox(width: 5),
+                    Text('ADD VEHICLE', style: constants.buttonTextStyle)
+                  ],
+                )),
             const SizedBox(height: 20.0),
             Expanded(
               child: _cars.isEmpty
@@ -259,16 +264,18 @@ class _CarUIState extends State<CarUI> {
                         final car = _cars[index];
                         return ListTile(
                           tileColor: constants.slategray,
-                          title: Text(
-                              '${car['year']} ${car['make']} ${car['model']}',
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
+                          title: Row(
+                            children: [
+                              Text('${car['year']}',
+                                  style: constants.header3TextStyle),
+                              const Spacer(),
+                              Text('ODO: ${car['odometer']}',
+                                  style: constants.subHeader2TextStyle)
+                            ],
+                          ),
                           subtitle: Text(
-                              'Color: ${car['color']}\nODO: ${car['odometer']}',
-                              style: const TextStyle(
-                                  color: constants.darkgray,
-                                  fontWeight: FontWeight.bold)),
+                              '${car['make']} ${car['model']}\n${car['color']}',
+                              style: constants.subHeaderTextStyle),
                           isThreeLine: true,
                           onTap: () {
                             _navigateToCarInfo(car['carId']);
