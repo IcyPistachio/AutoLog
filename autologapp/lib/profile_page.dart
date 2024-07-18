@@ -83,6 +83,36 @@ class _ProfilePageState extends State<ProfilePage> {
             const TextStyle(color: Colors.white, fontWeight: FontWeight.bold));
   }
 
+  Future<void> _openForgotPasswordPage() async {
+    // Show confirmation dialog
+    bool confirm = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmation'),
+          content: const Text(
+              'Are you sure you want to go to the reset password page?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(false); // Return false when cancel button is clicked
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(true); // Return true when yes button is clicked
+              },
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final TextEditingController _firstNameController =
@@ -129,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               OutlinedButton(
                 style: constants.defaultButtonStyle,
-                onPressed: () {},
+                onPressed: _openForgotPasswordPage,
                 child: const Text('RESET PASSWORD',
                     style: constants.buttonTextStyle),
               ),
