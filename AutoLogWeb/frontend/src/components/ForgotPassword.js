@@ -29,23 +29,28 @@ function ForgotPassword() {
 
     return (
         <div className="forgot-password-container">
-            <img src={logo} alt="AutoLog Logo" className="logo" />
-            <div className='textContainer'>
-                <h1>RESET PASSWORD</h1> 
+            <img src={logo} alt="AutoLog Logo" />
+            <form className="forgot-password-form" onSubmit={handleResetPassword}>
+                <h1 className="title">RESET PASSWORD</h1>
                 <p>Enter the email associated with the account password you are trying to reset.</p>
-                <form onSubmit={handleResetPassword}>
-                    <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <input type="submit" value="Send Reset Link" />
-                </form>
-                <span className="message">{message}</span>
-                <button onClick={() => navigate(-1)}>Back</button>
-            </div>
+                <div className="vbox">
+                    <label>
+                    Email
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </label>
+                </div>
+                <div className="buttons">
+                    <input type="submit" value="Send Reset Link" className="reset-button" />
+                    <span className="message">{message}</span>
+                    <button className="back-button" onClick={() => navigate(-1)}>Back</button>
+                </div>
+            </form>
         </div>
     );
 }
