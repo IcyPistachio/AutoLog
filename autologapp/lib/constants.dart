@@ -88,3 +88,7 @@ SnackBar errorSnackBar(String errMsg) {
       ]),
       padding: const EdgeInsets.all(15));
 }
+
+SnackBar defaultSnackBar(String msg) {
+  return SnackBar(content: Text(msg), duration: const Duration(seconds: 2));
+}
