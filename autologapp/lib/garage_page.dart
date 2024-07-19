@@ -18,12 +18,12 @@ class CarUI extends StatefulWidget {
       required this.email});
 
   @override
-  _CarUIState createState() => _CarUIState();
+  CarUIState createState() => CarUIState();
 }
 
-class _CarUIState extends State<CarUI> {
+class CarUIState extends State<CarUI> {
   final TextEditingController _searchController = TextEditingController();
-  List<dynamic> _cars = [];
+  List<dynamic> cars = [];
   String _errorMessage = '';
   final TextEditingController _makeController = TextEditingController();
   final TextEditingController _modelController = TextEditingController();
@@ -51,7 +51,7 @@ class _CarUIState extends State<CarUI> {
         });
       } else {
         setState(() {
-          _cars = responseBody['results'];
+          cars = responseBody['results'];
           _errorMessage = '';
         });
       }
@@ -131,28 +131,33 @@ class _CarUIState extends State<CarUI> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add Vehicle'),
+          title: const Text('New Vehicle'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
+                  key: const Key('make'),
                   controller: _makeController,
                   decoration: const InputDecoration(labelText: 'Make'),
                 ),
                 TextFormField(
+                  key: const Key('model'),
                   controller: _modelController,
                   decoration: const InputDecoration(labelText: 'Model'),
                 ),
                 TextFormField(
+                  key: const Key('year'),
                   controller: _yearController,
                   decoration: const InputDecoration(labelText: 'Year'),
                 ),
                 TextFormField(
+                  key: const Key('odometer'),
                   controller: _odometerController,
                   decoration: const InputDecoration(labelText: 'Odometer'),
                 ),
                 TextFormField(
+                  key: const Key('color'),
                   controller: _colorController,
                   decoration: const InputDecoration(labelText: 'Color'),
                 ),
@@ -422,7 +427,7 @@ class _CarUIState extends State<CarUI> {
                 )),
             const SizedBox(height: 20.0),
             Expanded(
-              child: _cars.isEmpty
+              child: cars.isEmpty
                   ? Center(
                       child: Text(
                         _errorMessage.isNotEmpty
@@ -434,9 +439,9 @@ class _CarUIState extends State<CarUI> {
                   : ListView.separated(
                       separatorBuilder: (context, index) => const Divider(
                           color: constants.lightslategray, height: 7),
-                      itemCount: _cars.length,
+                      itemCount: cars.length,
                       itemBuilder: (context, index) {
-                        final car = _cars[index];
+                        final car = cars[index];
                         return ListTile(
                           tileColor: constants.slategray,
                           trailing: MenuAnchor(
