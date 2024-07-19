@@ -19,10 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _login() async {
-    final email = _emailController.text;
-    final password = _passwordController.text;
-
+  Future<void> _login(String email, String password) async {
     final response = await http.post(
       Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/login'),
       headers: <String, String>{
@@ -43,8 +40,6 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context)
             .showSnackBar(constants.errorSnackBar('Email not verified'));
       } else {
-        _emailController.clear();
-        _passwordController.clear();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -180,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        _login();
+                        _login(_emailController.text, _passwordController.text);
                       }
                     },
                     style: constants.accentButtonStyle,
