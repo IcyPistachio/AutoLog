@@ -16,6 +16,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Monaco',
         scaffoldBackgroundColor: constants.lightslategray,
         primarySwatch: Colors.blue,
+        iconButtonTheme: IconButtonThemeData(
+            style: ButtonStyle(
+                iconColor: WidgetStateProperty.all(constants.darkgray))),
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: constants.darkgray,
         ),
