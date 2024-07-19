@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'login_page.dart';
 import 'constants.dart' as constants;
 
+// ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
   int userId;
   String firstName, lastName, email;
@@ -22,9 +23,6 @@ class ProfilePage extends StatefulWidget {
 enum FormInputType { firstName, lastName, email }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final _formKey = GlobalKey<FormState>();
-  String _errorMessage = '';
-
   Future<void> _changeName(String newFirstName, String newLastName) async {
     final response = await http.post(
       Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/changename'),
@@ -51,16 +49,10 @@ class _ProfilePageState extends State<ProfilePage> {
           widget.firstName = newFirstName;
           widget.lastName = newLastName;
         });
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Name updated successfully.'),
-          duration: Duration(seconds: 2),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+            constants.defaultSnackBar('Name updated successfully.'));
       }
-    } else {
-      setState(() {
-        _errorMessage = 'An error occurred. Please try again.';
-      });
-    }
+    } else {}
   }
 
   Widget _profileTextField(String label, TextEditingController control) {
@@ -85,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _openForgotPasswordPage() async {
     // Show confirmation dialog
-    bool confirm = await showDialog(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
