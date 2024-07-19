@@ -20,6 +20,7 @@ class _CarInfoState extends State<CarInfo> {
   List<dynamic>? _carNotes;
   List<dynamic>? _filteredCarNotes;
   String _errorMessage = '';
+  final formatter = intl.NumberFormat('#,###');
   final TextEditingController _makeController = TextEditingController();
   final TextEditingController _modelController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
@@ -65,6 +66,41 @@ class _CarInfoState extends State<CarInfo> {
     }
   }
 
+  Future<void> _updateCarInfo(Map<String, dynamic> updatedInfo) async {
+    final response = await http.post(
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/updatecar'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'carId': updatedInfo['carId'],
+        'make': updatedInfo['make'],
+        'model': updatedInfo['model'],
+        'year': updatedInfo['year'],
+        'odometer': updatedInfo['odometer'],
+        'color': updatedInfo['color'],
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['error'] != '') {
+        setState(() {
+          _errorMessage = responseBody['error'];
+        });
+      } else {
+        setState(() {
+          _errorMessage = '';
+          _fetchCarInfo();
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'An error occurred. Please try again.';
+      });
+    }
+  }
+
   Future<void> _fetchCarNotes() async {
     final response = await http.post(
       Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/getcarnotes'),
@@ -101,94 +137,6 @@ class _CarInfoState extends State<CarInfo> {
     }
   }
 
-  Future<void> _updateCarInfo(Map<String, dynamic> updatedInfo) async {
-    final response = await http.post(
-      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/updatecar'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
-        'carId': widget.carId,
-        'make': updatedInfo['make'],
-        'model': updatedInfo['model'],
-        'year': updatedInfo['year'],
-        'odometer': updatedInfo['odometer'],
-        'color': updatedInfo['color'],
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-      if (responseBody['error'] != '') {
-        setState(() {
-          _errorMessage = responseBody['error'];
-        });
-      } else {
-        setState(() {
-          _errorMessage = '';
-
-          _fetchCarInfo(); // Refresh car info
-          _fetchCarNotes(); // Refresh car notes
-        });
-      }
-    } else {
-      setState(() {
-        _errorMessage = 'An error occurred. Please try again.';
-      });
-    }
-  }
-
-  Future<void> _deleteCar(int carId) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Deletion'),
-          content: const Text('Are you sure you want to delete this vehicle?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () async {
-                Navigator.of(context).pop();
-                Navigator.pop(context);
-                final response = await http.post(
-                  Uri.parse(
-                      'https://autolog-b358aa95bace.herokuapp.com/api/deletecar'),
-                  headers: <String, String>{
-                    'Content-Type': 'application/json; charset=UTF-8',
-                  },
-                  body: jsonEncode(<String, dynamic>{
-                    'userId': widget.userId,
-                    'carId': carId,
-                  }),
-                );
-
-                if (response.statusCode == 200) {
-                  final responseBody = jsonDecode(response.body);
-                  if (responseBody['error'] != '') {
-                    setState(() {
-                      _errorMessage = responseBody['error'];
-                    });
-                  }
-                } else {
-                  setState(() {
-                    _errorMessage = 'An error occurred. Please try again.';
-                  });
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> _addNewNote() async {
     final response = await http.post(
       Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/addnote'),
@@ -211,12 +159,32 @@ class _CarInfoState extends State<CarInfo> {
           _errorMessage = responseBody['error'];
         });
       } else {
+        final milesString =
+            _noteMilesController.text.replaceAll(RegExp(r'[^0-9]'), '');
+        final odometerString =
+            _carInfo!['odometer'].replaceAll(RegExp(r'[^0-9]'), '');
+
+        int newMileage = int.tryParse(milesString) ?? 0;
+        int currentOdometer = int.tryParse(odometerString) ?? 0;
+
         setState(() {
           _errorMessage = '';
           _noteTypeController.clear();
           _noteMilesController.clear();
           _noteTextController.clear();
           _fetchCarNotes(); // Refresh car notes
+
+          if (newMileage > currentOdometer) {
+            Map<String, dynamic> updatedInfo = {
+              'carId': _carInfo!['carId'],
+              'make': _carInfo!['make'],
+              'model': _carInfo!['model'],
+              'year': _carInfo!['year'],
+              'odometer': formatter.format(newMileage),
+              'color': _carInfo!['color'],
+            };
+            _updateCarInfo(updatedInfo);
+          }
         });
       }
     } else {
@@ -231,8 +199,9 @@ class _CarInfoState extends State<CarInfo> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Note'),
-          content: const Text('Are you sure you want to delete this note?'),
+          title: const Text('Delete Log'),
+          content:
+              const Text('Are you sure you want to delete this log entry?'),
           actions: <Widget>[
             TextButton(
               child: const Text('Cancel'),
@@ -317,79 +286,6 @@ class _CarInfoState extends State<CarInfo> {
     }
   }
 
-  void _showEditCarDialog() {
-    // Create new controllers for the edit dialog
-    final TextEditingController makeController =
-        TextEditingController(text: _makeController.text);
-    final TextEditingController modelController =
-        TextEditingController(text: _modelController.text);
-    final TextEditingController yearController =
-        TextEditingController(text: _yearController.text);
-    final TextEditingController odometerController =
-        TextEditingController(text: _odometerController.text);
-    final TextEditingController colorController =
-        TextEditingController(text: _colorController.text);
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Edit Car Information'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                controller: makeController,
-                decoration: const InputDecoration(labelText: 'Make'),
-              ),
-              TextField(
-                controller: modelController,
-                decoration: const InputDecoration(labelText: 'Model'),
-              ),
-              TextField(
-                controller: yearController,
-                decoration: const InputDecoration(labelText: 'Year'),
-              ),
-              TextField(
-                controller: odometerController,
-                decoration: const InputDecoration(labelText: 'Odometer'),
-              ),
-              TextField(
-                controller: colorController,
-                decoration: const InputDecoration(labelText: 'Color'),
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Save'),
-              onPressed: () {
-                // Create a map with the updated values
-                Map<String, dynamic> updatedInfo = {
-                  'make': makeController.text,
-                  'model': modelController.text,
-                  'year': yearController.text,
-                  'odometer': odometerController.text,
-                  'color': colorController.text,
-                };
-
-                // Call _updateCarInfo with the updated values
-                _updateCarInfo(updatedInfo);
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void _showAddNoteDialog() {
     _noteTypeController.clear();
     _noteMilesController.clear();
@@ -399,13 +295,13 @@ class _CarInfoState extends State<CarInfo> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add Note'),
+          title: const Text('Add Log'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
                 controller: _noteTypeController,
-                decoration: const InputDecoration(labelText: 'Type'),
+                decoration: const InputDecoration(labelText: 'Service Type'),
               ),
               TextField(
                 controller: _noteMilesController,
@@ -419,13 +315,16 @@ class _CarInfoState extends State<CarInfo> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              style: constants.defaultButtonStyle,
+              child:
+                  const Text('Cancel', style: constants.dialogButtonTextStyle),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Add'),
+              style: constants.accentButtonStyle,
+              child: const Text('Add', style: constants.dialogButtonTextStyle),
               onPressed: () {
                 Navigator.of(context).pop();
                 _addNewNote();
@@ -471,6 +370,110 @@ class _CarInfoState extends State<CarInfo> {
     }
   }
 
+  void _showEditNoteDialog(Map<String, dynamic> note) {
+// Create new controllers for the edit dialog
+    final TextEditingController typeController =
+        TextEditingController(text: note['type']);
+    final TextEditingController milesController =
+        TextEditingController(text: note['miles']);
+    final TextEditingController noteController =
+        TextEditingController(text: note['note']);
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Edit Log'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: typeController,
+                  decoration: const InputDecoration(labelText: 'Service Type'),
+                ),
+                TextField(
+                  controller: milesController,
+                  decoration: const InputDecoration(labelText: 'Miles'),
+                ),
+                TextField(
+                  controller: noteController,
+                  decoration: const InputDecoration(labelText: 'Note'),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                style: constants.defaultButtonStyle,
+                child: const Text('Cancel',
+                    style: constants.dialogButtonTextStyle),
+                onPressed: () {
+                  // Clear text in controllers when cancel is pressed
+                  typeController.clear();
+                  milesController.clear();
+                  noteController.clear();
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                style: constants.accentButtonStyle,
+                child:
+                    const Text('Save', style: constants.dialogButtonTextStyle),
+                onPressed: () {
+                  _updateNote(note['noteId'], typeController.text,
+                      milesController.text, noteController.text);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void _showEditOdometerDialog() {
+    final TextEditingController odometerController =
+        TextEditingController(text: _carInfo!['odometer']);
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Update Odometer'),
+            content: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              TextField(
+                controller: odometerController,
+                decoration: const InputDecoration(labelText: 'Odometer'),
+              )
+            ]),
+            actions: <Widget>[
+              TextButton(
+                  style: constants.defaultButtonStyle,
+                  child: const Text('Cancel',
+                      style: constants.dialogButtonTextStyle),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+              TextButton(
+                  style: constants.accentButtonStyle,
+                  child: const Text('Update',
+                      style: constants.dialogButtonTextStyle),
+                  onPressed: () {
+                    Map<String, dynamic> updatedInfo = {
+                      'carId': _carInfo!['carId'],
+                      'make': _carInfo!['make'],
+                      'model': _carInfo!['model'],
+                      'year': _carInfo!['year'],
+                      'odometer': odometerController.text,
+                      'color': _carInfo!['color'],
+                    };
+                    _updateCarInfo(updatedInfo);
+                    Navigator.of(context).pop();
+                  })
+            ],
+          );
+        });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -506,33 +509,32 @@ class _CarInfoState extends State<CarInfo> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${_carInfo!['year']} ${_carInfo!['make']} ${_carInfo!['model']}',
-                          style: constants.header3TextStyle,
+                          '${_carInfo!['year']} ${_carInfo!['make']}',
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 10.0),
                         Text(
-                          'Color: ${_carInfo!['color']}',
-                          style: constants.subHeader2TextStyle,
+                          '${_carInfo!['color']} ${_carInfo!['model']}',
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold),
                         ),
-                        Row(children: [
-                          Text(
-                            'ODO: ${_carInfo!['odometer']}',
-                            style: constants.subHeader2TextStyle,
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              _showEditCarDialog();
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              _deleteCar(widget.carId);
-                            },
-                          )
-                        ]),
+                        Row(
+                          children: [
+                            Text(
+                              'ODO: ${_carInfo!['odometer']}',
+                              style: constants.header4TextStyle,
+                            ),
+                            IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () {
+                                  _showEditOdometerDialog();
+                                })
+                          ],
+                        )
                       ],
                     ),
                     const SizedBox(height: 20.0),
@@ -542,7 +544,7 @@ class _CarInfoState extends State<CarInfo> {
                         child: TextField(
                           controller: _searchController,
                           decoration: const InputDecoration(
-                            labelText: 'Search Notes',
+                            labelText: 'Search Logs',
                             labelStyle: TextStyle(color: constants.darkgray),
                             prefixIcon:
                                 Icon(Icons.search, color: constants.darkgray),
@@ -561,9 +563,8 @@ class _CarInfoState extends State<CarInfo> {
                       OutlinedButton(
                           style: constants.roundButtonStyle,
                           onPressed: _showAddNoteDialog,
-                          child: const Icon(Icons.add)),
+                          child: const Icon(Icons.post_add)),
                     ]),
-                    const SizedBox(height: 20.0),
                     const SizedBox(height: 20.0),
                     _filteredCarNotes == null
                         ? Center(
@@ -583,7 +584,7 @@ class _CarInfoState extends State<CarInfo> {
                               final createdDate =
                                   DateTime.parse(note['dateCreated']);
                               final formattedDate =
-                                  '${intl.DateFormat.yMMMMd().format(createdDate)}';
+                                  '${intl.DateFormat('MM/dd/yyyy').format(createdDate)}';
 
                               return Padding(
                                 padding:
@@ -606,7 +607,7 @@ class _CarInfoState extends State<CarInfo> {
                                                     .subHeaderTextStyle,
                                               ),
                                               Text(
-                                                'Miles: ${note['miles']}',
+                                                '${note['miles']} miles',
                                                 style: constants
                                                     .subHeader2TextStyle,
                                               ),
@@ -623,100 +624,34 @@ class _CarInfoState extends State<CarInfo> {
                                             ],
                                           ),
                                         ),
-                                        IconButton(
-                                          icon: const Icon(Icons.edit),
-                                          onPressed: () {
-                                            // Create new controllers for the edit dialog
-                                            final TextEditingController
-                                                typeController =
-                                                TextEditingController(
-                                                    text: note['type']);
-                                            final TextEditingController
-                                                milesController =
-                                                TextEditingController(
-                                                    text: note['miles']);
-                                            final TextEditingController
-                                                noteController =
-                                                TextEditingController(
-                                                    text: note['note']);
-
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title:
-                                                      const Text('Edit Note'),
-                                                  content: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      TextField(
-                                                        controller:
-                                                            typeController,
-                                                        decoration:
-                                                            const InputDecoration(
-                                                                labelText:
-                                                                    'Service Type'),
-                                                      ),
-                                                      TextField(
-                                                        controller:
-                                                            milesController,
-                                                        decoration:
-                                                            const InputDecoration(
-                                                                labelText:
-                                                                    'Miles'),
-                                                      ),
-                                                      TextField(
-                                                        controller:
-                                                            noteController,
-                                                        decoration:
-                                                            const InputDecoration(
-                                                                labelText:
-                                                                    'Note'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      child:
-                                                          const Text('Cancel'),
-                                                      onPressed: () {
-                                                        // Clear text in controllers when cancel is pressed
-                                                        typeController.clear();
-                                                        milesController.clear();
-                                                        noteController.clear();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    TextButton(
-                                                      child: const Text('Save'),
-                                                      onPressed: () {
-                                                        _updateNote(
-                                                            noteId,
-                                                            typeController.text,
-                                                            milesController
-                                                                .text,
-                                                            noteController
-                                                                .text);
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.delete),
-                                          onPressed: () =>
-                                              _deleteNote(note['noteId']),
-                                        ),
+                                        MenuAnchor(
+                                            builder: (BuildContext context,
+                                                MenuController controller,
+                                                Widget? child) {
+                                              return IconButton(
+                                                  icon: const Icon(
+                                                      Icons.more_vert,
+                                                      size: 30),
+                                                  onPressed: () {
+                                                    if (controller.isOpen) {
+                                                      controller.close();
+                                                    } else {
+                                                      controller.open();
+                                                    }
+                                                  });
+                                            },
+                                            menuChildren: <MenuItemButton>[
+                                              MenuItemButton(
+                                                  child: const Text('Edit'),
+                                                  onPressed: () {
+                                                    _showEditNoteDialog(note);
+                                                  }),
+                                              MenuItemButton(
+                                                  child: const Text('Delete'),
+                                                  onPressed: () {
+                                                    _deleteNote(noteId);
+                                                  })
+                                            ]),
                                       ],
                                     ),
                                   ],

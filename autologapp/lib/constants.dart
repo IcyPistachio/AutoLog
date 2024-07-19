@@ -33,7 +33,9 @@ const header2TextStyle = TextStyle(
           color: Color.fromARGB(59, 18, 21, 24))
     ]);
 const header3TextStyle =
-    TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white);
+    TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white);
+const header4TextStyle =
+    TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: darkgray);
 const subHeaderTextStyle =
     TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold);
 const subHeader2TextStyle =
@@ -43,6 +45,8 @@ const buttonTextStyle =
     TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black);
 const errorTextStyle =
     TextStyle(fontSize: 12, color: red, fontWeight: FontWeight.bold);
+const dialogButtonTextStyle =
+    TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black);
 
 // Button Styles
 final accentButtonStyle = ButtonStyle(

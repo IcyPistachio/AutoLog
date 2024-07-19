@@ -131,7 +131,7 @@ class _CarUIState extends State<CarUI> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add New Vehicle'),
+          title: const Text('Add Vehicle'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -159,15 +159,186 @@ class _CarUIState extends State<CarUI> {
           ),
           actions: <Widget>[
             TextButton(
+              style: constants.defaultButtonStyle,
+              child:
+                  const Text('Cancel', style: constants.dialogButtonTextStyle),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: constants.accentButtonStyle,
+              child: const Text('Add Vehicle',
+                  style: constants.dialogButtonTextStyle),
+              onPressed: () {
+                _addCar();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _updateCarInfo(Map<String, dynamic> updatedInfo) async {
+    final response = await http.post(
+      Uri.parse('https://autolog-b358aa95bace.herokuapp.com/api/updatecar'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'carId': updatedInfo['carId'],
+        'make': updatedInfo['make'],
+        'model': updatedInfo['model'],
+        'year': updatedInfo['year'],
+        'odometer': updatedInfo['odometer'],
+        'color': updatedInfo['color'],
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      if (responseBody['error'] != '') {
+        setState(() {
+          _errorMessage = responseBody['error'];
+        });
+      } else {
+        setState(() {
+          _errorMessage = '';
+
+          // refresh car list
+          _searchCars('');
+        });
+      }
+    } else {
+      setState(() {
+        _errorMessage = 'An error occurred. Please try again.';
+      });
+    }
+  }
+
+  Future<void> _deleteCar(int carId) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this vehicle?'),
+          actions: <Widget>[
+            TextButton(
               child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            ElevatedButton(
-              child: const Text('Add Vehicle'),
+            TextButton(
+              child: const Text('Delete'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+                final response = await http.post(
+                  Uri.parse(
+                      'https://autolog-b358aa95bace.herokuapp.com/api/deletecar'),
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                  },
+                  body: jsonEncode(<String, dynamic>{
+                    'userId': widget.userId,
+                    'carId': carId,
+                  }),
+                );
+
+                if (response.statusCode == 200) {
+                  final responseBody = jsonDecode(response.body);
+                  if (responseBody['error'] != '') {
+                    setState(() {
+                      _errorMessage = responseBody['error'];
+                    });
+                  } else {
+                    // refresh car list
+                    _searchCars('');
+                  }
+                } else {
+                  setState(() {
+                    _errorMessage = 'An error occurred. Please try again.';
+                  });
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showEditCarDialog(Map<String, dynamic> car) {
+    // Create new controllers for the edit dialog
+    final TextEditingController makeController =
+        TextEditingController(text: car['make']);
+    final TextEditingController modelController =
+        TextEditingController(text: car['model']);
+    final TextEditingController yearController =
+        TextEditingController(text: car['year']);
+    final TextEditingController odometerController =
+        TextEditingController(text: car['odometer']);
+    final TextEditingController colorController =
+        TextEditingController(text: car['color']);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Car Information'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                controller: makeController,
+                decoration: const InputDecoration(labelText: 'Make'),
+              ),
+              TextField(
+                controller: modelController,
+                decoration: const InputDecoration(labelText: 'Model'),
+              ),
+              TextField(
+                controller: yearController,
+                decoration: const InputDecoration(labelText: 'Year'),
+              ),
+              TextField(
+                controller: odometerController,
+                decoration: const InputDecoration(labelText: 'Odometer'),
+              ),
+              TextField(
+                controller: colorController,
+                decoration: const InputDecoration(labelText: 'Color'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              style: constants.defaultButtonStyle,
+              child:
+                  const Text('Cancel', style: constants.dialogButtonTextStyle),
               onPressed: () {
-                _addCar();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: constants.accentButtonStyle,
+              child: const Text('Save', style: constants.dialogButtonTextStyle),
+              onPressed: () {
+                // Create a map with the updated values
+                Map<String, dynamic> updatedInfo = {
+                  'carId': car['carId'],
+                  'make': makeController.text,
+                  'model': modelController.text,
+                  'year': yearController.text,
+                  'odometer': odometerController.text,
+                  'color': colorController.text,
+                };
+
+                // Call _updateCarInfo with the updated values
+                _updateCarInfo(updatedInfo);
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -264,19 +435,45 @@ class _CarUIState extends State<CarUI> {
                         final car = _cars[index];
                         return ListTile(
                           tileColor: constants.slategray,
+                          trailing: MenuAnchor(
+                              builder: (BuildContext context,
+                                  MenuController controller, Widget? child) {
+                                return IconButton(
+                                    icon: const Icon(Icons.more_vert, size: 30),
+                                    onPressed: () {
+                                      if (controller.isOpen) {
+                                        controller.close();
+                                      } else {
+                                        controller.open();
+                                      }
+                                    });
+                              },
+                              menuChildren: <MenuItemButton>[
+                                MenuItemButton(
+                                    child: const Text('Edit'),
+                                    onPressed: () {
+                                      _showEditCarDialog(car);
+                                    }),
+                                MenuItemButton(
+                                    child: const Text('Delete'),
+                                    onPressed: () {
+                                      _deleteCar(car['carId']);
+                                    })
+                              ]),
                           title: Row(
                             children: [
-                              Text('${car['year']}',
+                              Text('${car['year']} ${car['make']}',
                                   style: constants.header3TextStyle),
-                              const Spacer(),
-                              Text('ODO: ${car['odometer']}',
-                                  style: constants.subHeader2TextStyle)
                             ],
                           ),
-                          subtitle: Text(
-                              '${car['make']} ${car['model']}\n${car['color']}',
-                              style: constants.subHeaderTextStyle),
-                          isThreeLine: true,
+                          subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${car['color']} ${car['model']}',
+                                    style: constants.subHeaderTextStyle),
+                                Text('ODO: ${car['odometer']}',
+                                    style: constants.subHeader2TextStyle)
+                              ]),
                           onTap: () {
                             _navigateToCarInfo(car['carId']);
                           },

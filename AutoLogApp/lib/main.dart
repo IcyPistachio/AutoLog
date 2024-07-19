@@ -16,6 +16,13 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Monaco',
         scaffoldBackgroundColor: constants.lightslategray,
         primarySwatch: Colors.blue,
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: constants.darkgray,
+        ),
+        highlightColor: constants.orange,
+        dialogTheme: const DialogTheme(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)))),
       ),
       home: const SplashScreen(),
     );
