@@ -132,30 +132,32 @@ class _CarUIState extends State<CarUI> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Add Vehicle'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _makeController,
-                decoration: const InputDecoration(labelText: 'Make'),
-              ),
-              TextFormField(
-                controller: _modelController,
-                decoration: const InputDecoration(labelText: 'Model'),
-              ),
-              TextFormField(
-                controller: _yearController,
-                decoration: const InputDecoration(labelText: 'Year'),
-              ),
-              TextFormField(
-                controller: _odometerController,
-                decoration: const InputDecoration(labelText: 'Odometer'),
-              ),
-              TextFormField(
-                controller: _colorController,
-                decoration: const InputDecoration(labelText: 'Color'),
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _makeController,
+                  decoration: const InputDecoration(labelText: 'Make'),
+                ),
+                TextFormField(
+                  controller: _modelController,
+                  decoration: const InputDecoration(labelText: 'Model'),
+                ),
+                TextFormField(
+                  controller: _yearController,
+                  decoration: const InputDecoration(labelText: 'Year'),
+                ),
+                TextFormField(
+                  controller: _odometerController,
+                  decoration: const InputDecoration(labelText: 'Odometer'),
+                ),
+                TextFormField(
+                  controller: _colorController,
+                  decoration: const InputDecoration(labelText: 'Color'),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
             TextButton(
@@ -288,30 +290,32 @@ class _CarUIState extends State<CarUI> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Edit Car Information'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextField(
-                controller: makeController,
-                decoration: const InputDecoration(labelText: 'Make'),
-              ),
-              TextField(
-                controller: modelController,
-                decoration: const InputDecoration(labelText: 'Model'),
-              ),
-              TextField(
-                controller: yearController,
-                decoration: const InputDecoration(labelText: 'Year'),
-              ),
-              TextField(
-                controller: odometerController,
-                decoration: const InputDecoration(labelText: 'Odometer'),
-              ),
-              TextField(
-                controller: colorController,
-                decoration: const InputDecoration(labelText: 'Color'),
-              ),
-            ],
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: makeController,
+                  decoration: const InputDecoration(labelText: 'Make'),
+                ),
+                TextField(
+                  controller: modelController,
+                  decoration: const InputDecoration(labelText: 'Model'),
+                ),
+                TextField(
+                  controller: yearController,
+                  decoration: const InputDecoration(labelText: 'Year'),
+                ),
+                TextField(
+                  controller: odometerController,
+                  decoration: const InputDecoration(labelText: 'Odometer'),
+                ),
+                TextField(
+                  controller: colorController,
+                  decoration: const InputDecoration(labelText: 'Color'),
+                ),
+              ],
+            ),
           ),
           actions: <Widget>[
             TextButton(
