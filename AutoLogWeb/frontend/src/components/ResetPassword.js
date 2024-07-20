@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './ResetPassword.css'; 
+import './ResetPassword.css';
+import './DefaultStyles.css';
+import logo from '../images/Group 19.png';
 
 function ResetPassword() {
     const [newPassword, setNewPassword] = useState('');
@@ -18,7 +20,7 @@ function ResetPassword() {
     const [showPasswordMatchRequirement, setShowPasswordMatchRequirement] = useState(false);
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
-    const { token } = useParams(); 
+    const { token } = useParams();
     var bp = require('./Path.js');
 
     useEffect(() => {
@@ -71,58 +73,75 @@ function ResetPassword() {
     };
 
     return (
-        <div className="reset-password-container">
-            <h1>Reset Password</h1>
-            <p>Enter a new password for your account</p>
-            <form onSubmit={handleResetPassword}>
-                <div className="password-container">
-                    <input
-                        type="password"
-                        placeholder="New Password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        onFocus={() => setShowPasswordRequirements(true)}
-                        onBlur={() => setShowPasswordRequirements(false)}
-                        required
-                    />
-                    {passwordValid.length && passwordValid.lowercase && passwordValid.uppercase && passwordValid.number && passwordValid.symbol && passwordValid.noSpaces ? (
-                        <span className="checkmark">✔</span>
-                    ) : (
-                        <span className="crossmark">✖</span>
+        <div className="container-center">
+            <img src={logo} alt="AutoLog Logo" />
+            <form className="form-standard" onSubmit={handleResetPassword}>
+                <h1 className="title">RESET PASSWORD</h1>
+                <p>Enter a new password for your account.</p>
+
+                <div className="vbox">
+
+                    <div className="validator-group">
+                        <label>
+                            New Password:
+                            <input
+                                type="password"
+                                placeholder="New Password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                onFocus={() => setShowPasswordRequirements(true)}
+                                onBlur={() => setShowPasswordRequirements(false)}
+                                required
+                            />
+                        </label>
+
+                        {passwordValid.length && passwordValid.lowercase && passwordValid.uppercase && passwordValid.number && passwordValid.symbol && passwordValid.noSpaces ? (
+                            <span className="checkmark">✔</span>
+                        ) : (
+                            <span className="crossmark">✖</span>
+                        )}
+                    </div>
+
+                    {showPasswordRequirements && (
+                        <ul className="password-requirements">
+                            <li className={passwordValid.length ? 'valid' : 'invalid'}>8-20 characters</li>
+                            <li className={passwordValid.lowercase ? 'valid' : 'invalid'}>At least one lowercase letter</li>
+                            <li className={passwordValid.uppercase ? 'valid' : 'invalid'}>At least one uppercase letter</li>
+                            <li className={passwordValid.number ? 'valid' : 'invalid'}>At least one number</li>
+                            <li className={passwordValid.symbol ? 'valid' : 'invalid'}>At least one symbol (@, $, !, %, *, ?, &)</li>
+                            <li className={passwordValid.noSpaces ? 'valid' : 'invalid'}>No spaces</li>
+                        </ul>
+                    )}
+
+                    <div className="validator-group">
+                        <label>
+                            Confirm Password:
+                            <input
+                                type="password"
+                                placeholder="Confirm Password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                onFocus={() => setShowPasswordMatchRequirement(true)}
+                                onBlur={() => setShowPasswordMatchRequirement(false)}
+                                required
+                            />
+                        </label>
+                        {passwordValid.match ? (
+                            <span className="checkmark">✔</span>
+                        ) : (
+                            <span className="crossmark">✖</span>
+                        )}
+
+                    </div>
+                    {showPasswordMatchRequirement && (
+                        <p className={passwordValid.match ? 'valid' : 'invalid'}>
+                            {passwordValid.match ? '✔ Passwords match' : '✖ Passwords do not match'}
+                        </p>
                     )}
                 </div>
-                {showPasswordRequirements && (
-                    <ul className="password-requirements">
-                        <li className={passwordValid.length ? 'valid' : 'invalid'}>8-20 characters</li>
-                        <li className={passwordValid.lowercase ? 'valid' : 'invalid'}>At least one lowercase letter</li>
-                        <li className={passwordValid.uppercase ? 'valid' : 'invalid'}>At least one uppercase letter</li>
-                        <li className={passwordValid.number ? 'valid' : 'invalid'}>At least one number</li>
-                        <li className={passwordValid.symbol ? 'valid' : 'invalid'}>At least one symbol (@, $, !, %, *, ?, &)</li>
-                        <li className={passwordValid.noSpaces ? 'valid' : 'invalid'}>No spaces</li>
-                    </ul>
-                )}
-                <div className="password-container">
-                    <input
-                        type="password"
-                        placeholder="Confirm Password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        onFocus={() => setShowPasswordMatchRequirement(true)}
-                        onBlur={() => setShowPasswordMatchRequirement(false)}
-                        required
-                    />
-                    {passwordValid.match ? (
-                        <span className="checkmark">✔</span>
-                    ) : (
-                        <span className="crossmark">✖</span>
-                    )}
-                </div>
-                {showPasswordMatchRequirement && (
-                    <p className={passwordValid.match ? 'valid' : 'invalid'}>
-                        {passwordValid.match ? '✔ Passwords match' : '✖ Passwords do not match'}
-                    </p>
-                )}
-                <input type="submit" value="Reset Password" />
+                <button className="button-standard accent-button" type="submit">
+                    RESET PASSWORD
+                </button>
             </form>
             <span className="message">{message}</span>
         </div>
