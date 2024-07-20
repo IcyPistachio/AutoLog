@@ -1,0 +1,98 @@
+/* Global styles */
+* {
+    font-family: "Monaco", monospace;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+/* Container styles */
+.container-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+}
+
+.vbox {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form styles */
+.form-standard {
+    padding: 5%;
+    background-color: lightslategray;
+}
+
+.form-standard .title {
+    font-size: 3.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #2E343B;
+    text-shadow: 3px 3px 5px rgb(0 0 0 / 25%);
+    padding-bottom: 1rem;
+}
+
+.form-standard label {
+    width: 20vw;
+    font-size: large;
+    text-align: left;
+    color: white;
+}
+
+.form-standard input[type="email"],
+.form-standard input[type="password"] {
+    width: calc(100% - 22px);
+    padding: 7px;
+    margin: 5px 0;
+    border: none;
+    box-shadow: inset 4px 4px #ccc;
+}
+
+/* Button styles */
+.button-standard {
+    width: 60%;
+    padding: 10px;
+    color: black;
+    border-color: black;
+    font-size: large;
+    cursor: pointer;
+    box-shadow: 7px 7px black;
+}
+
+.button-standard.accent-button {
+    background-color: #FF9400;
+}
+
+.button-standard.accent-button:hover {
+    color: #FF9400;
+    background-color: black;
+    box-shadow: 7px 7px #FF9400;
+    border-color: #FF9400;
+}
+
+.button-standard.default-button {
+    background-color: #D9D9D9;
+}
+
+.button-standard.default-button:hover {
+    color: #D9D9D9;
+    background-color: black;
+    box-shadow: 7px 7px #D9D9D9;
+    border-color: #D9D9D9;
+}
+
+/* Additional styles */
+.message {
+    display: inline-block;
+    margin-top: 15px;
+    color: #800000;
+}
+
+.spacer {
+    height: 20px;
+}
