@@ -3,12 +3,6 @@
     width: 50%;
 }
 
-.validator-group {
-    display: flex;
-    width: 50%;
-    align-items: last baseline;
-}
-
 .name-group input {
     width: 90%;
     padding: 7px;

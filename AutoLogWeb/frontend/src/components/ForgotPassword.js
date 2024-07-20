@@ -35,7 +35,7 @@ function ForgotPassword() {
 
                 <div className="vbox">
                     <label>
-                        Email
+                        Email:
                         <input
                             type="email"
                             placeholder="Email"

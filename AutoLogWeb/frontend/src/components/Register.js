@@ -140,18 +140,15 @@ function Register() {
                         </label>
                     </div>
 
-                    <div className="validator-group">
-                        <label>
-                            Email:
-                            <input
-                                type="email"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required />
-                        </label>
-                        <div className="spacer"></div>
-                    </div>
+                    <label>
+                        Email:
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required />
+                    </label>
 
                     <div className="validator-group">
                         <label>
