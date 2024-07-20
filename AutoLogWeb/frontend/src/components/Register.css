@@ -1,49 +1,20 @@
-.register-container {
+.name-group {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    margin: auto;
-    max-width: 400px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 50%;
 }
 
-.title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.register-form {
+.validator-group {
     display: flex;
-    flex-direction: column;
-    width: 100%;
+    width: 50%;
+    align-items: last baseline;
 }
 
-.register-form input {
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.register-form input[type="submit"] {
-    padding: 10px;
-    font-size: 16px;
-    color: white;
-    background-color: #007bff;
+.name-group input {
+    width: 90%;
+    padding: 7px;
+    margin: 5px 0;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.register-form input[type="submit"]:hover {
-    background-color: #0056b3;
+    box-shadow: inset 4px 4px #ccc;
 }
 
 .message {
@@ -52,66 +23,27 @@
 }
 
 .message.success {
-    color: green;
+    color: #113321;
 }
 
 .message.error {
-    color: red;
-}
-
-.back-button {
-    margin-top: 20px;
-    padding: 10px;
-    font-size: 16px;
-    color: white;
-    background-color: #6c757d;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.back-button:hover {
-    background-color: #5a6268;
-}
-
-.password-strength {
-    display: block;
-    margin-top: 10px;
-}
-
-.password-strength.strong {
-    color: green;
-}
-
-.password-strength.weak {
-    color: red;
-}
-
-.password-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.password-container input {
-    flex: 1;
+    color: #800000;
 }
 
 .checkmark {
-    color: green;
+    color: #113321;
     margin-left: 10px;
     font-size: 1.5em;
 }
 
 .crossmark {
-    color: red;
+    color: #800000;
     margin-left: 10px;
     font-size: 1.5em;
 }
 
 .password-requirements {
-    list-style: none;
-    padding: 0;
+    text-align: left;
     margin-top: 10px;
 }
 
@@ -121,19 +53,18 @@
 
 .password-requirements .valid::before {
     content: '✔ ';
-    color: green;
+    color: #113321;
 }
 
 .password-requirements .invalid::before {
     content: '✖ ';
-    color: red;
+    color: #800000;
 }
 
 .valid {
-    color: green;
+    color: #113321;
 }
 
 .invalid {
-    color: red;
+    color: #800000;
 }
-

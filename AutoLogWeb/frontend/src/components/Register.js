@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Register.css';
+import './DefaultStyles.css'
+import logo from '../images/Group 19.png';
 
 function Register() {
     const [firstName, setFirstName] = useState('');
@@ -111,57 +113,110 @@ function Register() {
     const isPasswordValid = Object.values(passwordValidations).every((valid) => valid);
 
     return (
-        <div className="register-container">
-            <h1 className="title">Register</h1>
-            <form className="register-form" onSubmit={handleRegister}>
-                <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
-                <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
-                <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                <div className="password-container">
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        onFocus={() => setIsPasswordFocused(true)}
-                        onBlur={() => setIsPasswordFocused(false)}
-                        required
-                    />
-                    {isPasswordValid && <span className="checkmark">✔</span>}
-                    {!isPasswordValid && <span className="crossmark">✖</span>}
+        <div className="container-center">
+            <img src={logo} alt="AutoLog Logo" />
+            <form className="form-standard" onSubmit={handleRegister}>
+                <h1 className="title">SIGN UP</h1>
+
+                <div className="vbox">
+                    <div className="name-group">
+                        <label>
+                            First Name:
+                            <input
+                                type="text"
+                                placeholder="First Name"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required />
+                        </label>
+                        <label>
+                            Last Name:
+                            <input
+                                type="text"
+                                placeholder="Last Name"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                required />
+                        </label>
+                    </div>
+
+                    <div className="validator-group">
+                        <label>
+                            Email:
+                            <input
+                                type="email"
+                                placeholder="Email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required />
+                        </label>
+                        <div className="spacer"></div>
+                    </div>
+
+                    <div className="validator-group">
+                        <label>
+                            Password:
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={handlePasswordChange}
+                                onFocus={() => setIsPasswordFocused(true)}
+                                onBlur={() => setIsPasswordFocused(false)}
+                                required
+                            />
+                        </label>
+                        {isPasswordValid && <span className="checkmark">✔</span>}
+                        {!isPasswordValid && <span className="crossmark">✖</span>}
+                    </div>
+
+                    {isPasswordFocused && (
+                        <ul className="password-requirements">
+                            <li className={passwordValidations.length ? 'valid' : 'invalid'}>8-20 characters</li>
+                            <li className={passwordValidations.lowercase ? 'valid' : 'invalid'}>At least one lowercase letter</li>
+                            <li className={passwordValidations.uppercase ? 'valid' : 'invalid'}>At least one uppercase letter</li>
+                            <li className={passwordValidations.number ? 'valid' : 'invalid'}>At least one number</li>
+                            <li className={passwordValidations.symbol ? 'valid' : 'invalid'}>At least one symbol (@, $, !, %, *, ?, &)</li>
+                            <li className={passwordValidations.noSpaces ? 'valid' : 'invalid'}>No spaces</li>
+                        </ul>
+                    )}
+
+                    <div className="validator-group">
+                        <label>
+                            Confirm Password:
+                            <input
+                                type="password"
+                                placeholder="Confirm Password"
+                                value={confirmPassword}
+                                onChange={handleConfirmPasswordChange}
+                                onFocus={() => setIsConfirmPasswordFocused(true)}
+                                onBlur={() => setIsConfirmPasswordFocused(false)}
+                                required
+                            />
+                        </label>
+                        {isPasswordMatching && <span className="checkmark">✔</span>}
+                        {!isPasswordMatching && <span className="crossmark">✖</span>}
+                    </div>
+
+                    {isConfirmPasswordFocused && (
+                        <p className={isPasswordMatching ? 'valid' : 'invalid'}>
+                            {isPasswordMatching ? '✔ Passwords match' : '✖ Passwords do not match'}
+                        </p>
+                    )}
+
                 </div>
-                {isPasswordFocused && (
-                    <ul className="password-requirements">
-                        <li className={passwordValidations.length ? 'valid' : 'invalid'}>8-20 characters</li>
-                        <li className={passwordValidations.lowercase ? 'valid' : 'invalid'}>At least one lowercase letter</li>
-                        <li className={passwordValidations.uppercase ? 'valid' : 'invalid'}>At least one uppercase letter</li>
-                        <li className={passwordValidations.number ? 'valid' : 'invalid'}>At least one number</li>
-                        <li className={passwordValidations.symbol ? 'valid' : 'invalid'}>At least one symbol (@, $, !, %, *, ?, &)</li>
-                        <li className={passwordValidations.noSpaces ? 'valid' : 'invalid'}>No spaces</li>
-                    </ul>
-                )}
-                <div className="password-container">
-                    <input
-                        type="password"
-                        placeholder="Confirm Password"
-                        value={confirmPassword}
-                        onChange={handleConfirmPasswordChange}
-                        onFocus={() => setIsConfirmPasswordFocused(true)}
-                        onBlur={() => setIsConfirmPasswordFocused(false)}
-                        required
-                    />
-                    {isPasswordMatching && <span className="checkmark">✔</span>}
-                    {!isPasswordMatching && <span className="crossmark">✖</span>}
-                </div>
-                {isConfirmPasswordFocused && (
-                    <p className={isPasswordMatching ? 'valid' : 'invalid'}>
-                        {isPasswordMatching ? '✔ Passwords match' : '✖ Passwords do not match'}
-                    </p>
-                )}
-                <input type="submit" value="Register" />
+
+                <button type="submit" className="button-standard accent-button">
+                    REGISTER
+                </button>
+
                 <span className="message">{message}</span>
             </form>
-            <button className="back-button" onClick={() => navigate(-1)}>Back</button>
+
+            <div className="spacer"></div>
+            <button className="button-standard default-button" onClick={() => navigate(-1)}>
+                Back
+            </button>
         </div>
     );
 }
