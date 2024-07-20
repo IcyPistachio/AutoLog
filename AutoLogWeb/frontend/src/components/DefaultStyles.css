@@ -15,11 +15,14 @@
     align-items: center;
     margin: auto;
     text-align: center;
+    width: 50vw;
+    min-height: 90vh;
 }
 
 .vbox {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 /* Form styles */
@@ -46,22 +49,27 @@
 
 .form-standard input[type="email"],
 .form-standard input[type="password"] {
-    width: calc(100% - 22px);
+    width: 100%;
     padding: 7px;
     margin: 5px 0;
     border: none;
     box-shadow: inset 4px 4px #ccc;
 }
 
+.form-standard input:focus {
+    border: 2px solid black;
+}
+
 /* Button styles */
 .button-standard {
-    width: 60%;
+    width: 50%;
     padding: 10px;
     color: black;
     border-color: black;
     font-size: large;
     cursor: pointer;
     box-shadow: 7px 7px black;
+    max-width: 12vw
 }
 
 .button-standard.accent-button {
@@ -95,4 +103,5 @@
 
 .spacer {
     height: 20px;
+    width: 20px;
 }

@@ -58,7 +58,7 @@ function Login() {
     };
 
     return (
-        <div className="container-center" style={{ width: '50vw', height: '70vh', minHeight: '90vh' }}>
+        <div className="container-center">
             <img src={logo} alt="AutoLog Logo" />
             <form className="form-standard" onSubmit={doLogin}>
                 <h1 className="title">LOG IN</h1>
@@ -72,6 +72,7 @@ function Login() {
                             placeholder="Email"
                             value={loginEmail}
                             onChange={(e) => setLoginEmail(e.target.value)}
+                            required
                         />
                     </label>
                     <label>
@@ -82,6 +83,7 @@ function Login() {
                             placeholder="Password"
                             value={loginPassword}
                             onChange={(e) => setLoginPassword(e.target.value)}
+                            required
                         />
                     </label>
                 </div>

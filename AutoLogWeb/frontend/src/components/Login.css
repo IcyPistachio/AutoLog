@@ -24,3 +24,9 @@
 .forgot-password-link {
     color: #000060;
 }
+
+#loginResult.message {
+    display: inline-block;
+    margin-top: 15px;
+    color: #800000;
+}

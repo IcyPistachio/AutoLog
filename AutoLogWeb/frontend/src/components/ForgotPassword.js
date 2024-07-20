@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DefaultStyles.css';  // Import the shared CSS
-import './ForgotPassword.css';
 import logo from '../images/Group 19.png';
 
 function ForgotPassword() {
@@ -28,7 +27,7 @@ function ForgotPassword() {
     };
 
     return (
-        <div className="container-center" style={{ width: '50vw', height: '70vh', minHeight: '90vh' }}>
+        <div className="container-center">
             <img src={logo} alt="AutoLog Logo" />
             <form className="form-standard" onSubmit={handleResetPassword}>
                 <h1 className="title">RESET PASSWORD</h1>
@@ -57,11 +56,13 @@ function ForgotPassword() {
                     <span className="message">{message}</span>
                     <div className="spacer"></div>
 
-                    <button className="button-standard default-button" onClick={() => navigate(-1)}>
-                        BACK
-                    </button>
                 </div>
             </form >
+
+            <div className="spacer"></div>
+            <button className="button-standard default-button" onClick={() => navigate(-1)}>
+                BACK
+            </button>
         </div >
     );
 }
