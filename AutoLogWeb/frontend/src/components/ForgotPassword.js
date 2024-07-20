@@ -50,10 +50,16 @@ function ForgotPassword() {
                 <div className="spacer"></div>
 
                 <div className="buttons">
-                    <button type="submit" className="button-standard accent-button" >SEND RESET LINK</button>
+                    <button type="submit" className="button-standard accent-button" >
+                        SEND RESET LINK
+                    </button>
+
                     <span className="message">{message}</span>
                     <div className="spacer"></div>
-                    <button className="button-standard default-button" onClick={() => navigate(-1)}>BACK</button>
+
+                    <button className="button-standard default-button" onClick={() => navigate(-1)}>
+                        BACK
+                    </button>
                 </div>
             </form >
         </div >
