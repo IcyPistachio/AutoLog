@@ -60,7 +60,7 @@ function Login() {
     return (
         <div className="container-center" style={{ width: '50vw', height: '70vh', minHeight: '90vh' }}>
             <img src={logo} alt="AutoLog Logo" />
-            <form className="form-standard">
+            <form className="form-standard" onSubmit={doLogin}>
                 <h1 className="title">LOG IN</h1>
 
                 <div className="vbox">
@@ -91,7 +91,7 @@ function Login() {
                 </div>
 
                 <div className="buttons">
-                    <button className="button-standard accent-button" onClick={doLogin}>
+                    <button type="submit" className="button-standard accent-button">
                         LOG IN
                     </button>
 
