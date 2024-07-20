@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './DefaultStyles.css';  // Import the shared CSS
 import './ForgotPassword.css';
-import Form from 'react-bootstrap/Form';
-import logo from '../images/Group 19.png'
+import logo from '../images/Group 19.png';
 
 function ForgotPassword() {
     const [email, setEmail] = useState('');
@@ -28,14 +28,15 @@ function ForgotPassword() {
     };
 
     return (
-        <div className="forgot-password-container">
+        <div className="container-center" style={{ width: '50vw', height: '70vh', minHeight: '90vh' }}>
             <img src={logo} alt="AutoLog Logo" />
-            <form className="forgot-password-form" onSubmit={handleResetPassword}>
+            <form className="form-standard" onSubmit={handleResetPassword}>
                 <h1 className="title">RESET PASSWORD</h1>
-                <p>Enter the email associated with the account password you are trying to reset.</p>
+                <p>Enter the email to the associated account.</p>
+
                 <div className="vbox">
                     <label>
-                    Email
+                        Email
                         <input
                             type="email"
                             placeholder="Email"
@@ -45,13 +46,17 @@ function ForgotPassword() {
                         />
                     </label>
                 </div>
+
+                <div className="spacer"></div>
+
                 <div className="buttons">
-                    <input type="submit" value="Send Reset Link" className="reset-button" />
+                    <button className="button-standard accent-button" >SEND RESET LINK</button>
                     <span className="message">{message}</span>
-                    <button className="back-button" onClick={() => navigate(-1)}>Back</button>
+                    <div className="spacer"></div>
+                    <button className="button-standard default-button" onClick={() => navigate(-1)}>BACK</button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     );
 }
 

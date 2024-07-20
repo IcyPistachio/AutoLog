@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import './DefaultStyles.css';
 import './Login.css';
 import garageSound from '../sounds/garageSound.mp3';
-import logo from '../images/Group 19.png'
+import logo from '../images/Group 19.png';
 
 function Login() {
     const [loginEmail, setLoginEmail] = useState('');
@@ -57,9 +58,9 @@ function Login() {
     };
 
     return (
-        <div className="login-container">
+        <div className="container-center" style={{ width: '50vw', height: '70vh', minHeight: '90vh' }}>
             <img src={logo} alt="AutoLog Logo" />
-            <form className="login-form">
+            <form className="form-standard">
                 <h1 className="title">LOG IN</h1>
 
                 <div className="vbox">
@@ -90,7 +91,7 @@ function Login() {
                 </div>
 
                 <div className="buttons">
-                    <button className="login-button" onClick={doLogin}>
+                    <button className="button-standard accent-button" onClick={doLogin}>
                         LOG IN
                     </button>
 
@@ -102,7 +103,7 @@ function Login() {
                         <hr className="line" />
                     </div>
 
-                    <button className="signup-button" onClick={() => navigate('/register')}>
+                    <button className="button-standard default-button" onClick={() => navigate('/register')}>
                         SIGN UP
                     </button>
                 </div>
