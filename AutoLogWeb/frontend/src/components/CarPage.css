@@ -31,39 +31,53 @@
 .car-page-content {
     display: flex;
     width: 100%;
+    justify-content: space-between; 
 }
 
 .left-half, .right-half {
-    width: 50%;
+    width: 48%;
     padding: 0 10px;
 }
 
-.car-ui-container, .car-list {
-    border: 1px solid #ccc;
+.car-list, .car-ui-container, .maintenance-log { 
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
+    background-color: lightslategrey;
 }
 
-.car-box {
-    border: 1px solid #ccc;
+.car-box, .log-entry { 
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
+    background-color: slategrey;
 }
 
 .car-box:hover {
     background-color: #f0f0f0;
 }
 
-.add-car-section {
+.add-car-section, .add-log-section {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 10px;
 }
 
-.add-car-section input, .add-car-section button {
+.add-car-section input, .add-car-section button, .add-log-section input, .add-log-section button {
     margin: 0;
 }
+
+.odo-display {
+    text-align: right;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.maintenance-log-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+

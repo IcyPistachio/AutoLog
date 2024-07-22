@@ -5,6 +5,7 @@ import CarUI from '../components/CarUI';
 import CarInfo from '../components/CarInfo';
 import CreateVehicle from '../components/CreateVehicle';
 import '../components/CarPage.css';
+import '../components/DefaultStyles.css';  // Import the shared CSS
 
 const CarPage = () => {
     const [selectedCarId, setSelectedCarId] = useState(null);
@@ -45,16 +46,26 @@ const CarPage = () => {
             <LoggedInName />
             <div className="car-page-content">
                 <div className="left-half">
-                    <CarUI
-                        onSelectCar={handleCarSelect}
-                        selectedCarId={selectedCarId}
-                        carInfoUpdated={carInfoUpdated}
-                        onCreateVehicle={handleCreateVehicle}
-                    />
+                    <div className="car-list"> 
+                        <CarUI
+                            onSelectCar={handleCarSelect}
+                            selectedCarId={selectedCarId}
+                            carInfoUpdated={carInfoUpdated}
+                            onCreateVehicle={handleCreateVehicle}
+                        />
+                    </div>
                 </div>
                 <div className="right-half">
-                    {selectedCarId && <CarInfo carId={selectedCarId} onCarInfoUpdated={handleCarInfoUpdated} />}
-                    {creatingVehicle && <CreateVehicle onVehicleCreated={handleVehicleCreated} />}
+                    {selectedCarId && (
+                        <div className="car-ui-container"> 
+                            <CarInfo carId={selectedCarId} onCarInfoUpdated={handleCarInfoUpdated} />
+                        </div>
+                    )}
+                    {creatingVehicle && (
+                        <div className="car-ui-container"> 
+                            <CreateVehicle onVehicleCreated={handleVehicleCreated} />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
