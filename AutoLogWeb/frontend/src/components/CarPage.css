@@ -42,12 +42,20 @@
     padding: 0 10px;
 }
 
-.car-list,
 .car-ui-container,
 .maintenance-log {
     padding: 10px;
     margin-bottom: 10px;
     background-color: lightslategrey;
+    
+}
+
+.car-list{
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: lightslategrey;
+    height: 80vh;
+    overflow-y: auto;
 }
 
 .car-box,

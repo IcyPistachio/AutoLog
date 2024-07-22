@@ -99,7 +99,7 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
 
             <br />
 
-            <div className="car-list">
+            <div className="car-lists">
                 {carList.map((car) => (
                     <div key={car.carId} className="car-box" onClick={() => handleSelectCar(car.carId)}>
                         <h2>
