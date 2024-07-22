@@ -129,6 +129,7 @@ function Register() {
                                 onChange={(e) => setFirstName(e.target.value)}
                                 required />
                         </label>
+                        <div className="spacer"></div>
                         <label>
                             Last Name:
                             <input

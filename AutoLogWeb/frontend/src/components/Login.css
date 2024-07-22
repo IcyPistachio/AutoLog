@@ -1,3 +1,7 @@
+#loginForm.form-standard input {
+    min-width: 20vw;
+}
+
 .separator {
     display: flex;
     align-items: center;

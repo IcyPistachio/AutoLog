@@ -60,7 +60,7 @@ function Login() {
     return (
         <div className="container-center">
             <img src={logo} alt="AutoLog Logo" />
-            <form className="form-standard" onSubmit={doLogin}>
+            <form id="loginForm" className="form-standard" onSubmit={doLogin}>
                 <h1 className="title">LOG IN</h1>
 
                 <div className="vbox">

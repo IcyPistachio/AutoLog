@@ -1,10 +1,15 @@
 .name-group {
     display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.name-group label {
     width: 50%;
 }
 
 .name-group input {
-    width: 90%;
+    width: 100%;
     padding: 7px;
     margin: 5px 0;
     border: none;
