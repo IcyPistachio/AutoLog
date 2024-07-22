@@ -42,8 +42,7 @@ const CarPage = () => {
     return (
         <div className="car-page-container">
             {showGarageDoor && <div className="garage-door"></div>}
-            <GarageTitle />
-            <LoggedInName />
+            <LoggedInName/>
             <div className="car-page-content">
                 <div className="left-half">
                     <div className="car-list"> 

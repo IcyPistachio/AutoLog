@@ -1,0 +1,30 @@
+#loggedInDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+    padding: 0 20px;
+}
+
+#userName {
+    font-size: 3.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #2E343B;
+    text-shadow: 3px 3px 5px rgb(0 0 0 / 25%);
+    padding-bottom: 1rem;
+}
+
+.buttons {
+    margin-left: auto; /*Pushes buttons to the right*/
+    margin-right: 5px; /*Adds some space between buttons*/
+}
+
+#editNameContainer {
+    display: flex;
+    align-items: center;
+}
+
+#editNameContainer {
+    margin-left: auto; /*Pushes the edit and logout buttons to the right*/
+}

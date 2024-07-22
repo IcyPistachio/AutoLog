@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CarInfo.css'; 
+import './DefaultStyles.css';  // Import the shared CSS
 
 function CarInfo({ carId, onCarInfoUpdated }) {
     const [car, setCar] = useState(null);

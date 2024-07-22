@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-
+import './LoggedInName.css';
+import './DefaultStyles.css';
 function LoggedInName() {
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
@@ -46,22 +47,27 @@ function LoggedInName() {
 
     return (
         <div id="loggedInDiv">
-            {isEditing ? (
-                <div>
-                    <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    <button type="button" className="buttons" onClick={handleChangeName}>Save</button>
-                    <button type="button" className="buttons" onClick={() => setIsEditing(false)}>Cancel</button>
-                </div>
-            ) : (
-                <div>
-                    <span id="userName">Logged In As {firstName} {lastName}</span><br />
-                    <button type="button" className="buttons" onClick={() => setIsEditing(true)}>Edit Name</button>
-                    <button type="button" className="buttons" onClick={doLogout}> Log Out </button>
-                </div>
-            )}
+            <div id="userName">
+                {firstName} {lastName}'s Garage
+            </div>
+            <div id="editNameContainer">
+                {isEditing ? (
+                    <div>
+                        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        <button type="button" className="buttons" onClick={handleChangeName}>Save</button>
+                        <button type="button" className="buttons" onClick={() => setIsEditing(false)}>Cancel</button>
+                    </div>
+                ) : (
+                    <div>
+                        <button type="button" className="buttons" onClick={() => setIsEditing(true)}>Edit Name</button>
+                        <button type="button" className="buttons" onClick={doLogout}> Log Out </button>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
+
 
 export default LoggedInName;
