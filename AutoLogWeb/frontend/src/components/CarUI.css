@@ -53,3 +53,7 @@
     }
 }
 
+.create-vehicle-section {
+    display: flex;
+    justify-content: space-between;
+}

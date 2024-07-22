@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './CarUI.css'; 
+import addcar from '../images/Group 19.png';
 
 function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) {
     const [message, setMessage] = useState('');
@@ -81,10 +82,10 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
     return (
         <div className="car-ui-container">
             <div className="create-vehicle-section">
-                <button type="button" onClick={onCreateVehicle}>Create Vehicle</button>
+                <button type="button" onClick={onCreateVehicle}>Add Car </button>
+                <input type="text" placeholder="Search Vehicles" ref={searchRef} onChange={handleSearchChange} />
             </div>
             <br />
-            <input type="text" placeholder="Search Vehicles" ref={searchRef} onChange={handleSearchChange} />
             <div className="car-list">
                 {carList.map((car) => (
                     <div key={car.carId} className="car-box" onClick={() => handleSelectCar(car.carId)}>
