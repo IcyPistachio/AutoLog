@@ -2,6 +2,7 @@
     from {
         transform: translateY(0);
     }
+
     to {
         transform: translateY(-100%);
     }
@@ -31,24 +32,26 @@
 .car-page-content {
     display: flex;
     width: 100%;
-    justify-content: space-between; 
+    justify-content: space-between;
     margin-top: -30px;
 }
 
-.left-half, .right-half {
+.left-half,
+.right-half {
     width: 48%;
     padding: 0 10px;
 }
 
-.car-list, .car-ui-container, .maintenance-log { 
-    border-radius: 5px;
+.car-list,
+.car-ui-container,
+.maintenance-log {
     padding: 10px;
     margin-bottom: 10px;
     background-color: lightslategrey;
 }
 
-.car-box, .log-entry { 
-    border-radius: 5px;
+.car-box,
+.log-entry {
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
@@ -56,18 +59,15 @@
 }
 
 .car-box:hover {
-    background-color: #f0f0f0;
+    background-color: #2E343B;
 }
 
-.add-car-section, .add-log-section {
+.add-car-section,
+.add-log-section {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 10px;
-}
-
-.add-car-section input, .add-car-section button, .add-log-section input, .add-log-section button {
-    margin: 0;
 }
 
 .odo-display {
@@ -80,4 +80,47 @@
     font-size: 1.2em;
     font-weight: bold;
     margin-bottom: 10px;
+}
+
+.search-add-section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    position: relative;
+    border-bottom: 2px solid #2E343B;
+}
+
+.search-container input {
+    color: white;
+    font-size: 1.25em;
+    background-color: transparent;
+    width: 100%;
+    padding: 0px 0px 0px 10px;
+    margin: 5px 0;
+    border: none;
+}
+
+.search-container input::placeholder {
+    color: #2E343B;
+}
+
+.search-container input .search-container .bi-search {
+    position: absolute;
+    left: 10px;
+    font-size: 18px;
+}
+
+i {
+    font-size: 20px;
+}
+
+.search-add-section button {
+    background-color: transparent;
+    padding: 5px 10px 5px 3px;
+    font-size: 20px;
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './CarUI.css'; 
-import addcar from '../images/Group 19.png';
+import './CarUI.css';
+import './DefaultStyles.css';  // Import the shared CSS
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) {
     const [message, setMessage] = useState('');
@@ -11,7 +12,7 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
     var bp = require('./Path.js');
 
     useEffect(() => {
-        searchCars(searchRef.current.value); 
+        searchCars(searchRef.current.value);
     }, [carInfoUpdated]);
 
     const searchCars = async (searchTerm) => {
@@ -81,29 +82,35 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
 
     return (
         <div className="car-ui-container">
-            <div className="create-vehicle-section">
-                <button type="button" onClick={onCreateVehicle}>Add Car </button>
-                <input type="text" placeholder="Search Vehicles" ref={searchRef} onChange={handleSearchChange} />
+            <div className="search-add-section">
+                <div className="search-container">
+                    <i className="bi bi-search"></i>
+                    <input
+                        type="text"
+                        placeholder="Search Vehicles..."
+                        ref={searchRef}
+                        onChange={handleSearchChange} />
+                </div>
+                <button type="button" onClick={onCreateVehicle}>
+                    <i class="bi bi-plus" />
+                    ADD VEHICLE
+                </button>
             </div>
+
             <br />
+
             <div className="car-list">
                 {carList.map((car) => (
                     <div key={car.carId} className="car-box" onClick={() => handleSelectCar(car.carId)}>
-                        <div>
-                            <strong>Make:</strong> {car.make}
-                        </div>
-                        <div>
-                            <strong>Model:</strong> {car.model}
-                        </div>
-                        <div>
-                            <strong>Year:</strong> {car.year}
-                        </div>
-                        <div>
-                            <strong>Odometer:</strong> {car.odometer}
-                        </div>
-                        <div>
-                            <strong>Color:</strong> {car.color}
-                        </div>
+                        <h2>
+                            {car.year} {car.make}
+                        </h2>
+                        <h3>
+                            {car.color} {car.model}
+                        </h3>
+                        <h4>
+                            <strong>ODO:</strong> {car.odometer}
+                        </h4>
                         <button onClick={(e) => { e.stopPropagation(); deleteCar(car.carId); }}>Delete</button>
                     </div>
                 ))}

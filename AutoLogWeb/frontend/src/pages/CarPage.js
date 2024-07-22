@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import GarageTitle from '../components/GarageTitle';
 import LoggedInName from '../components/LoggedInName';
 import CarUI from '../components/CarUI';
 import CarInfo from '../components/CarInfo';
@@ -42,10 +41,10 @@ const CarPage = () => {
     return (
         <div className="car-page-container">
             {showGarageDoor && <div className="garage-door"></div>}
-            <LoggedInName/>
+            <LoggedInName />
             <div className="car-page-content">
                 <div className="left-half">
-                    <div className="car-list"> 
+                    <div className="car-list">
                         <CarUI
                             onSelectCar={handleCarSelect}
                             selectedCarId={selectedCarId}
@@ -56,12 +55,12 @@ const CarPage = () => {
                 </div>
                 <div className="right-half">
                     {selectedCarId && (
-                        <div className="car-ui-container"> 
+                        <div className="car-ui-container">
                             <CarInfo carId={selectedCarId} onCarInfoUpdated={handleCarInfoUpdated} />
                         </div>
                     )}
                     {creatingVehicle && (
-                        <div className="car-ui-container"> 
+                        <div className="car-ui-container">
                             <CreateVehicle onVehicleCreated={handleVehicleCreated} />
                         </div>
                     )}

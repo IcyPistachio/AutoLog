@@ -56,7 +56,8 @@
     margin-right: 10px;
 }
 
-.top-half, .bottom-half {
+.top-half,
+.bottom-half {
     flex: 1;
     padding: 10px;
     overflow-y: auto;
@@ -65,7 +66,50 @@
 
 .barrier {
     height: 50px;
-    width: 115%; 
+    width: 115%;
     background-color: slategray;
     margin-left: -8%;
-  }
+}
+
+#sectionHeader {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #2E343B;
+    text-shadow: 2px 2px 3px rgb(0 0 0 / 25%);
+}
+
+.car-info-container h2 {
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.car-info-container h3 {
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.car-info-container h4 {
+    color: white;
+    font-size: 1.25em;
+}
+
+#iconButton {
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Adjust the rgba values as needed for transparency */
+    border: none;
+    /* Remove border if any */
+    cursor: pointer;
+    /* Change cursor to pointer */
+    padding: 10px;
+    /* Adjust padding as needed */
+    border-radius: 5px;
+    /* Add some rounding if needed */
+}
+
+/* Optionally, add hover effect */
+#iconButton:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    /* Slightly less transparent on hover */
+}

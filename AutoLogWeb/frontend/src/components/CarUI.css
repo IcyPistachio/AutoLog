@@ -5,55 +5,22 @@
 #carList {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; 
+    gap: 20px;
 }
 
-.carBox {
-    border: 1px solid #ccc;
-    padding: 20px;
-    cursor: pointer;
-    background-color: #f9f9f9;
-    border-radius: 15px; 
-    flex: 1 1 calc(33.333% - 40px); 
-    box-sizing: border-box;
-    max-width: calc(33.333% - 40px); 
-    position: relative; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
-.carBox div {
-    margin-bottom: 5px;
-}
-
-.carBox button {
-    margin-right: 5px;
-    background-color: #007bff;
+.car-list h2 {
     color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
+    font-size: 2em;
+    font-weight: bold;
 }
 
-.carBox button:hover {
-    background-color: #0056b3;
+.car-list h3 {
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
 }
 
-@media (max-width: 768px) {
-    .carBox {
-        flex: 1 1 calc(50% - 40px); 
-        max-width: calc(50% - 40px);
-    }
-}
-
-@media (max-width: 480px) {
-    .carBox {
-        flex: 1 1 calc(100% - 40px); 
-        max-width: calc(100% - 40px);
-    }
-}
-
-.create-vehicle-section {
-    display: flex;
-    justify-content: space-between;
+.car-list h4 {
+    color: white;
+    font-size: 1.25em;
 }

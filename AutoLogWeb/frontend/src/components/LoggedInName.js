@@ -22,7 +22,7 @@ function LoggedInName() {
     const handleChangeName = async () => {
         const obj = { userId, firstName, lastName };
         const js = JSON.stringify(obj);
-        
+
         try {
             const response = await fetch(bp.buildPath('api/changename'), {
                 method: 'POST',
@@ -48,7 +48,7 @@ function LoggedInName() {
     return (
         <div id="loggedInDiv">
             <div id="userName">
-                {firstName} {lastName}'s Garage
+                {firstName}'s GARAGE
             </div>
             <div id="editNameContainer">
                 {isEditing ? (

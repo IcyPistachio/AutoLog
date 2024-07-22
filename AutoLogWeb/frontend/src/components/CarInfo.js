@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CarInfo.css'; 
+import './CarInfo.css';
 import './DefaultStyles.css';  // Import the shared CSS
 
 function CarInfo({ carId, onCarInfoUpdated }) {
@@ -217,8 +217,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
     };
 
     const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
+        return new Date(dateString).toLocaleDateString();
     };
 
     const handleSearchChange = (e) => {
@@ -239,31 +238,38 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                 <div className="top-half">
                     <div>
                         <div>
-                            <label>Make: </label>
                             {editMode ? (
-                                <input type="text" value={make} onChange={(e) => setMake(e.target.value)} />
+                                <label>Make: <input
+                                    type="text"
+                                    value={make}
+                                    onChange={(e) => setMake(e.target.value)} />
+                                </label>
                             ) : (
-                                <span>{car.make}</span>
+                                <h2>{car.year} {car.make}</h2>
                             )}
                         </div>
                         <div>
-                            <label>Model: </label>
                             {editMode ? (
-                                <input type="text" value={model} onChange={(e) => setModel(e.target.value)} />
+                                <label>Model: <input
+                                    type="text"
+                                    value={model}
+                                    onChange={(e) => setModel(e.target.value)} /></label>
                             ) : (
-                                <span>{car.model}</span>
+                                <h3>{car.color} {car.model}</h3>
                             )}
                         </div>
                         <div>
-                            <label>Year: </label>
                             {editMode ? (
-                                <input type="text" value={year} onChange={(e) => setYear(e.target.value)} />
+                                <label>Year: <input
+                                    type="text"
+                                    value={year}
+                                    onChange={(e) => setYear(e.target.value)} /></label>
                             ) : (
-                                <span>{car.year}</span>
+                                <span />
                             )}
                         </div>
                         <div>
-                            <label>Odometer: </label>
+                            <label>ODO: </label>
                             {editMode ? (
                                 <input type="text" value={odometer} onChange={(e) => setOdometer(e.target.value)} />
                             ) : (
@@ -271,11 +277,13 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                             )}
                         </div>
                         <div>
-                            <label>Color: </label>
                             {editMode ? (
-                                <input type="text" value={color} onChange={(e) => setColor(e.target.value)} />
+                                <label>Color: <input
+                                    type="text"
+                                    value={color}
+                                    onChange={(e) => setColor(e.target.value)} /></label>
                             ) : (
-                                <span>{car.color}</span>
+                                <span />
                             )}
                         </div>
                         {editMode ? (
@@ -294,10 +302,26 @@ function CarInfo({ carId, onCarInfoUpdated }) {
             <div className="barrier"></div>
             <div className="bottom-half">
                 <div className="notes-section">
-                    <h2>Vehicle Notes:</h2>
-                    <button onClick={() => setShowAddNoteForm(!showAddNoteForm)}>
-                        {showAddNoteForm ? 'Hide Add Note Form' : 'Create New Note'}
-                    </button>
+                    <div id="sectionHeader">MAINTENANCE LOG</div>
+
+                    <div className="search-add-section">
+                        <div className="search-container">
+                            <i className="bi bi-search"></i>
+                            <input
+                                type="text"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                placeholder="Search Logs..."
+                            />
+                        </div>
+
+                        <button className="iconButton" onClick={() => setShowAddNoteForm(true)}>
+                            <i class="bi bi-plus"></i>
+                            ADD LOG
+                        </button>
+                    </div>
+
+                    <br />
                     {showAddNoteForm && (
                         <div className="note-form">
                             <label>
@@ -327,14 +351,10 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                 ></textarea>
                             </label>
                             <button onClick={addNote}>Add Note</button>
+                            <button onClick={() => setShowAddNoteForm(false)}>Cancel</button>
                         </div>
                     )}
-                    <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        placeholder="Search notes..."
-                    />
+
                     <div>
                         {filteredNotes.map((note) => (
                             <div key={note.noteId}>
@@ -370,7 +390,14 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                     </div>
                                 ) : (
                                     <div className="note">
-                                        <p>Type: {note.type} | Miles: {note.miles} | Note: {note.note} | {formatDate(note.dateCreated)}</p>
+                                        <h3>
+                                            {note.type}
+                                        </h3>
+                                        <h4>
+                                            {note.miles} miles
+                                        </h4>
+                                        <p>{note.note}</p>
+                                        <p>{formatDate(note.dateCreated)}</p>
                                         <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
                                         <button onClick={() => deleteNote(note.noteId)}>Delete</button>
                                     </div>
@@ -380,7 +407,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 
