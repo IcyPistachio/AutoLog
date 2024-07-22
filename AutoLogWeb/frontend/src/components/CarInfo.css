@@ -1,5 +1,6 @@
 .car-info-container {
     padding: 20px;
+    flex-direction: column;
 }
 
 .notes-section {
@@ -53,3 +54,17 @@
 .note button {
     margin-right: 10px;
 }
+
+.top-half, .bottom-half {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: lightslategray;
+}
+
+.barrier {
+    height: 50px;
+    width: 120%; 
+    background-color: slategray;
+    margin-left: -8%;
+  }

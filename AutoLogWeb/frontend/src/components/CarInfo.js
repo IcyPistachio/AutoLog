@@ -233,147 +233,150 @@ function CarInfo({ carId, onCarInfoUpdated }) {
 
     return (
         <div className="car-info-container">
-            <h2>Vehicle Information</h2>
             {error && <p>{error}</p>}
             {car ? (
-                <div>
+                <div className="top-half">
                     <div>
-                        <label>Make: </label>
-                        {editMode ? (
-                            <input type="text" value={make} onChange={(e) => setMake(e.target.value)} />
-                        ) : (
-                            <span>{car.make}</span>
-                        )}
-                    </div>
-                    <div>
-                        <label>Model: </label>
-                        {editMode ? (
-                            <input type="text" value={model} onChange={(e) => setModel(e.target.value)} />
-                        ) : (
-                            <span>{car.model}</span>
-                        )}
-                    </div>
-                    <div>
-                        <label>Year: </label>
-                        {editMode ? (
-                            <input type="text" value={year} onChange={(e) => setYear(e.target.value)} />
-                        ) : (
-                            <span>{car.year}</span>
-                        )}
-                    </div>
-                    <div>
-                        <label>Odometer: </label>
-                        {editMode ? (
-                            <input type="text" value={odometer} onChange={(e) => setOdometer(e.target.value)} />
-                        ) : (
-                            <span>{car.odometer}</span>
-                        )}
-                    </div>
-                    <div>
-                        <label>Color: </label>
-                        {editMode ? (
-                            <input type="text" value={color} onChange={(e) => setColor(e.target.value)} />
-                        ) : (
-                            <span>{car.color}</span>
-                        )}
-                    </div>
-                    {editMode ? (
                         <div>
-                            <button onClick={saveCarChanges}>Save Changes</button>
-                            <button onClick={() => setEditMode(false)}>Cancel</button>
+                            <label>Make: </label>
+                            {editMode ? (
+                                <input type="text" value={make} onChange={(e) => setMake(e.target.value)} />
+                            ) : (
+                                <span>{car.make}</span>
+                            )}
                         </div>
-                    ) : (
-                        <button onClick={() => setEditMode(true)}>Edit</button>
-                    )}
+                        <div>
+                            <label>Model: </label>
+                            {editMode ? (
+                                <input type="text" value={model} onChange={(e) => setModel(e.target.value)} />
+                            ) : (
+                                <span>{car.model}</span>
+                            )}
+                        </div>
+                        <div>
+                            <label>Year: </label>
+                            {editMode ? (
+                                <input type="text" value={year} onChange={(e) => setYear(e.target.value)} />
+                            ) : (
+                                <span>{car.year}</span>
+                            )}
+                        </div>
+                        <div>
+                            <label>Odometer: </label>
+                            {editMode ? (
+                                <input type="text" value={odometer} onChange={(e) => setOdometer(e.target.value)} />
+                            ) : (
+                                <span>{car.odometer}</span>
+                            )}
+                        </div>
+                        <div>
+                            <label>Color: </label>
+                            {editMode ? (
+                                <input type="text" value={color} onChange={(e) => setColor(e.target.value)} />
+                            ) : (
+                                <span>{car.color}</span>
+                            )}
+                        </div>
+                        {editMode ? (
+                            <div>
+                                <button onClick={saveCarChanges}>Save Changes</button>
+                                <button onClick={() => setEditMode(false)}>Cancel</button>
+                            </div>
+                        ) : (
+                            <button onClick={() => setEditMode(true)}>Edit</button>
+                        )}
+                    </div>
                 </div>
             ) : (
                 <p>Loading...</p>
             )}
-
-            <div className="notes-section">
-                <h2>Vehicle Notes:</h2>
-                <button onClick={() => setShowAddNoteForm(!showAddNoteForm)}>
-                    {showAddNoteForm ? 'Hide Add Note Form' : 'Create New Note'}
-                </button>
-                {showAddNoteForm && (
-                    <div className="note-form">
-                        <label>
-                            Service Type:
-                            <input
-                                type="text"
-                                value={type}
-                                onChange={(e) => setType(e.target.value)}
-                                placeholder="Service Type"
-                            />
-                        </label>
-                        <label>
-                            Miles:
-                            <input
-                                type="text"
-                                value={miles}
-                                onChange={(e) => setMiles(e.target.value)}
-                                placeholder="Miles"
-                            />
-                        </label>
-                        <label>
-                            Note:
-                            <textarea
-                                value={note}
-                                onChange={(e) => setNote(e.target.value)}
-                                placeholder="Add a note"
-                            ></textarea>
-                        </label>
-                        <button onClick={addNote}>Add Note</button>
-                    </div>
-                )}
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    placeholder="Search notes..."
-                />
-                <div>
-                    {filteredNotes.map((note) => (
-                        <div key={note.noteId}>
-                            {editNoteId === note.noteId ? (
-                                <div className="edit-note-form">
-                                    <label>
-                                        Type:
-                                        <input
-                                            type="text"
-                                            value={editNoteType}
-                                            onChange={(e) => setEditNoteType(e.target.value)}
-                                            placeholder="Type"
-                                        />
-                                    </label>
-                                    <label>
-                                        Miles:
-                                        <input
-                                            type="text"
-                                            value={editNoteMiles}
-                                            onChange={(e) => setEditNoteMiles(e.target.value)}
-                                            placeholder="Miles"
-                                        />
-                                    </label>
-                                    <label>
-                                        Note:
-                                        <textarea
-                                            value={editNoteContent}
-                                            onChange={(e) => setEditNoteContent(e.target.value)}
-                                        ></textarea>
-                                    </label>
-                                    <button onClick={updateNote}>Update Note</button>
-                                    <button onClick={() => setEditNoteId(null)}>Cancel</button>
-                                </div>
-                            ) : (
-                                <div className="note">
-                                    <p>Type: {note.type} | Miles: {note.miles} | Note: {note.note} | {formatDate(note.dateCreated)}</p>
-                                    <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
-                                    <button onClick={() => deleteNote(note.noteId)}>Delete</button>
-                                </div>
-                            )}
+            <div className="barrier"></div>
+            <div className="bottom-half">
+                <div className="notes-section">
+                    <h2>Vehicle Notes:</h2>
+                    <button onClick={() => setShowAddNoteForm(!showAddNoteForm)}>
+                        {showAddNoteForm ? 'Hide Add Note Form' : 'Create New Note'}
+                    </button>
+                    {showAddNoteForm && (
+                        <div className="note-form">
+                            <label>
+                                Service Type:
+                                <input
+                                    type="text"
+                                    value={type}
+                                    onChange={(e) => setType(e.target.value)}
+                                    placeholder="Service Type"
+                                />
+                            </label>
+                            <label>
+                                Miles:
+                                <input
+                                    type="text"
+                                    value={miles}
+                                    onChange={(e) => setMiles(e.target.value)}
+                                    placeholder="Miles"
+                                />
+                            </label>
+                            <label>
+                                Note:
+                                <textarea
+                                    value={note}
+                                    onChange={(e) => setNote(e.target.value)}
+                                    placeholder="Add a note"
+                                ></textarea>
+                            </label>
+                            <button onClick={addNote}>Add Note</button>
                         </div>
-                    ))}
+                    )}
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        placeholder="Search notes..."
+                    />
+                    <div>
+                        {filteredNotes.map((note) => (
+                            <div key={note.noteId}>
+                                {editNoteId === note.noteId ? (
+                                    <div className="edit-note-form">
+                                        <label>
+                                            Type:
+                                            <input
+                                                type="text"
+                                                value={editNoteType}
+                                                onChange={(e) => setEditNoteType(e.target.value)}
+                                                placeholder="Type"
+                                            />
+                                        </label>
+                                        <label>
+                                            Miles:
+                                            <input
+                                                type="text"
+                                                value={editNoteMiles}
+                                                onChange={(e) => setEditNoteMiles(e.target.value)}
+                                                placeholder="Miles"
+                                            />
+                                        </label>
+                                        <label>
+                                            Note:
+                                            <textarea
+                                                value={editNoteContent}
+                                                onChange={(e) => setEditNoteContent(e.target.value)}
+                                            ></textarea>
+                                        </label>
+                                        <button onClick={updateNote}>Update Note</button>
+                                        <button onClick={() => setEditNoteId(null)}>Cancel</button>
+                                    </div>
+                                ) : (
+                                    <div className="note">
+                                        <p>Type: {note.type} | Miles: {note.miles} | Note: {note.note} | {formatDate(note.dateCreated)}</p>
+                                        <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
+                                        <button onClick={() => deleteNote(note.noteId)}>Delete</button>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
