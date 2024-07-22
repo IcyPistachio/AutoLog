@@ -113,3 +113,8 @@
     background-color: rgba(0, 0, 0, 0.2);
     /* Slightly less transparent on hover */
 }
+
+.scrollbar{
+    overflow-y: scroll;
+    height: 30vh;
+}

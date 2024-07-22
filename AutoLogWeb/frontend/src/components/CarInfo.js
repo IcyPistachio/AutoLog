@@ -322,88 +322,90 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                     </div>
 
                     <br />
-                    {showAddNoteForm && (
-                        <div className="note-form">
-                            <label>
-                                Service Type:
-                                <input
-                                    type="text"
-                                    value={type}
-                                    onChange={(e) => setType(e.target.value)}
-                                    placeholder="Service Type"
-                                />
-                            </label>
-                            <label>
-                                Miles:
-                                <input
-                                    type="text"
-                                    value={miles}
-                                    onChange={(e) => setMiles(e.target.value)}
-                                    placeholder="Miles"
-                                />
-                            </label>
-                            <label>
-                                Note:
-                                <textarea
-                                    value={note}
-                                    onChange={(e) => setNote(e.target.value)}
-                                    placeholder="Add a note"
-                                ></textarea>
-                            </label>
-                            <button onClick={addNote}>Add Note</button>
-                            <button onClick={() => setShowAddNoteForm(false)}>Cancel</button>
-                        </div>
-                    )}
-
-                    <div>
-                        {filteredNotes.map((note) => (
-                            <div key={note.noteId}>
-                                {editNoteId === note.noteId ? (
-                                    <div className="edit-note-form">
-                                        <label>
-                                            Type:
-                                            <input
-                                                type="text"
-                                                value={editNoteType}
-                                                onChange={(e) => setEditNoteType(e.target.value)}
-                                                placeholder="Type"
-                                            />
-                                        </label>
-                                        <label>
-                                            Miles:
-                                            <input
-                                                type="text"
-                                                value={editNoteMiles}
-                                                onChange={(e) => setEditNoteMiles(e.target.value)}
-                                                placeholder="Miles"
-                                            />
-                                        </label>
-                                        <label>
-                                            Note:
-                                            <textarea
-                                                value={editNoteContent}
-                                                onChange={(e) => setEditNoteContent(e.target.value)}
-                                            ></textarea>
-                                        </label>
-                                        <button onClick={updateNote}>Update Note</button>
-                                        <button onClick={() => setEditNoteId(null)}>Cancel</button>
-                                    </div>
-                                ) : (
-                                    <div className="note">
-                                        <h3>
-                                            {note.type}
-                                        </h3>
-                                        <h4>
-                                            {note.miles} miles
-                                        </h4>
-                                        <p>{note.note}</p>
-                                        <p>{formatDate(note.dateCreated)}</p>
-                                        <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
-                                        <button onClick={() => deleteNote(note.noteId)}>Delete</button>
-                                    </div>
-                                )}
+                    <div className='scrollbar'>
+                        {showAddNoteForm && (
+                            <div className="note-form">
+                                <label>
+                                    Service Type:
+                                    <input
+                                        type="text"
+                                        value={type}
+                                        onChange={(e) => setType(e.target.value)}
+                                        placeholder="Service Type"
+                                    />
+                                </label>
+                                <label>
+                                    Miles:
+                                    <input
+                                        type="text"
+                                        value={miles}
+                                        onChange={(e) => setMiles(e.target.value)}
+                                        placeholder="Miles"
+                                    />
+                                </label>
+                                <label>
+                                    Note:
+                                    <textarea
+                                        value={note}
+                                        onChange={(e) => setNote(e.target.value)}
+                                        placeholder="Add a note"
+                                    ></textarea>
+                                </label>
+                                <button onClick={addNote}>Add Note</button>
+                                <button onClick={() => setShowAddNoteForm(false)}>Cancel</button>
                             </div>
-                        ))}
+                        )}
+
+                        <div>
+                            {filteredNotes.map((note) => (
+                                <div key={note.noteId}>
+                                    {editNoteId === note.noteId ? (
+                                        <div className="edit-note-form">
+                                            <label>
+                                                Type:
+                                                <input
+                                                    type="text"
+                                                    value={editNoteType}
+                                                    onChange={(e) => setEditNoteType(e.target.value)}
+                                                    placeholder="Type"
+                                                />
+                                            </label>
+                                            <label>
+                                                Miles:
+                                                <input
+                                                    type="text"
+                                                    value={editNoteMiles}
+                                                    onChange={(e) => setEditNoteMiles(e.target.value)}
+                                                    placeholder="Miles"
+                                                />
+                                            </label>
+                                            <label>
+                                                Note:
+                                                <textarea
+                                                    value={editNoteContent}
+                                                    onChange={(e) => setEditNoteContent(e.target.value)}
+                                                ></textarea>
+                                            </label>
+                                            <button onClick={updateNote}>Update Note</button>
+                                            <button onClick={() => setEditNoteId(null)}>Cancel</button>
+                                        </div>
+                                    ) : (
+                                        <div className="note">
+                                            <h3>
+                                                {note.type}
+                                            </h3>
+                                            <h4>
+                                                {note.miles} miles
+                                            </h4>
+                                            <p>{note.note}</p>
+                                            <p>{formatDate(note.dateCreated)}</p>
+                                            <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
+                                            <button onClick={() => deleteNote(note.noteId)}>Delete</button>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
