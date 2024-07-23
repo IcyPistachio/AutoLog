@@ -36,10 +36,13 @@
     margin-top: -30px;
 }
 
-.left-half,
+.left-half {
+    width: 41%;
+}
+
 .right-half {
-    width: 48%;
-    padding: 0 10px;
+    width: 57%;
+    overflow: hidden;
 }
 
 .car-ui-container,
@@ -50,7 +53,7 @@
     height: 80vh;
 }
 
-.car-list{
+.car-list {
     padding: 10px;
     margin-bottom: 10px;
     background-color: lightslategrey;

@@ -1,6 +1,5 @@
 .car-info-container {
     padding: 20px;
-    flex-direction: column;
 }
 
 .notes-section {
@@ -13,7 +12,7 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     margin-bottom: 20px;
-    background-color: slategray;  
+    background-color: slategray;
 }
 
 .note-form label,
@@ -50,8 +49,9 @@
 .note {
     padding: 10px;
     margin-bottom: 10px;
-    background-color: slategray;    
-    position: relative; /* Add this to position date absolutely */
+    background-color: slategray;
+    position: relative;
+    /* Add this to position date absolutely */
     color: white;
 }
 
@@ -75,8 +75,8 @@
 }
 
 .barrier {
-    height: 50px;
-    width: 115%;
+    height: 35px;
+    width: 500%;
     background-color: slategray;
     margin-left: -8%;
 }
@@ -124,17 +124,17 @@
     /* Slightly less transparent on hover */
 }
 
-.scrollbar{
+.scrollbar {
     overflow-y: scroll;
     height: 30vh;
 }
 
-.note-date{
+.note-date {
     position: absolute;
     top: 10px;
-    right: 10px; 
-    font-size: 0.9em; 
-    color: white; 
+    right: 10px;
+    font-size: 0.9em;
+    color: white;
 }
 
 .icon-button {
@@ -161,9 +161,9 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: rgba(0, 0, 0, 0.2); 
-    padding: 10px; 
-    border-radius: 5px; 
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
     color: white;
     font-size: 1.2em;
     font-weight: bold;
