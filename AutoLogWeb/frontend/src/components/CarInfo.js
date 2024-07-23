@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CarInfo.css';
 import './DefaultStyles.css';  // Import the shared CSS
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function CarInfo({ carId, onCarInfoUpdated }) {
     const [car, setCar] = useState(null);
@@ -399,8 +400,12 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                             </h4>
                                             <p>{note.note}</p>
                                             <p className="note-date"> {formatDate(note.dateCreated)}</p>
-                                            <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
-                                            <button onClick={() => deleteNote(note.noteId)}>Delete</button>
+                                            <button className="icon-button" onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>
+                                                <i className="bi bi-pencil-square"></i> Edit
+                                            </button>
+                                            <button className="icon-button" onClick={() => deleteNote(note.noteId)}>
+                                                <i className="bi bi-trash"></i> Delete
+                                            </button>
                                         </div>
                                     )}
                                 </div>
