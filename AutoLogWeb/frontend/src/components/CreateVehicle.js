@@ -49,7 +49,7 @@ function CreateVehicle({ onVehicleCreated }) {
 
     return (
         <div className="create-vehicle-container">
-            <h2>Add New Vehicle</h2>
+            <div id="sectionHeader">Add New Vehicle</div>
             <form onSubmit={addCar}>
                 <div className="add-car-section">
                     <div className="input-group">
@@ -72,10 +72,14 @@ function CreateVehicle({ onVehicleCreated }) {
                         <label>Color: </label>
                         <input type="text" placeholder="Color" ref={colorRef} className="width" />
                     </div>
-                    <button type="submit">Add Vehicle</button>
+                    <div className='search-add-section'>
+                        <button type="submit">
+                            <i class="bi bi-plus" />ADD VEHICLE
+                        </button>
+                    </div>
                 </div>
             </form>
-            <div>{message}</div>
+            <div className="message">{message}</div>
         </div>
     );
 }

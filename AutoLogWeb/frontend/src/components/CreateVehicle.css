@@ -1,30 +1,38 @@
-.width {
-    width: calc(50% - 10px); 
-    margin-right: 10px; 
+.create-vehicle-container {
+    padding: 20px;
+    color: black;
+    border-radius: 8px;
 }
 
 .add-car-section {
     display: flex;
     flex-direction: column;
-    gap: 10px; 
+    gap: 15px; 
 }
 
 .input-group {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .input-group label {
-    margin-right: 10px; 
+    margin-right: -25px; 
+    flex-basis: 25%;
 }
 
 .input-group input {
     flex: 1; 
-    padding: 5px;
-    font-size: 14px; 
+    padding: 10px;
+    font-size: 16px; 
     border: 1px solid #ccc; 
+    border-radius: 4px;
+    color: #333;
 }
 
-button[type="submit"] {
-    margin-top: 10px; 
+.message {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1em;
+    color: lightgray;
 }
