@@ -293,7 +293,9 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                 <button onClick={() => setEditMode(false)}>Cancel</button>
                             </div>
                         ) : (
-                            <button onClick={() => setEditMode(true)}>Edit</button>
+                            <button className = "icon-button" onClick={() => setEditMode(true)}>
+                                <i className="bi bi-pencil-square"> </i>Edit
+                            </button>
                         )}
                     </div>
                 </div>
