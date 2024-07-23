@@ -354,8 +354,8 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                         placeholder="Add a note"
                                     ></textarea>
                                 </label>
-                                <button onClick={addNote}>Add Note</button>
-                                <button onClick={() => setShowAddNoteForm(false)}>Cancel</button>
+                                <button className='icon-button' onClick={addNote}><i class="bi bi-plus"></i>Add Note</button>
+                                <button className='icon-button' onClick={() => setShowAddNoteForm(false)}><i class="bi bi-x"></i>Cancel</button>
                             </div>
                         )}
 
@@ -389,8 +389,8 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                                     onChange={(e) => setEditNoteContent(e.target.value)}
                                                 ></textarea>
                                             </label>
-                                            <button onClick={updateNote}>Update Note</button>
-                                            <button onClick={() => setEditNoteId(null)}>Cancel</button>
+                                            <button className = 'icon-button' onClick={updateNote}><i className="bi bi-pencil-square"></i>Update Note</button>
+                                            <button className = 'icon-button' onClick={() => setEditNoteId(null)}><i class="bi bi-x"></i>Cancel</button>
                                         </div>
                                     ) : (
                                         <div className="note">
