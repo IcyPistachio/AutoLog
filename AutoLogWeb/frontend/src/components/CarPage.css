@@ -45,20 +45,15 @@
     overflow: hidden;
 }
 
-.car-ui-container,
-.maintenance-log {
+.car-ui-container {
     padding: 10px;
-    margin-bottom: 10px;
     background-color: lightslategrey;
-    height: 80vh;
 }
 
 .car-list {
     padding: 10px;
     margin-bottom: 10px;
     background-color: lightslategrey;
-    height: 80vh;
-    overflow-y: auto;
 }
 
 .car-box,

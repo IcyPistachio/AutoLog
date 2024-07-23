@@ -126,8 +126,9 @@
 
 .scrollbar {
     overflow-y: scroll;
-    height: 30vh;
+    height: 42.5vh;
 }
+
 
 .note-date {
     position: absolute;

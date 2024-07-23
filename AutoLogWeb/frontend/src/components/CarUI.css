@@ -8,8 +8,13 @@
     gap: 20px;
 }
 
-.carbox{
+.carbox {
     position: relative;
+}
+
+.car-lists {
+    overflow: auto;
+    height: 73vh;
 }
 
 .car-list h2 {

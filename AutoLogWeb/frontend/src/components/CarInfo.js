@@ -269,7 +269,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                 <span />
                             )}
                         </div>
-                        <div className = "odometer-container">
+                        <div className="odometer-container">
                             <label>ODO: </label>
                             {editMode ? (
                                 <input type="text" value={odometer} onChange={(e) => setOdometer(e.target.value)} />
@@ -293,7 +293,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                 <button onClick={() => setEditMode(false)}>Cancel</button>
                             </div>
                         ) : (
-                            <button className = "icon-button" onClick={() => setEditMode(true)}>
+                            <button className="icon-button" onClick={() => setEditMode(true)}>
                                 <i className="bi bi-pencil-square"> </i>Edit
                             </button>
                         )}
@@ -359,7 +359,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                             </div>
                         )}
 
-                        <div>
+                        <div className="note-list">
                             {filteredNotes.map((note) => (
                                 <div key={note.noteId}>
                                     {editNoteId === note.noteId ? (
@@ -389,8 +389,8 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                                     onChange={(e) => setEditNoteContent(e.target.value)}
                                                 ></textarea>
                                             </label>
-                                            <button className = 'icon-button' onClick={updateNote}><i className="bi bi-pencil-square"></i>Update Note</button>
-                                            <button className = 'icon-button' onClick={() => setEditNoteId(null)}><i class="bi bi-x"></i>Cancel</button>
+                                            <button className='icon-button' onClick={updateNote}><i className="bi bi-pencil-square"></i>Update Note</button>
+                                            <button className='icon-button' onClick={() => setEditNoteId(null)}><i class="bi bi-x"></i>Cancel</button>
                                         </div>
                                     ) : (
                                         <div className="note">
