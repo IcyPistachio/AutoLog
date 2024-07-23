@@ -111,7 +111,7 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
                         <h4>
                             <strong>ODO:</strong> {car.odometer}
                         </h4>
-                        <button onClick={(e) => { e.stopPropagation(); deleteCar(car.carId); }}>Delete</button>
+                        <button className = "icon-button" onClick={(e) => { e.stopPropagation(); deleteCar(car.carId); }}><i className="bi bi-trash"></i> Delete</button>
                     </div>
                 ))}
             </div>
