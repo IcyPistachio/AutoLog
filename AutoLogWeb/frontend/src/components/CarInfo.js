@@ -269,7 +269,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                 <span />
                             )}
                         </div>
-                        <div>
+                        <div className = "odometer-container">
                             <label>ODO: </label>
                             {editMode ? (
                                 <input type="text" value={odometer} onChange={(e) => setOdometer(e.target.value)} />
