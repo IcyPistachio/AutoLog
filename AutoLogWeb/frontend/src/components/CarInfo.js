@@ -398,7 +398,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                                 {note.miles} miles
                                             </h4>
                                             <p>{note.note}</p>
-                                            <p>{formatDate(note.dateCreated)}</p>
+                                            <p className="note-date"> {formatDate(note.dateCreated)}</p>
                                             <button onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>Edit</button>
                                             <button onClick={() => deleteNote(note.noteId)}>Delete</button>
                                         </div>
