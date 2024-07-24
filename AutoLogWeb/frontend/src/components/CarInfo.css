@@ -1,5 +1,5 @@
 .car-info-container {
-    padding: 20px;
+    padding: 20px 20px 0px 20px;
 }
 
 .notes-section {
@@ -32,6 +32,10 @@
 .edit-note-form input,
 .edit-note-form textarea {
     width: 100%;
+    padding: 7px;
+    margin: 5px 0;
+    border: none;
+    box-shadow: inset 4px 4px #ccc;
 }
 
 .note-form input[type="text"],
@@ -53,6 +57,24 @@
     position: relative;
     /* Add this to position date absolutely */
     color: white;
+}
+
+.car-info {
+    padding: 10px;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.car-info input {
+    width: 100%;
+    display: inline-flex;
+    padding: 5px;
+    border: none;
+    box-shadow: inset 4px 4px #ccc;
+}
+
+.note p {
+    color: #2E343B;
 }
 
 .note button {
@@ -126,7 +148,7 @@
 
 .scrollbar {
     overflow-y: scroll;
-    height: 42.5vh;
+    height: 42vh;
 }
 
 
@@ -134,28 +156,8 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 0.9em;
-    color: white;
-}
-
-.icon-button {
-    background: none;
-    border: none;
-    color: black;
-    cursor: pointer;
     font-size: 1em;
-    margin-right: 10px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
-}
-
-.icon-button i {
-    margin-right: 5px;
-}
-
-.icon-button:hover {
-    color: lightgray;
+    color: white;
 }
 
 .odometer-container {
@@ -163,7 +165,7 @@
     top: 10px;
     right: 10px;
     background: rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    padding: 10px 20px 10px 20px;
     border-radius: 5px;
     color: white;
     font-size: 1.2em;

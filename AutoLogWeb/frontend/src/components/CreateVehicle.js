@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import './CreateVehicle.css'; 
+import './CreateVehicle.css';
 
 function CreateVehicle({ onVehicleCreated }) {
     const [message, setMessage] = useState('');
@@ -34,13 +34,13 @@ function CreateVehicle({ onVehicleCreated }) {
             if (res.error.length > 0) {
                 setMessage("API Error:" + res.error);
             } else {
-                setMessage('Vehicle has been added');
+                setMessage('Vehicle successfully added.');
                 makeRef.current.value = '';
                 modelRef.current.value = '';
                 yearRef.current.value = '';
                 odometerRef.current.value = '';
                 colorRef.current.value = '';
-                onVehicleCreated(); 
+                onVehicleCreated();
             }
         } catch (e) {
             setMessage(e.toString());
@@ -49,34 +49,27 @@ function CreateVehicle({ onVehicleCreated }) {
 
     return (
         <div className="create-vehicle-container">
-            <div id="sectionHeader">Add New Vehicle</div>
+            <div id="sectionHeader">ADD VEHICLE</div>
             <form onSubmit={addCar}>
                 <div className="add-car-section">
-                    <div className="input-group">
-                        <label>Make: </label>
-                        <input type="text" placeholder="Make" ref={makeRef} className="width" />
-                    </div>
-                    <div className="input-group">
-                        <label>Model: </label>
-                        <input type="text" placeholder="Model" ref={modelRef} className="width" />
-                    </div>
-                    <div className="input-group">
-                        <label>Year: </label>
-                        <input type="text" placeholder="Year" ref={yearRef} className="width" />
-                    </div>
-                    <div className="input-group">
-                        <label>Odometer: </label>
-                        <input type="text" placeholder="Odometer" ref={odometerRef} className="width" />
-                    </div>
-                    <div className="input-group">
-                        <label>Color: </label>
-                        <input type="text" placeholder="Color" ref={colorRef} className="width" />
-                    </div>
-                    <div className='search-add-section'>
-                        <button type="submit">
-                            <i class="bi bi-plus" />ADD VEHICLE
-                        </button>
-                    </div>
+                    <label>Make:
+                        <input type="text" placeholder="Make" ref={makeRef} />
+                    </label>
+                    <label>Model:
+                        <input type="text" placeholder="Model" ref={modelRef} />
+                    </label>
+                    <label>Year:
+                        <input type="text" placeholder="Year" ref={yearRef} />
+                    </label>
+                    <label>Odometer:
+                        <input type="text" placeholder="Odometer" ref={odometerRef} />
+                    </label>
+                    <label>Color:
+                        <input type="text" placeholder="Color" ref={colorRef} />
+                    </label>
+                    <button className="button-fitted accent-button" type="submit">
+                        ADD
+                    </button>
                 </div>
             </form>
             <div className="message">{message}</div>

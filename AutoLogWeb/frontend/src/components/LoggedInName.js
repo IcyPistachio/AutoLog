@@ -59,11 +59,12 @@ function LoggedInName() {
                         <button type="button" className="buttons" onClick={() => setIsEditing(false)}>Cancel</button>
                     </div>
                 ) : (
-                    <div>
+                    <div className="buttons-container">
                         <button type="button" className="icon-button" onClick={() => setIsEditing(true)}>
                             <i className="bi bi-pencil-square"></i>Edit Name</button>
-                        <button type="button" className="icon-button" onClick={doLogout}>
-                            <i class="bi bi-box-arrow-right"></i>Log Out 
+                        <div className="spacer" />
+                        <button id="redButton" type="button" className="icon-button" onClick={doLogout}>
+                            <i class="bi bi-box-arrow-right"></i>Log Out
                         </button>
                     </div>
                 )}

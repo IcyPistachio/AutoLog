@@ -1,33 +1,40 @@
 .create-vehicle-container {
-    padding: 20px;
-    color: black;
-    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: slategray;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 .add-car-section {
+    width: 100%;
+    max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 15px; 
-}
-
-.input-group {
-    display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
-.input-group label {
-    margin-right: -25px; 
-    flex-basis: 25%;
+.add-car-section label {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
 }
 
-.input-group input {
-    flex: 1; 
-    padding: 10px;
-    font-size: 16px; 
-    border: 1px solid #ccc; 
-    border-radius: 4px;
-    color: #333;
+.add-car-section input {
+    width: 100%;
+    /* Ensure inputs have the same width */
+    padding: 7px;
+    border: none;
+    box-shadow: inset 4px 4px #ccc;
+}
+
+.button-fitted {
+    width: 70%;
+    padding: 5px;
+    margin-top: 10px;
 }
 
 .message {

@@ -50,24 +50,6 @@
     background-color: lightslategrey;
 }
 
-.car-list {
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: lightslategrey;
-}
-
-.car-box,
-.log-entry {
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    background-color: slategrey;
-}
-
-.car-box:hover {
-    background-color: #2E343B;
-}
-
 .add-car-section,
 .add-log-section {
     display: flex;
@@ -129,4 +111,57 @@ i {
     background-color: transparent;
     padding: 5px 10px 5px 3px;
     font-size: 20px;
+}
+
+.bottom-right-buttons {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+}
+
+.icon-button:hover {
+    color: white;
+}
+
+.button-fitted {
+    color: black;
+    border-color: black;
+    font-size: large;
+    cursor: pointer;
+    box-shadow: 4px 4px black;
+    min-width: 4vw;
+}
+
+.button-fitted.accent-button {
+    background-color: #FF9400;
+}
+
+.button-fitted.accent-button:hover {
+    color: #FF9400;
+    background-color: black;
+    box-shadow: 4px 4px #FF9400;
+    border-color: #FF9400;
+}
+
+.button-fitted.default-button {
+    background-color: #D9D9D9;
+}
+
+.button-fitted.default-button:hover {
+    color: #D9D9D9;
+    background-color: black;
+    box-shadow: 4px 4px #D9D9D9;
+    border-color: #D9D9D9;
 }

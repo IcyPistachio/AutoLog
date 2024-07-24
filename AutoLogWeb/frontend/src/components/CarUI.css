@@ -8,8 +8,10 @@
     gap: 20px;
 }
 
-.carbox {
-    position: relative;
+.car-list {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: lightslategrey;
 }
 
 .car-lists {
@@ -34,22 +36,30 @@
     font-size: 1.25em;
 }
 
-.icon-button {
-    background: none;
-    border: none;
-    color: black;
+#deleteButton {
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+}
+
+.car-box {
+    padding: 10px;
+    margin-bottom: 10px;
     cursor: pointer;
-    font-size: 1em;
-    margin-right: 10px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
+    background-color: slategrey;
+    position: relative;
+    color: white;
 }
 
-.icon-button i {
-    margin-right: 5px;
+.car-box:hover {
+    background-color: #2E343B;
 }
 
-.icon-button:hover {
-    color: lightgray;
+.odo-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
 }

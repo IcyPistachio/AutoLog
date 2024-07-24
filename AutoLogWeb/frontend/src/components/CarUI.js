@@ -108,10 +108,13 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
                         <h3>
                             {car.color} {car.model}
                         </h3>
-                        <h4>
-                            <strong>ODO:</strong> {car.odometer}
-                        </h4>
-                        <button className = "icon-button" onClick={(e) => { e.stopPropagation(); deleteCar(car.carId); }}><i className="bi bi-trash"></i> Delete</button>
+                        <br></br>
+                        <div className="odo-container">
+                            ODO: {car.odometer}
+                        </div>
+                        <div className="bottom-right-buttons">
+                            <button className="icon-button" onClick={(e) => { e.stopPropagation(); deleteCar(car.carId); }}><i className="bi bi-trash"></i></button>
+                        </div>
                     </div>
                 ))}
             </div>

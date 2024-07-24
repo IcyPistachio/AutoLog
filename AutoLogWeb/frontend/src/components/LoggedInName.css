@@ -27,22 +27,12 @@
     /*Pushes the edit and logout buttons to the right*/
 }
 
-.icon-button {
-    background: none;
-    border: none;
-    color: black;
-    cursor: pointer;
+.buttons-container {
+    display: contents;
     font-size: 1em;
-    margin-right: 10px;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
 }
 
-.icon-button i {
-    margin-right: 5px;
-}
-
-.icon-button:hover {
-    color: lightgray;
+.buttons-container i {
+    padding-right: 5px;
+    font-size: 1.5em;
 }

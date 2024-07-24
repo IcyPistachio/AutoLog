@@ -237,7 +237,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
             {error && <p>{error}</p>}
             {car ? (
                 <div className="top-half">
-                    <div>
+                    <div className="car-info">
                         <div>
                             {editMode ? (
                                 <label>Make: <input
@@ -256,7 +256,10 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                     value={model}
                                     onChange={(e) => setModel(e.target.value)} /></label>
                             ) : (
-                                <h3>{car.color} {car.model}</h3>
+                                <div>
+                                    <h3>{car.color} {car.model}</h3>
+                                    <br></br>
+                                </div>
                             )}
                         </div>
                         <div>
@@ -288,14 +291,17 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                             )}
                         </div>
                         {editMode ? (
-                            <div>
-                                <button onClick={saveCarChanges}>Save Changes</button>
-                                <button onClick={() => setEditMode(false)}>Cancel</button>
+                            <div className="bottom-right-buttons">
+                                <button className="button-fitted default-button" onClick={() => setEditMode(false)}>CANCEL</button>
+                                <div className="spacer"></div>
+                                <button className="button-fitted accent-button" onClick={saveCarChanges}>SAVE</button>
                             </div>
                         ) : (
-                            <button className="icon-button" onClick={() => setEditMode(true)}>
-                                <i className="bi bi-pencil-square"> </i>Edit
-                            </button>
+                            <div className="bottom-right-buttons">
+                                <button className="icon-button" onClick={() => setEditMode(true)}>
+                                    <i className="bi bi-pencil-fill"></i>
+                                </button>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -327,41 +333,46 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                     <br />
                     <div className='scrollbar'>
                         {showAddNoteForm && (
-                            <div className="note-form">
-                                <label>
-                                    Service Type:
-                                    <input
-                                        type="text"
-                                        value={type}
-                                        onChange={(e) => setType(e.target.value)}
-                                        placeholder="Service Type"
-                                    />
-                                </label>
-                                <label>
-                                    Miles:
-                                    <input
-                                        type="text"
-                                        value={miles}
-                                        onChange={(e) => setMiles(e.target.value)}
-                                        placeholder="Miles"
-                                    />
-                                </label>
-                                <label>
-                                    Note:
-                                    <textarea
-                                        value={note}
-                                        onChange={(e) => setNote(e.target.value)}
-                                        placeholder="Add a note"
-                                    ></textarea>
-                                </label>
-                                <button className='icon-button' onClick={addNote}><i class="bi bi-plus"></i>Add Note</button>
-                                <button className='icon-button' onClick={() => setShowAddNoteForm(false)}><i class="bi bi-x"></i>Cancel</button>
+                            <div className="note">
+                                <div id="sectionHeader">NEW LOG</div>
+                                <div className="note-form">
+                                    <label>
+                                        Service Type:
+                                        <input
+                                            type="text"
+                                            value={type}
+                                            onChange={(e) => setType(e.target.value)}
+                                            placeholder="Service Type"
+                                        />
+                                    </label>
+                                    <label>
+                                        Miles:
+                                        <input
+                                            type="text"
+                                            value={miles}
+                                            onChange={(e) => setMiles(e.target.value)}
+                                            placeholder="Miles"
+                                        />
+                                    </label>
+                                    <label>
+                                        Note:
+                                        <textarea
+                                            value={note}
+                                            onChange={(e) => setNote(e.target.value)}
+                                            placeholder="Add a note"
+                                        ></textarea>
+                                    </label>
+                                    <div className="bottom-right-buttons">
+                                        <button className="button-fitted default-button" onClick={() => setShowAddNoteForm(false)}>CANCEL</button>
+                                        <button className="button-fitted accent-button" onClick={addNote}>ADD</button>
+                                    </div>
+                                </div>
                             </div>
                         )}
 
                         <div className="note-list">
                             {filteredNotes.map((note) => (
-                                <div key={note.noteId}>
+                                <div className="note" key={note.noteId}>
                                     {editNoteId === note.noteId ? (
                                         <div className="edit-note-form">
                                             <label>
@@ -389,8 +400,11 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                                     onChange={(e) => setEditNoteContent(e.target.value)}
                                                 ></textarea>
                                             </label>
-                                            <button className='icon-button' onClick={updateNote}><i className="bi bi-pencil-square"></i>Update Note</button>
-                                            <button className='icon-button' onClick={() => setEditNoteId(null)}><i class="bi bi-x"></i>Cancel</button>
+
+                                            <div className="bottom-right-buttons">
+                                                <button className="button-fitted default-button" onClick={() => setEditNoteId(null)}>CANCEL</button>
+                                                <button className="button-fitted accent-button" onClick={updateNote}>SAVE</button>
+                                            </div>
                                         </div>
                                     ) : (
                                         <div className="note">
@@ -401,13 +415,18 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                                 {note.miles} miles
                                             </h4>
                                             <p>{note.note}</p>
-                                            <p className="note-date"> {formatDate(note.dateCreated)}</p>
-                                            <button className="icon-button" onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>
-                                                <i className="bi bi-pencil-square"></i> Edit
-                                            </button>
-                                            <button className="icon-button" onClick={() => deleteNote(note.noteId)}>
-                                                <i className="bi bi-trash"></i> Delete
-                                            </button>
+                                            <br></br>
+                                            <div className="note-date"> {formatDate(note.dateCreated)}</div>
+
+                                            <div className="bottom-right-buttons">
+                                                <button className="icon-button" onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>
+                                                    <i className="bi bi-pencil-square"></i>
+                                                </button>
+
+                                                <button className="icon-button" onClick={() => deleteNote(note.noteId)}>
+                                                    <i className="bi bi-trash"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
