@@ -31,6 +31,10 @@
     box-shadow: inset 4px 4px #ccc;
 }
 
+.add-car-section input:focus {
+    border: 2px solid black;
+}
+
 .button-fitted {
     width: 70%;
     padding: 5px;

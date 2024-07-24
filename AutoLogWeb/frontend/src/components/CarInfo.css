@@ -38,6 +38,11 @@
     box-shadow: inset 4px 4px #ccc;
 }
 
+.note-form input:focus,
+.edit-note-form input:focus {
+    border: 2px solid black;
+}
+
 .note-form input[type="text"],
 .edit-note-form input[type="text"] {
     padding: 8px;
@@ -71,6 +76,10 @@
     padding: 5px;
     border: none;
     box-shadow: inset 4px 4px #ccc;
+}
+
+.car-info input:focus {
+    border: 2px solid black;
 }
 
 .note p {

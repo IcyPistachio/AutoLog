@@ -298,7 +298,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                             </div>
                         ) : (
                             <div className="bottom-right-buttons">
-                                <button className="icon-button" onClick={() => setEditMode(true)}>
+                                <button aria-label="Edit Vehicle" className="icon-button" onClick={() => setEditMode(true)}>
                                     <i className="bi bi-pencil-fill"></i>
                                 </button>
                             </div>
@@ -419,11 +419,11 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                                             <div className="note-date"> {formatDate(note.dateCreated)}</div>
 
                                             <div className="bottom-right-buttons">
-                                                <button className="icon-button" onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>
+                                                <button aria-label="Edit Log" className="icon-button" onClick={() => editNote(note.noteId, note.note, note.type, note.miles)}>
                                                     <i className="bi bi-pencil-square"></i>
                                                 </button>
 
-                                                <button className="icon-button" onClick={() => deleteNote(note.noteId)}>
+                                                <button aria-label="Delete Log" className="icon-button" onClick={() => deleteNote(note.noteId)}>
                                                     <i className="bi bi-trash"></i>
                                                 </button>
                                             </div>
