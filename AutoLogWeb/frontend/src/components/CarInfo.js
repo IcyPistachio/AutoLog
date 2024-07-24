@@ -103,7 +103,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                 setNote('');
                 setType('');
                 setMiles('');
-                //setShowAddNoteForm(false); // Hide form after adding the note
+                setShowAddNoteForm(false); // Hide form after adding the note
             }
         } catch (e) {
             setError(e.toString());
