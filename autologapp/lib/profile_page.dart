@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'login_page.dart';
 import 'constants.dart' as constants;
@@ -77,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _openForgotPasswordPage() async {
     // Show confirmation dialog
-    showDialog(
+    bool confirm = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -103,6 +104,17 @@ class _ProfilePageState extends State<ProfilePage> {
         );
       },
     );
+
+    // If user confirms, open web browser
+    if (confirm == true) {
+      Uri url = Uri.parse(
+          'https://autolog4331-72854790c21d.herokuapp.com/forgot-password');
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
   }
 
   @override

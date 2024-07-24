@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
     // If user confirms, open web browser
     if (confirm == true) {
       Uri url = Uri.parse(
-          'https://autolog-b358aa95bace.herokuapp.com/forgot-password');
+          'https://autolog4331-72854790c21d.herokuapp.com/forgot-password');
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       } else {
@@ -156,56 +156,64 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: constants.slategray,
-          centerTitle: true,
-          title: Image.asset(
-            'assets/logo.png',
-            height: 60,
-          )),
+        backgroundColor: constants.slategray,
+        centerTitle: true,
+        title: Image.asset(
+          'assets/logo.png',
+          height: 60,
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: Form(
-            key: _formKey,
-            child: Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                  const Center(
-                      child: Text("LOG IN", style: constants.headerTextStyle)),
-                  _spacer(),
-                  _loginFormInput(FormInputType.email),
-                  _spacer(),
-                  _loginFormInput(FormInputType.password),
-                  _spacer(),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _login();
-                      }
-                    },
-                    style: constants.accentButtonStyle,
-                    child: const Text('LOG IN ->',
-                        style: constants.buttonTextStyle),
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                const Center(
+                  child: Text("LOG IN", style: constants.headerTextStyle),
+                ),
+                _spacer(),
+                _loginFormInput(FormInputType.email),
+                _spacer(),
+                _loginFormInput(FormInputType.password),
+                _spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _login();
+                    }
+                  },
+                  style: constants.accentButtonStyle,
+                  child:
+                      const Text('LOG IN ->', style: constants.buttonTextStyle),
+                ),
+                TextButton(
+                  onPressed: _openForgotPasswordPage,
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
-                  TextButton(
-                    onPressed: _openForgotPasswordPage,
-                    child: const Text('Forgot Password?',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
-                  ),
-                  const Spacer(),
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()),
-                      );
-                    },
-                    style: constants.defaultButtonStyle,
-                    child:
-                        const Text('SIGN UP', style: constants.buttonTextStyle),
-                  ),
-                ]))),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(30.0), // Adjust padding as needed
+        child: OutlinedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RegisterPage()),
+            );
+          },
+          style: constants.defaultButtonStyle,
+          child: const Text('SIGN UP', style: constants.buttonTextStyle),
+        ),
       ),
     );
   }
