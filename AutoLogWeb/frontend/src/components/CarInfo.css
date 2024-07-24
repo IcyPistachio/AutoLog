@@ -57,6 +57,7 @@
 
 .note {
     padding: 10px;
+    margin-right: 10px;
     margin-bottom: 10px;
     background-color: slategray;
     position: relative;
@@ -160,4 +161,60 @@
     color: white;
     font-size: 1.2em;
     font-weight: bold;
+}
+
+/* scrollbars */
+.scrollbar {
+    --sb-track-color: #2e343b;
+    --sb-thumb-color: slategray;
+    --sb-size: 15px;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: var(--sb-size)
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 10px;
+    border: 3px solid #2E343B;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .scrollbar {
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
+}
+
+
+.car-lists {
+    --sb-track-color: #2e343b;
+    --sb-thumb-color: slategray;
+    --sb-size: 15px;
+}
+
+.car-lists::-webkit-scrollbar {
+    width: var(--sb-size)
+}
+
+.car-lists::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 10px;
+}
+
+.car-lists::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 10px;
+    border: 3px solid #2E343B;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .car-lists {
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    }
 }
