@@ -16,19 +16,42 @@
     text-transform: uppercase;
 }
 
-
 #editNameContainer {
     display: flex;
+    flex-direction: row;
     align-items: center;
+    margin-left: auto;
 }
 
-#editNameContainer {
-    margin-left: auto;
-    /*Pushes the edit and logout buttons to the right*/
+.edit-inputs-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Adjust this value to control the spacing between items */
+}
+
+.edit-inputs-container input {
+    width: 100%;
+    display: inline-flex;
+    padding: 5px;
+    border: none;
+    box-shadow: inset 4px 4px #ccc;
+}
+
+.edit-inputs-container input:focus {
+    border: 2px solid black;
+}
+
+.edit-inputs-container button {
+    font-size: .9em;
+    margin-bottom: 10px;
 }
 
 .buttons-container {
-    display: contents;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Adjust this value to control the spacing between items */
     font-size: 1em;
 }
 

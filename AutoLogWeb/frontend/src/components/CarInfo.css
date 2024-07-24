@@ -136,25 +136,6 @@
     font-size: 1.25em;
 }
 
-#iconButton {
-    background-color: rgba(0, 0, 0, 0.1);
-    /* Adjust the rgba values as needed for transparency */
-    border: none;
-    /* Remove border if any */
-    cursor: pointer;
-    /* Change cursor to pointer */
-    padding: 10px;
-    /* Adjust padding as needed */
-    border-radius: 5px;
-    /* Add some rounding if needed */
-}
-
-/* Optionally, add hover effect */
-#iconButton:hover {
-    background-color: rgba(0, 0, 0, 0.2);
-    /* Slightly less transparent on hover */
-}
-
 .scrollbar {
     overflow-y: scroll;
     height: 42vh;

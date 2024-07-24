@@ -91,7 +91,7 @@ function CarUI({ onSelectCar, selectedCarId, carInfoUpdated, onCreateVehicle }) 
                         ref={searchRef}
                         onChange={handleSearchChange} />
                 </div>
-                <button type="button" onClick={onCreateVehicle}>
+                <button className="button-custom default-button" type="button" onClick={onCreateVehicle}>
                     <i class="bi bi-plus" />
                     ADD VEHICLE
                 </button>

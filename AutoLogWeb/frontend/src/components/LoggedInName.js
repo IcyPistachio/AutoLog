@@ -34,7 +34,6 @@ function LoggedInName() {
             if (res.error) {
                 alert('Failed to update name');
             } else {
-                alert('Name updated successfully');
                 setIsEditing(false);
 
                 const updatedUser = { ...ud, firstName, lastName };
@@ -52,18 +51,19 @@ function LoggedInName() {
             </div>
             <div id="editNameContainer">
                 {isEditing ? (
-                    <div>
+                    <div className="edit-inputs-container">
                         <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                         <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                        <button type="button" className="buttons" onClick={handleChangeName}>Save</button>
-                        <button type="button" className="buttons" onClick={() => setIsEditing(false)}>Cancel</button>
+                        <button type="button" className="button-fitted default-button" onClick={() => setIsEditing(false)}>Cancel</button>
+                        <button type="button" className="button-fitted accent-button" onClick={handleChangeName}>Save</button>
                     </div>
                 ) : (
                     <div className="buttons-container">
                         <button type="button" className="icon-button" onClick={() => setIsEditing(true)}>
-                            <i className="bi bi-pencil-square"></i>Edit Name</button>
+                            <i className="bi bi-pencil-square"></i>Edit Name
+                        </button>
                         <div className="spacer" />
-                        <button id="redButton" type="button" className="icon-button" onClick={doLogout}>
+                        <button type="button" className="icon-button" onClick={doLogout}>
                             <i class="bi bi-box-arrow-right"></i>Log Out
                         </button>
                     </div>

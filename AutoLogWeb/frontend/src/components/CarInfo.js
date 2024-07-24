@@ -324,7 +324,7 @@ function CarInfo({ carId, onCarInfoUpdated }) {
                             />
                         </div>
 
-                        <button className="iconButton" onClick={() => setShowAddNoteForm(true)}>
+                        <button className="button-custom default-button" onClick={() => setShowAddNoteForm(true)}>
                             <i class="bi bi-plus"></i>
                             ADD LOG
                         </button>
