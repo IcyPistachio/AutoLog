@@ -17,6 +17,7 @@
     background: url('../images/garage.JPG') no-repeat center center fixed;
     background-size: cover;
     animation: garage-door 2s ease-in-out forwards;
+    z-index: 1000;
 }
 
 .car-page-container {
